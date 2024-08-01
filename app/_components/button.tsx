@@ -7,7 +7,7 @@ type ButtonProps = {
     type?: 'button' | 'submit' | 'reset';
     className?: string,
     size?: 'sm' | 'md' | 'lg';
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({
