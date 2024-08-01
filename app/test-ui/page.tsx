@@ -24,7 +24,7 @@ export default function TestUIPage() {
         <TextInput type="text" placeholder="this is text field" />
         <TextInput type="password" placeholder="this is pasword" />
         <TextInput className="bg-orange-200 text-green-400" type="text" placeholder="this is customed text field" />
-        <TextInput value={changableValue} onChange={(e) => setChangableValue(e.target.value)} type="text" placeholder="Change by event" />
+        <TextInput value={changableValue} onChange={(val) => setChangableValue(val)} type="text" placeholder="Change by event" />
         <br />
         <h1>Text input</h1>
         <br />
@@ -47,7 +47,7 @@ export default function TestUIPage() {
             id="label-input-4"
             placeholder="this is place holder"
             value={changableValue}
-            onChange={(e) => setChangableValue(e.target.value)}
+            onChange={setChangableValue}
         />
 
         <LabelTextInput
@@ -56,7 +56,7 @@ export default function TestUIPage() {
             id="label-input-4"
             placeholder="this is place holder"
             value={changableValue}
-            onChange={(e) => setChangableValue(e.target.value)}
+            onChange={setChangableValue}
         />
 
     </div>
