@@ -4,7 +4,7 @@ import TextInput from "./text-input"
 
 type LabelTextInputProps = {
     id: string,
-    onChange?: React.ChangeEventHandler<HTMLInputElement>,
+    onChange?: (val: string) => void,
     value?: string,
     title: string,
     className?: string,
