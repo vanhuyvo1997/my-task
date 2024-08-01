@@ -7,9 +7,11 @@ import { ChangeEventHandler } from "react"
 type TextInputProps = {
     value?: string,
     className?: string,
-    type: "text" | "password",
+    type?: "text" | "password",
     placeholder?: string,
     onChange?: ChangeEventHandler<HTMLInputElement>,
+    id?: string,
+    name?: string,
 }
 
 export default function TextInput({
@@ -18,8 +20,12 @@ export default function TextInput({
     className,
     placeholder,
     onChange,
+    id,
+    name,
 }: Readonly<TextInputProps>) {
     return <input
+        id={id}
+        name={name}
         className={clsx(
             className,
             'shadow-md rounded-md px-3 py-2 border-none',
