@@ -1,15 +1,9 @@
 "use client"
 
-import TextInput from "./text-input"
+import TextInput, { CommonTextInputProps } from "./text-input"
 
-type LabelTextInputProps = {
-    id: string,
-    onChange?: (val: string) => void,
-    value?: string,
+type LabelTextInputProps = CommonTextInputProps & {
     title: string,
-    className?: string,
-    placeholder?: string,
-    type?: 'password' | 'text',
 }
 
 export default function LabelTextInput({
