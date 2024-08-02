@@ -8,6 +8,14 @@ export default function TestUIPage() {
 
     const [changableValue, setChangableValue] = useState("");
 
+    function handleClearText(e: React.MouseEvent<HTMLButtonElement>) {
+        setChangableValue('');
+    }
+
+    function handleChangeText(e: React.ChangeEvent<HTMLInputElement>) {
+        setChangableValue(e.target.value);
+    }
+
     return <div>
         <h1>Buttons</h1>
         <hr />
@@ -20,22 +28,27 @@ export default function TestUIPage() {
         <hr />
         <h1>Text input</h1>
         <br />
+        <TextInput
+            onClearText={handleClearText} onChange={handleChangeText} value={changableValue}
+        />
 
-        <TextInput type="text" placeholder="this is text field" />
-        <TextInput type="password" placeholder="this is pasword" />
-        <TextInput className="bg-orange-200 text-green-400" type="text" placeholder="this is customed text field" />
-        <TextInput value={changableValue} onChange={(val) => setChangableValue(val)} type="text" placeholder="Change by event" />
+        <TextInput
+
+        />
+
         <br />
         <h1>Text input</h1>
         <br />
-        <LabelTextInput title="Label input" id="label-input-1" />
+        <LabelTextInput onClearText={handleClearText} onChange={handleChangeText} value={changableValue} title="Label input" id="label-input-1" />
         <LabelTextInput
+            onClearText={handleClearText} onChange={handleChangeText} value={changableValue}
             title="Label input with place holder"
             id="label-input-2"
             placeholder="this is place holder"
         />
 
         <LabelTextInput
+            onClearText={handleClearText} onChange={handleChangeText} value={changableValue}
             title="Customed label input"
             id="label-input-3"
             placeholder="this is place holder"
@@ -47,7 +60,7 @@ export default function TestUIPage() {
             id="label-input-4"
             placeholder="this is place holder"
             value={changableValue}
-            onChange={setChangableValue}
+            onClearText={handleClearText} onChange={handleChangeText}
         />
 
         <LabelTextInput
@@ -55,8 +68,7 @@ export default function TestUIPage() {
             title="Password label in put field"
             id="label-input-4"
             placeholder="this is place holder"
-            value={changableValue}
-            onChange={setChangableValue}
+            onClearText={handleClearText} onChange={handleChangeText} value={changableValue}
         />
 
     </div>

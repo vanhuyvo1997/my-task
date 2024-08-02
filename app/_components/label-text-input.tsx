@@ -13,7 +13,8 @@ export default function LabelTextInput({
     className,
     placeholder,
     onChange,
-    type = 'text'
+    type = 'text',
+    onClearText,
 }: Readonly<LabelTextInputProps>) {
     return <div>
         <label htmlFor={id}><small>{title}</small></label><br />
@@ -23,6 +24,7 @@ export default function LabelTextInput({
             id={id}
             value={value}
             onChange={onChange}
+            onClearText={onClearText}
             type={type}
         />
     </div>

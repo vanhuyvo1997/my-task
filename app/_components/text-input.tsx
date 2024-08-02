@@ -2,7 +2,7 @@
 
 
 import clsx from "clsx"
-import { useState } from "react"
+import { ChangeEventHandler, MouseEventHandler, useState } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
 import { CommonButtonProps } from "./button"
 
@@ -13,7 +13,8 @@ export type CommonTextInputProps = {
     className?: string,
     type?: "text" | "password",
     placeholder?: string,
-    onChange?: (val: string) => void,
+    onChange?: ChangeEventHandler<HTMLInputElement>,
+    onClearText?: MouseEventHandler<HTMLButtonElement>,
 }
 
 
@@ -25,14 +26,14 @@ export default function TextInput({
     className,
     placeholder,
     onChange,
+    onClearText,
     id,
     name,
 }: Readonly<TextInputProps>) {
-    const [internalValue, setInternalValue] = useState(value);
-    const [internalType, setInternalType] = useState(type);
-    const isEmpty = !internalValue;
     const isPassword = type === "password";
+    const [internalType, setInternalType] = useState(type);
     const isShowPossword = internalType === "text";
+    const isEmpty = !value;
 
     return <div className="relative inline-block">
         <input
@@ -43,24 +44,13 @@ export default function TextInput({
                 isPassword ? 'pr-12' : 'pr-5',
                 'shadow-md rounded-md pl-3 py-2 border-none',
             )}
-            onChange={(e) => {
-                if (onChange) {
-                    onChange(e.target.value);
-                }
-                setInternalValue(e.target.value);
-
-            }}
+            onChange={onChange}
             type={internalType}
-            value={internalValue}
+            value={value}
             placeholder={placeholder}
         />
         {!isEmpty && <ClearButton
-            onClick={e => {
-                if (onChange) {
-                    onChange('');
-                }
-                setInternalValue('');
-            }}
+            onClick={onClearText}
             className={clsx(
                 'hover:transition-colors hover:text-black text-gray-500 absolute top-1/2 right-0.5 -translate-y-1/2',
                 isPassword && 'right-7'
