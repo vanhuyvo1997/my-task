@@ -11,7 +11,7 @@ export type CommonTextInputProps = {
     name?: string,
     value?: string,
     className?: string,
-    type?: "text" | "password",
+    type?: "text" | "password" | "email",
     placeholder?: string,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     onClearText?: MouseEventHandler<HTMLButtonElement>,
@@ -35,14 +35,14 @@ export default function TextInput({
     const isShowPossword = internalType === "text";
     const isEmpty = !value;
 
-    return <div className="relative inline-block">
+    return <div className="relative">
         <input
             id={id}
             name={name}
             className={clsx(
                 className,
                 isPassword ? 'pr-12' : 'pr-5',
-                'shadow-md rounded-md pl-3 py-2 border-none',
+                'shadow-md rounded-md pl-3 py-2 border-none w-full',
             )}
             onChange={onChange}
             type={internalType}
