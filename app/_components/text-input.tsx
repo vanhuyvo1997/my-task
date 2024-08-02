@@ -40,8 +40,8 @@ export default function TextInput({
             name={name}
             className={clsx(
                 className,
-                'shadow-md rounded-md pl-3 pr-5 py-2 border-none',
-                isPassword && 'pr-12'
+                isPassword ? 'pr-12' : 'pr-5',
+                'shadow-md rounded-md pl-3 py-2 border-none',
             )}
             onChange={(e) => {
                 if (onChange) {
