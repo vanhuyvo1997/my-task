@@ -2,12 +2,15 @@
 
 import clsx from 'clsx';
 
-type ButtonProps = {
+export type CommonButtonProps = {
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    className?: string;
+}
+
+type ButtonProps = CommonButtonProps & {
     content: string;
     type?: 'button' | 'submit' | 'reset';
-    className?: string,
     size?: 'sm' | 'md' | 'lg';
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({
