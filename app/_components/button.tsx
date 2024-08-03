@@ -5,12 +5,13 @@ import clsx from 'clsx';
 export type CommonButtonProps = {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
+    disabled?: boolean;
 }
 
 type ButtonProps = CommonButtonProps & {
-    content: string;
     type?: 'button' | 'submit' | 'reset';
     size?: 'sm' | 'md' | 'lg';
+    content: React.ReactNode,
 }
 
 export default function Button({
@@ -19,12 +20,16 @@ export default function Button({
     type = 'button',
     className,
     onClick,
+    disabled,
 }: Readonly<ButtonProps>) {
     return <button
+        aria-disabled={disabled}
+        disabled={disabled}
         onClick={onClick}
         type={type}
         className={clsx(
-            'hover:bg-gray-600 hover:text-white transition-colors',
+            !disabled && 'hover:bg-gray-600 hover:text-white transition-colors',
+            disabled && 'opacity-80',
             className,
             (size === 'sm') && 'shadow-sm text-sm rounded-sm px-2 py-1',
             (size === 'md') && 'shadow-md text-base rounded-md px-3 py-2',
