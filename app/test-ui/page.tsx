@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "../_components/button";
 import TextInput from "../_components/text-input";
 import LabelTextInput from "../_components/label-text-input";
+import SubmitButton from "../_components/submit-button";
 
 export default function TestUIPage() {
 
@@ -70,6 +71,14 @@ export default function TestUIPage() {
             placeholder="this is place holder"
             onClearText={handleClearText} onChange={handleChangeText} value={changableValue}
         />
+
+        <br />
+        <br />
+        <h1>Submit button</h1>
+        <br />
+        <form action={async (data) => { await new Promise(resolve => setTimeout(resolve, 3000)); }}>
+            <SubmitButton content="Submit button" />
+        </form>
 
     </div>
 }
