@@ -9,6 +9,7 @@ type LabelTextInputProps = CommonTextInputProps & {
 export default function LabelTextInput({
     id,
     value,
+    name,
     title,
     className,
     placeholder,
@@ -26,6 +27,7 @@ export default function LabelTextInput({
             onChange={onChange}
             onClearText={onClearText}
             type={type}
+            name={name}
         />
     </div>
 }
