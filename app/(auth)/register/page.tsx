@@ -6,17 +6,28 @@ import { register } from '@/app/_actions/auth-actions';
 import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
 
+type RegisterFormData = { firstName: string, lastName: string, email: string, password: string, retypePassword: string };
+const initialFormData = { lastName: '', firstName: '', email: '', password: '', retypePassword: '' };
 
 export default function RegisterPage() {
 
     const [formState, dispatch] = useFormState(register, { success: false });
+    const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
 
+    //focus first element on first load
     useEffect(() => {
         document.getElementById('firstName')?.focus();
     }, []);
 
-    const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '', retypePassword: '' });
+    //clear form affter submitting successfully
+    useEffect(() => {
+        if (formState.success) {
+            setFormData(initialFormData);
+        }
+    }, [formState])
 
+
+    //Handle change form data
     function handleChangeFormData(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData({
             ...formData,
@@ -24,13 +35,13 @@ export default function RegisterPage() {
         });
     }
 
-    function handleClearText(fieldName: 'firstName' | 'lastName' | 'email' | 'password' | 'retypePassword') {
+    //handle clear all text in a input filed 
+    function handleClearText(fieldName: keyof typeof formData) {
         setFormData({
             ...formData,
             [fieldName]: '',
         });
     }
-
 
     return (
         <AuthCommonForm
