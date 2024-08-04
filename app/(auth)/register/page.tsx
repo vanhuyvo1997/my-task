@@ -1,10 +1,11 @@
 'use client'
 import LabelTextInput from '@/app/_components/label-text-input';
-import Link from 'next/link';
 import AuthCommonForm from '../auth-common-form';
 import { register } from '@/app/_actions/auth-actions';
 import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
+import { showNotification } from '@/app/_lib/utils';
+import CommonLink from '@/app/_components/common-link';
 
 type RegisterFormData = { firstName: string, lastName: string, email: string, password: string, retypePassword: string };
 const initialFormData = { lastName: '', firstName: '', email: '', password: '', retypePassword: '' };
@@ -22,6 +23,7 @@ export default function RegisterPage() {
     //clear form affter submitting successfully
     useEffect(() => {
         if (formState.success) {
+            showNotification('success', <>Congratulation! You have registered successfully.<CommonLink className='text-blue-600' href='/login'> Log in now.</CommonLink></>)
             setFormData(initialFormData);
         }
     }, [formState])
@@ -45,7 +47,7 @@ export default function RegisterPage() {
 
     return (
         <AuthCommonForm
-            footerContent={<>or Already had an account? <Link className='text-blue-600' href='/login'>Log in now.</Link></>}
+            footerContent={<>or Already had an account? <CommonLink className='text-blue-600' href='/login'>Log in now.</CommonLink></>}
             buttonContent='Register'
             action={dispatch}
         >
@@ -60,7 +62,7 @@ export default function RegisterPage() {
             />
             {
                 formState.fieldErrors?.firstName && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.firstName?.map(e => <><p key={e}>(*) {e}</p></>)}
+                    {formState.fieldErrors?.firstName?.map(e => <p key={e}>(*) {e}</p>)}
                 </div>
             }
 
@@ -75,7 +77,7 @@ export default function RegisterPage() {
             />
             {
                 formState.fieldErrors?.lastName && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.lastName?.map(e => <><p key={e}>(*) {e}</p></>)}
+                    {formState.fieldErrors?.lastName?.map(e => <p key={e}>(*) {e}</p>)}
                 </div>
             }
 
@@ -91,7 +93,7 @@ export default function RegisterPage() {
             />
             {
                 formState.fieldErrors?.email && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.email?.map(e => <><p key={e}>(*) {e}</p></>)}
+                    {formState.fieldErrors?.email?.map(e => <p key={e}>(*) {e}</p>)}
                 </div>
             }
 
@@ -107,7 +109,7 @@ export default function RegisterPage() {
             />
             {
                 formState.fieldErrors?.password && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.password?.map(e => <><p key={e}>(*) {e}</p></>)}
+                    {formState.fieldErrors?.password?.map(e => <p key={e}>(*) {e}</p>)}
                 </div>
             }
 
@@ -123,7 +125,7 @@ export default function RegisterPage() {
             />
             {
                 formState.fieldErrors?.retypePassword && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.retypePassword?.map(e => <><p key={e}>(*) {e}</p></>)}
+                    {formState.fieldErrors?.retypePassword?.map(e => <p key={e}>(*) {e}</p>)}
                 </div>
             }
         </AuthCommonForm>
