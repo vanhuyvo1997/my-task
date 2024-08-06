@@ -12,7 +12,7 @@ const toastifyConfig: ToastOptions = {
     transition: Bounce,
 }
 
-export function showNotification(type: "success" | 'info' | 'warning', message: React.ReactNode) {
+export function showNotification(type: "success" | 'info' | 'warning' | 'error', message: React.ReactNode) {
     switch (type) {
         case 'success': {
             toast.success(message, toastifyConfig); break;
@@ -22,6 +22,9 @@ export function showNotification(type: "success" | 'info' | 'warning', message: 
         }
         case 'warning': {
             toast.warning(message, toastifyConfig); break;
+        }
+        case 'error': {
+            toast.error(message, toastifyConfig); break;
         }
     }
 }

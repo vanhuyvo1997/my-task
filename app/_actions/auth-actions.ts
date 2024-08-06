@@ -32,6 +32,7 @@ const RegisterFormSchema = z.object({
 
 export type RegisterFormState = {
     success: boolean,
+    message?: string,
     fieldErrors?: {
         firstName?: string[],
         lastName?: string[],
@@ -69,8 +70,44 @@ export async function register(state: any, RegisterFormData: FormData): Promise<
         }
     }
 
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    return {
-        success: true
+    try {
+        const response = await fetch(process.env.MY_TASK_REGISTER_API, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+
+        if (response.status === 409) {
+            return {
+                success: false,
+                fieldErrors: {
+                    email: ['This email was taken. Please choose another one.']
+                }
+            }
+        }
+
+        if (response.ok) {
+            return {
+                success: true,
+            }
+        }
+
+        return {
+            success: false,
+            message: 'Something went wrong: ' + response.statusText,
+        }
+    } catch (e) {
+        console.error(e);
+        let message = '';
+        if (e instanceof Error) {
+            message = e.message;
+        } else message = String(e);
+
+        return {
+            success: false,
+            message: 'Something went wrong: ' + message,
+        }
     }
 }

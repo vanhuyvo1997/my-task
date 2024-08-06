@@ -25,6 +25,8 @@ export default function RegisterPage() {
         if (formState.success) {
             showNotification('success', <>Congratulation! You have registered successfully.<CommonLink className='text-blue-600' href='/login'> Log in now.</CommonLink></>)
             setFormData(initialFormData);
+        } else if (formState.message) {
+            showNotification('error', <>Failed! <br />  {formState.message}</>);
         }
     }, [formState])
 
