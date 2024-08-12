@@ -1,5 +1,7 @@
-import NextAuth from "next-auth"
+import { readFileSync } from "fs";
+import NextAuth, { User } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import * as jose from 'jose'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -9,7 +11,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 password: {},
             },
             authorize: async (credentials) => {
-                const response = await fetch('https://a8025dac-e97f-4b23-a884-4d6442f85827.mock.pstmn.io/api/authentication/login', {
+                const response = await fetch(process.env.MY_TASK_LOGIN_API, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -19,16 +21,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 if (response.ok) {
                     const data = await response.json();
-                    return {
-                        id: data.id,
-                        email: data.email,
-                        name: data.name,
-                        image: data.image,
-                        accessToken: data.accessToken,
-                        refreshToken: data.refreshToken,
-                        role: data.role,
-                    }
-                } else return null
+                    const user = await extractUser(data.accessToken);
+                    user.refreshToken = data.refreshToken;
+                    return user;
+                }
+
+                return null
             },
         }),
     ],
@@ -53,3 +51,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signIn: '/login',
     },
 })
+
+
+
+async function extractUser(accessToken: string): Promise<User> {
+    let key = readFileSync(process.env.PUBLIC_KEY_FILE).toString();
+    let header = jose.decodeProtectedHeader(accessToken);
+    const publicKey = await jose.importSPKI(key, header.alg!)
+    const { payload } = await jose.jwtVerify<{ id?: string, lastName?: string, firstName?: string, role?: string, img?: string }>(accessToken, publicKey)
+
+    return {
+        id: payload.id,
+        email: payload.sub,
+        accessToken: accessToken,
+        role: payload.role,
+        name: payload.firstName + " " + payload.lastName,
+        image: payload.img,
+    }
+}
