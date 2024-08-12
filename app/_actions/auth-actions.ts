@@ -1,34 +1,9 @@
 "use server"
 
-import { z } from "zod";
 
-
-const nameRegex = /[a-zA-Z]+/;
-
-
-const RequiredStringSchema = z.coerce.string({ required_error: 'This field is required.' }).min(1, { message: 'This field is required.' });
-
-const FirstNameSchema = RequiredStringSchema.trim()
-    .max(32, { message: 'This field must not contain more than 32 characters.' }).
-    regex(nameRegex, { message: 'This field must contain alphabet characters only.' });
-const LastNameSchema = RequiredStringSchema.trim()
-    .max(64, { message: 'This field must not contain more than 64 characters.' })
-    .regex(nameRegex, { message: 'This field must contain alphabet characters only.' });
-const EmailSchema = RequiredStringSchema.trim()
-    .email({ message: 'This is not an valid email' }).max(124, { message: 'This field must not contain more than 124 characters.' });
-const PasswordSchema = RequiredStringSchema
-    .max(100, { message: 'This field must not contain more than 100 characters.' })
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, { message: 'This field must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character' });
-const RetypePasswordSchema = RequiredStringSchema;
-
-const RegisterFormSchema = z.object({
-    firstName: FirstNameSchema,
-    lastName: LastNameSchema,
-    email: EmailSchema,
-    password: PasswordSchema,
-    retypePassword: RequiredStringSchema,
-});
-
+import { LoginFormSchema, RegisterFormSchema } from "../_lib/zod";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 export type RegisterFormState = {
     success: boolean,
@@ -41,6 +16,7 @@ export type RegisterFormState = {
         retypePassword?: string[],
     },
 }
+
 
 export async function register(state: any, RegisterFormData: FormData): Promise<RegisterFormState> {
 
@@ -109,5 +85,42 @@ export async function register(state: any, RegisterFormData: FormData): Promise<
             success: false,
             message: 'Something went wrong: ' + message,
         }
+    }
+}
+
+
+export type LoginFormState = {
+    success: boolean,
+    message?: string,
+}
+export async function login(prevFormState: LoginFormState, FormData: FormData): Promise<LoginFormState> {
+    const validateResult = LoginFormSchema.safeParse({
+        email: FormData.get('email'),
+        password: FormData.get('password'),
+    });
+
+    if (!validateResult.success) {
+        return {
+            success: false,
+            message: 'Email or password is incorrect.'
+        }
+    }
+
+    try {
+        await signIn('credentials', { redirect: true, redirectTo: '/user', ...validateResult.data });
+        return { success: true, };
+    } catch (error) {
+        if (error instanceof AuthError) {
+            const result: LoginFormState = { success: false };
+            let message = '';
+            if (error.type === "CredentialsSignin") {
+                message = 'Invalid credentials';
+            } else {
+                message = 'Something went wrong';
+            }
+            result.message = message;
+            return result;
+        }
+        throw error;
     }
 }
