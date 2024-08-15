@@ -2,7 +2,7 @@
 
 
 import clsx from "clsx"
-import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, useState } from "react"
+import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, ReactNode, useState } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
 import { CommonButtonProps } from "./button"
 
@@ -10,6 +10,7 @@ export type CommonTextInputProps = {
     id?: string,
     name?: string,
     value?: string,
+    defaultValue?: string,
     className?: string,
     type?: "text" | "password" | "email",
     placeholder?: string,
@@ -33,6 +34,7 @@ export default function TextInput({
     name,
     onFocus,
     onBlur,
+    defaultValue,
 }: Readonly<TextInputProps>) {
     const isPassword = type === "password";
     const [internalType, setInternalType] = useState(type);
@@ -53,6 +55,7 @@ export default function TextInput({
             onBlur={onBlur}
             type={internalType}
             value={value}
+            defaultValue={defaultValue}
             placeholder={placeholder}
         />
         {!isEmpty && <ClearButton

@@ -6,7 +6,7 @@ export type CommonButtonProps = {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
     disabled?: boolean;
-    children: React.ReactNode,
+    children?: React.ReactNode,
     title?: string,
 }
 
