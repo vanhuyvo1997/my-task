@@ -1,4 +1,5 @@
 'use client'
+import Button from "../_components/button";
 import SubmitButton from "../_components/submit-button";
 
 export default function AuthCommonForm({
@@ -20,7 +21,7 @@ export default function AuthCommonForm({
             <div className="flex flex-col gap-3">
                 {children}
             </div>
-            <SubmitButton content={buttonContent} className="w-full bg-green-500" />
+            <SubmitButton className="w-full bg-green-500">{buttonContent}</SubmitButton>
             <p className="text-center">{footerContent}</p>
         </form>
     );

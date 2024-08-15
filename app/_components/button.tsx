@@ -6,23 +6,26 @@ export type CommonButtonProps = {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
     disabled?: boolean;
+    children: React.ReactNode,
+    title?: string,
 }
 
 type ButtonProps = CommonButtonProps & {
     type?: 'button' | 'submit' | 'reset';
     size?: 'sm' | 'md' | 'lg';
-    content: React.ReactNode,
 }
 
 export default function Button({
-    content,
+    children,
     size = 'md',
     type = 'button',
     className,
     onClick,
     disabled,
+    title,
 }: Readonly<ButtonProps>) {
     return <button
+        title={title}
         aria-disabled={disabled}
         disabled={disabled}
         onClick={onClick}
@@ -36,6 +39,6 @@ export default function Button({
             (size === 'lg') && 'shadow-lg text-lg rounded-lg px-4 py-2',
         )}
     >
-        {content}
+        {children}
     </button>
 }

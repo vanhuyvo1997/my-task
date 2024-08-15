@@ -11,5 +11,7 @@ export default function BarsButton({
     toggleElementId: string,
     className?: string
 }>) {
-    return <Button className={className + " lg:hidden"} onClick={() => document.getElementById(toggleElementId)!.classList.toggle('hidden')} size="sm" content={<Bars3Icon height={25} width={25} />} />
+    return <Button className={className + " lg:hidden"} onClick={() => document.getElementById(toggleElementId)!.classList.toggle('hidden')} size="sm" >
+        <Bars3Icon height={25} width={25} />
+    </Button>
 }
