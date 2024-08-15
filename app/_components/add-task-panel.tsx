@@ -1,17 +1,14 @@
+"use client"
 import { useState } from "react"
 import TaskIcon from "./task-icon"
 import TextInput from "./text-input"
 
-export default function AddTaskPanel({
-
-}: Readonly<{
-
-}>) {
+export default function AddTaskPanel() {
     const [taskContent, setTaskContent] = useState('');
     const [currentState, setCurrentState] = useState<"adding" | "normal">("normal");
 
 
-    return <div className="flex px-4 items-center">
+    return <div className="flex px-4 items-center bg-[#414141] rounded-md shadow-sm">
         <TaskIcon state={currentState === 'adding' ? "unchecked" : "add"} />
         <TextInput
             onFocus={e => setCurrentState("adding")}

@@ -11,7 +11,7 @@ export default function SerchBar() {
     const searchParams = useSearchParams();
     const pathName = usePathname();
     const { replace } = useRouter();
-    const [serchTerm, setSearchTerm] = useState(searchParams.get('query')?.toString());
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('query')?.toString());
     function handleSearch(term: string) {
         const params = new URLSearchParams(searchParams);
         if (term) {
@@ -28,7 +28,7 @@ export default function SerchBar() {
             onClearText={(e) => handleSearch('')}
             placeholder="Search..."
             className="outline-none rounded-r-none bg-transparent"
-            value={serchTerm}
+            value={searchTerm}
         />
         <Button className="rounded-l-none bg-blue-500"><MagnifyingGlassIcon height={20} width={20} /></Button>
     </form>

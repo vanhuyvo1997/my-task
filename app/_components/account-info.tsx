@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Button from "./button";
-import { auth, signOut } from "@/auth";
-import { redirect } from "next/navigation";
+import { signOut } from "@/auth";
 import LimitedText from "./limited-text";
 import DefaultAvatar from "../_images/logo.png"
 import { User } from "next-auth";
