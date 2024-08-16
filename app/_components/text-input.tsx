@@ -2,7 +2,7 @@
 
 
 import clsx from "clsx"
-import { ChangeEventHandler, MouseEventHandler, useState } from "react"
+import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, ReactNode, useState } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
 import { CommonButtonProps } from "./button"
 
@@ -10,11 +10,14 @@ export type CommonTextInputProps = {
     id?: string,
     name?: string,
     value?: string,
+    defaultValue?: string,
     className?: string,
     type?: "text" | "password" | "email",
     placeholder?: string,
     onChange?: ChangeEventHandler<HTMLInputElement>,
     onClearText?: MouseEventHandler<HTMLButtonElement>,
+    onFocus?: FocusEventHandler<HTMLInputElement>,
+    onBlur?: FocusEventHandler<HTMLInputElement>,
 }
 
 
@@ -29,13 +32,16 @@ export default function TextInput({
     onClearText,
     id,
     name,
+    onFocus,
+    onBlur,
+    defaultValue,
 }: Readonly<TextInputProps>) {
     const isPassword = type === "password";
     const [internalType, setInternalType] = useState(type);
     const isShowPossword = internalType === "text";
     const isEmpty = !value;
 
-    return <div className="relative">
+    return <div className="relative w-full">
         <input
             id={id}
             name={name}
@@ -45,8 +51,11 @@ export default function TextInput({
                 'shadow-md rounded-md pl-3 py-2 border-none w-full',
             )}
             onChange={onChange}
+            onFocus={onFocus}
+            onBlur={onBlur}
             type={internalType}
             value={value}
+            defaultValue={defaultValue}
             placeholder={placeholder}
         />
         {!isEmpty && <ClearButton
