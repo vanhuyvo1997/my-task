@@ -5,7 +5,7 @@ import TextInput from "../_components/text-input";
 import LabelTextInput from "../_components/label-text-input";
 import SubmitButton from "../_components/submit-button";
 import TaskIcon from "../_components/task-icon";
-import AddTaskPanel from "../_components/add-task-panel";
+import AddTaskForm from "../_components/add-task-form";
 
 export default function TestUIPage() {
 
@@ -22,11 +22,11 @@ export default function TestUIPage() {
     return <div>
         <h1>Buttons</h1>
         <hr />
-        <Button content="Button" size="sm" /><br />
-        <Button content="Button" size="md" /><br />
-        <Button content="Button" size="lg" /><br />
-        <Button content="Button" className="bg-blue-500 text-white" />
-        <Button content="Clickable Button" onClick={e => alert("you clicked!")} size="lg" />
+        <Button size="sm">Button</Button><br />
+        <Button size="md">Button</Button><br />
+        <Button size="lg">Button</Button><br />
+        <Button className="bg-blue-500 text-white"></Button>
+        <Button onClick={e => alert("you clicked!")} size="lg">Clickable Button</Button>
         <br />
         <hr />
         <h1>Text input</h1>
@@ -79,24 +79,24 @@ export default function TestUIPage() {
         <h1>Submit button</h1>
         <br />
         <form action={async (data) => { await new Promise(resolve => setTimeout(resolve, 3000)); }}>
-            <SubmitButton content="Submit button" />
+            <SubmitButton >Submit button</SubmitButton>
         </form>
         <br /><br />
         <h1>Task icon</h1>
         <br />
         <div className="bg-gray-700">
 
-            <TaskIcon state="add" />
-            <TaskIcon state="checked" />
-            <TaskIcon state="unchecked" />
+            <TaskIcon status="add" />
+            <TaskIcon status="checked" />
+            <TaskIcon status="unchecked" />
         </div>
 
         <h1>Task </h1>
         <br />
         <div className="bg-gray-700">
 
-            <AddTaskPanel />
-            <AddTaskPanel />
+            {/* <AddTaskForm />
+            <AddTaskForm /> */}
         </div>
 
     </div>
