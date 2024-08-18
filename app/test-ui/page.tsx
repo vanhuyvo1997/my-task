@@ -5,7 +5,7 @@ import TextInput from "../_components/text-input";
 import LabelTextInput from "../_components/label-text-input";
 import SubmitButton from "../_components/submit-button";
 import TaskIcon from "../_components/task-icon";
-import AddTaskPanel from "../_components/add-task-panel";
+import AddTaskForm from "../_components/add-task-form";
 
 export default function TestUIPage() {
 
@@ -86,17 +86,17 @@ export default function TestUIPage() {
         <br />
         <div className="bg-gray-700">
 
-            <TaskIcon state="add" />
-            <TaskIcon state="checked" />
-            <TaskIcon state="unchecked" />
+            <TaskIcon status="add" />
+            <TaskIcon status="checked" />
+            <TaskIcon status="unchecked" />
         </div>
 
         <h1>Task </h1>
         <br />
         <div className="bg-gray-700">
 
-            <AddTaskPanel />
-            <AddTaskPanel />
+            <AddTaskForm />
+            <AddTaskForm />
         </div>
 
     </div>
