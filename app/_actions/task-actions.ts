@@ -14,17 +14,18 @@ export default async function createTask(prevState: CreateTaskState, formData: F
         const response = await fetch(process.env.CREATE_NEW_TASK_API, {
             headers: {
                 "Content-Type": "application/json",
-                "authorization": session.user.accessToken!,
+                "Authorization": session.user.accessToken!,
             },
             method: 'POST',
-            body: JSON.stringify({ taskName: formData.get('taskName')?.toString() })
+            body: JSON.stringify({ name: formData.get('name')?.toString() })
         });
         if (!response.ok) {
-            return { success: false, message: response.text.toString() }
+            return { success: false, message: response.status.toString() }
         }
 
         return { success: true, createdTask: await response.json() }
     } catch (error) {
+        console.error(error);
         let message = '';
         if (error instanceof Error) {
             console.log(error.message);
