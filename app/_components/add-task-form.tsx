@@ -5,9 +5,6 @@ import TextInput from "./text-input"
 import { CreateTaskState } from "../user/page";
 import { showNotification } from "../_lib/utils";
 
-
-type TaskState = "adding" | "normal";
-
 export default function AddTaskForm({
     addTaskAction,
     addingTaskFormState,
@@ -24,7 +21,6 @@ export default function AddTaskForm({
         if (addingTaskFormState.success) {
             setAddingTaskName("");
             setAddingTaskState("normal");
-            showNotification("success", "Add task success");
         } else if (addingTaskFormState.message) {
             showNotification("error", addingTaskFormState.message);
         }

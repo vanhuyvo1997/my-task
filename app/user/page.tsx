@@ -14,7 +14,6 @@ export type TaskData = {
     ownerId?: string
 }
 
-
 export type CreateTaskState = {
     success: boolean,
     message?: string,
@@ -24,6 +23,7 @@ export type CreateTaskState = {
 export default function UserPage() {
     const [addingTaskFormState, addTaskAction] = useFormState(createTask, { success: false });
     const [tasks, setTasks] = useState<TaskData[] | null>(null);
+    const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         fetch(process.env.NEXT_PUBLIC_GET_USER_TASKS_PROXY_API)
@@ -34,14 +34,23 @@ export default function UserPage() {
 
     useEffect(() => {
         if (addingTaskFormState.success) {
+            let timeoutId: NodeJS.Timeout;
+            const createdTask: TaskData = addingTaskFormState.createdTask!;
+
+            setHighlightedTaskId(createdTask.id);
+            timeoutId = setTimeout(() => setHighlightedTaskId(undefined), 3000);
+
             setTasks(tasks => {
-                const createdTask: TaskData = addingTaskFormState.createdTask!;
                 const nextTasks = tasks ? [
                     createdTask,
                     ...tasks,
                 ] : [createdTask]
                 return nextTasks;
             });
+
+            return () => {
+                clearTimeout(timeoutId);
+            }
         }
     }, [addingTaskFormState]);
 
@@ -51,7 +60,7 @@ export default function UserPage() {
             addTaskAction={addTaskAction}
         />
         <div className="mt-14">
-            <TaskList tasks={tasks} setTasks={setTasks} highlightedTaskId={addingTaskFormState.createdTask?.id} />
+            <TaskList tasks={tasks} setTasks={setTasks} highlightedTaskId={highlightedTaskId} />
         </div>
     </div>
 }

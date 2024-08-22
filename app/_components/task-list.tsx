@@ -4,10 +4,6 @@ import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task from "./task";
 
-
-
-
-
 export default function TaskList({
     highlightedTaskId,
     tasks,
@@ -17,9 +13,6 @@ export default function TaskList({
     tasks: TaskData[] | null,
     setTasks: Dispatch<SetStateAction<TaskData[] | null>>,
 }>) {
-
-
-
     const [showCompleted, setShowCompleted] = useState(true);
 
     if (tasks === null) {
@@ -45,9 +38,25 @@ export default function TaskList({
         return task.status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
     }
 
+    function showTasks(tasks: TaskData[]) {
+        return tasks.map(task => <Task
+            onCheck={e => handleCheckTask(task)}
+            status={task.status === "COMPLETED" ? 'checked' : 'unchecked'}
+            key={task.id}
+            name={task.name}
+            highlighted={task.id === highlightedTaskId}
+        />)
+    }
+
     return <div className="flex flex-col gap-2">
-        {todoTasks.map(task => <Task onCheck={e => handleCheckTask(task)} status={task.status === "COMPLETED" ? 'checked' : 'unchecked'} key={task.id} name={task.name} />)}
-        {showCompletedDropFlag && <CompletedDropMark numOfCompleted={completedTasks.length} onClick={(e => setShowCompleted(!showCompleted))} status={showCompleted ? "expanded" : "collapsed"} />}
-        {showCompleted && completedTasks.map(task => <Task onCheck={e => handleCheckTask(task)} status={task.status === "COMPLETED" ? 'checked' : 'unchecked'} key={task.id} name={task.name} />)}
+        {showTasks(todoTasks)}
+        {
+            showCompletedDropFlag && <CompletedDropMark
+                numOfCompleted={completedTasks.length}
+                onClick={(e => setShowCompleted(!showCompleted))}
+                status={showCompleted ? "expanded" : "collapsed"}
+            />
+        }
+        {showCompleted && showTasks(completedTasks)}
     </div>
 }
