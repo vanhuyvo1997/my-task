@@ -33,10 +33,10 @@ export default function Button({
         className={clsx(
             !disabled && 'hover:bg-gray-600 hover:text-white transition-colors',
             disabled && 'opacity-80',
-            className,
             (size === 'sm') && 'shadow-sm text-sm rounded-sm px-2 py-1',
             (size === 'md') && 'shadow-md text-base rounded-md px-3 py-2',
             (size === 'lg') && 'shadow-lg text-lg rounded-lg px-4 py-2',
+            className,
         )}
     >
         {children}

@@ -5,6 +5,7 @@ import clsx from "clsx"
 import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, ReactNode, useState } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
 import { CommonButtonProps } from "./button"
+import { useFormStatus } from "react-dom"
 
 export type CommonTextInputProps = {
     id?: string,
@@ -40,6 +41,7 @@ export default function TextInput({
     const [internalType, setInternalType] = useState(type);
     const isShowPossword = internalType === "text";
     const isEmpty = !value;
+    const { pending } = useFormStatus();
 
     return <div className="relative w-full">
         <input
@@ -48,8 +50,9 @@ export default function TextInput({
             className={clsx(
                 className,
                 isPassword ? 'pr-12' : 'pr-5',
-                'shadow-md rounded-md pl-3 py-2 border-none w-full',
+                'shadow-md rounded-md pl-3 py-2 border-none w-full disabled:opacity-60',
             )}
+            disabled={pending}
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
