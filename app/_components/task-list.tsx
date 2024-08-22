@@ -1,6 +1,6 @@
 'use client'
-import { useEffect, useState } from "react";
-import COMPLETEDDropMark from "./completed-drop-mark";
+import { Dispatch, SetStateAction, useState } from "react";
+import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task from "./task";
 
@@ -10,26 +10,28 @@ import Task from "./task";
 
 export default function TaskList({
     highlightedTaskId,
+    tasks,
+    setTasks,
 }: Readonly<{
-    highlightedTaskId?: number | string
+    highlightedTaskId?: number | string,
+    tasks: TaskData[] | null,
+    setTasks: Dispatch<SetStateAction<TaskData[] | null>>,
 }>) {
-    const [tasks, setTasks] = useState<TaskData[] | null>(null);
-
-    useEffect(() => {
-        fetch(process.env.NEXT_PUBLIC_GET_USER_TASKS_PROXY_API)
-            .then(rs => rs.json())
-            .then(data => setTasks(data))
-            .catch(err => console.log(err));
-    }, []);
 
 
-    const [showCOMPLETED, setShowCOMPLETED] = useState(true);
+
+    const [showCompleted, setShowCompleted] = useState(true);
 
     if (tasks === null) {
         return "Loading tasks...";
     }
 
-    const COMPLETEDTasks = tasks.filter(t => t.status === 'COMPLETED');
+    if (tasks.length === 0) {
+        return <div className="w-fit m-auto mt-20 text-2xl text-gray-200">{"Let's add your first task now!"}</div>
+    }
+
+    const completedTasks = tasks.filter(t => t.status === 'COMPLETED');
+    const showCompletedDropFlag = completedTasks.length > 0;
     const todoTasks = tasks.filter(t => t.status === 'TO_DO');
 
     function handleCheckTask(task: TaskData) {
@@ -45,7 +47,7 @@ export default function TaskList({
 
     return <div className="flex flex-col gap-2">
         {todoTasks.map(task => <Task onCheck={e => handleCheckTask(task)} status={task.status === "COMPLETED" ? 'checked' : 'unchecked'} key={task.id} name={task.name} />)}
-        <COMPLETEDDropMark numOfCompleted={COMPLETEDTasks.length} onClick={(e => setShowCOMPLETED(!showCOMPLETED))} status={showCOMPLETED ? "expanded" : "collapsed"} />
-        {showCOMPLETED && COMPLETEDTasks.map(task => <Task onCheck={e => handleCheckTask(task)} status={task.status === "COMPLETED" ? 'checked' : 'unchecked'} key={task.id} name={task.name} />)}
+        {showCompletedDropFlag && <CompletedDropMark numOfCompleted={completedTasks.length} onClick={(e => setShowCompleted(!showCompleted))} status={showCompleted ? "expanded" : "collapsed"} />}
+        {showCompleted && completedTasks.map(task => <Task onCheck={e => handleCheckTask(task)} status={task.status === "COMPLETED" ? 'checked' : 'unchecked'} key={task.id} name={task.name} />)}
     </div>
 }
