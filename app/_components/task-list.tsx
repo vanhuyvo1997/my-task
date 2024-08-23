@@ -3,6 +3,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task from "./task";
+import ConfirmDialog from "./dialog/confirm-dialog";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import DeleteTaskDialog from "./dialog/delete-task-dialog";
+
 
 export default function TaskList({
     highlightedTaskId,
@@ -14,6 +18,10 @@ export default function TaskList({
     setTasks: Dispatch<SetStateAction<TaskData[] | null>>,
 }>) {
     const [showCompleted, setShowCompleted] = useState(true);
+
+    //if there is no selected task to delete, the id is 0
+    const [deletingTaskId, setDeletingTaskId] = useState(0);
+    const isShowDeleteTaskConfirmDialog = deletingTaskId > 0;
 
     if (tasks === null) {
         return "Loading tasks...";
@@ -45,7 +53,12 @@ export default function TaskList({
             key={task.id}
             name={task.name}
             highlighted={task.id === highlightedTaskId}
+            onDelete={() => handleShowDeletingConfirmDialog(task.id)}
         />)
+    }
+
+    function handleShowDeletingConfirmDialog(taskId: number) {
+        setDeletingTaskId(taskId);
     }
 
     return <div className="flex flex-col gap-2">
@@ -58,5 +71,6 @@ export default function TaskList({
             />
         }
         {showCompleted && showTasks(completedTasks)}
+        {isShowDeleteTaskConfirmDialog && <DeleteTaskDialog onClose={_ => { setDeletingTaskId(0) }} />}
     </div>
 }

@@ -7,12 +7,14 @@ export default function Task({
     status = "checked",
     name,
     onCheck,
-    highlighted
+    highlighted,
+    onDelete,
 }: Readonly<{
     status: 'checked' | 'unchecked',
     name: string,
     onCheck?: React.MouseEventHandler<HTMLButtonElement>,
     highlighted?: boolean,
+    onDelete?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
     return <div className={clsx(
         "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white hover:opacity-90",
@@ -24,7 +26,7 @@ export default function Task({
         </div>
         <div className="">
             <Button size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
-            <Button size="sm" ><TrashIcon height={20} width={20} /></Button>
+            <Button size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
         </div>
     </div>
 }
