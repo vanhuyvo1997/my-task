@@ -1,16 +1,16 @@
 import Image from "next/image";
 import clsx from "clsx";
 import AddIcon from "../_images/add-Icon.png";
-import { useFormStatus } from "react-dom";
+
+export type IconStatus = 'add' | 'unchecked' | 'checked' | 'busy';
 
 export default function TaskIcon({
     status,
     onClick,
 }: Readonly<{
-    status: 'add' | 'unchecked' | 'checked',
+    status: IconStatus,
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }>) {
-    const { pending } = useFormStatus();
 
     return (
         <button
@@ -19,7 +19,7 @@ export default function TaskIcon({
 
             className={clsx(
                 'rounded-full h-6 w-6 relative p-0.5',
-                pending && 'animate-spin border-dotted border-[5px] border-t-emerald-200 border-r-lime-500 border-l-red-500',
+                status === 'busy' && 'animate-spin border-dotted border-[5px] border-t-emerald-200 border-r-lime-500 border-l-red-500',
                 (status === 'checked' || status == 'unchecked') && 'border-2 border-white',
                 status === 'checked' && 'bg-green-500',
             )}

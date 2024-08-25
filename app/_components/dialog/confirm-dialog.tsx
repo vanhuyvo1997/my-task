@@ -3,10 +3,12 @@ import DialogContainer from "./dialog-container";
 
 export default function ConfirmDialog({
     onClose,
+    onConfirm,
     children
 }: Readonly<{
     onClose: React.MouseEventHandler<HTMLElement>,
-    children: React.ReactNode
+    children: React.ReactNode,
+    onConfirm: () => void;
 }>) {
     return <DialogContainer onClose={onClose}>
         <div className="flex flex-col gap-4">
@@ -15,8 +17,9 @@ export default function ConfirmDialog({
             </div>
             <div className="flex justify-around">
                 <Button className="bg-gray-600" onClick={onClose}>No</Button>
-                <Button className="bg-orange-500">Yes</Button>
+                <Button className="bg-orange-500" onClick={onConfirm}>Yes</Button>
             </div>
         </div>
     </DialogContainer>
 }
+
