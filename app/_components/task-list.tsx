@@ -1,10 +1,8 @@
 'use client'
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task from "./task";
-import ConfirmDialog from "./dialog/confirm-dialog";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import DeleteTaskDialog from "./dialog/delete-task-dialog";
 
 
@@ -22,6 +20,7 @@ export default function TaskList({
     //if there is no selected task to delete, the id is 0
     const [deletingTaskId, setDeletingTaskId] = useState(0);
     const isShowDeleteTaskConfirmDialog = deletingTaskId > 0;
+    const [busyTaskId, setBusyTaskId] = useState(0);
 
     if (tasks === null) {
         return "Loading tasks...";
@@ -49,7 +48,7 @@ export default function TaskList({
     function showTasks(tasks: TaskData[]) {
         return tasks.map(task => <Task
             onCheck={e => handleCheckTask(task)}
-            status={task.status === "COMPLETED" ? 'checked' : 'unchecked'}
+            status={busyTaskId === task.id ? 'submiting' : (task.status === "COMPLETED" ? 'checked' : 'unchecked')}
             key={task.id}
             name={task.name}
             highlighted={task.id === highlightedTaskId}
@@ -71,6 +70,18 @@ export default function TaskList({
             />
         }
         {showCompleted && showTasks(completedTasks)}
-        {isShowDeleteTaskConfirmDialog && <DeleteTaskDialog onClose={_ => { setDeletingTaskId(0) }} />}
+
+        {isShowDeleteTaskConfirmDialog && <DeleteTaskDialog
+            onClose={() => { setDeletingTaskId(0) }}
+            deletingTaskId={deletingTaskId}
+            beforeConfirm={() => setBusyTaskId(deletingTaskId)}
+            afterDelete={() => setBusyTaskId(0)}
+            afterConfirm={() => {
+                setDeletingTaskId(0);
+            }}
+            deleteSuccess={() => {
+                setTasks(tasks.filter(t => t.id != deletingTaskId))
+            }}
+        />}
     </div>
 }
