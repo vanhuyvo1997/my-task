@@ -33,7 +33,7 @@ export default function DialogContainer({
                 size === 'md' && "max-w-md",
                 size === 'lg' && "max-w-lg",
             )} onClick={e => e.stopPropagation()} >
-                <button onClick={onClose} onKeyDown={e => console.log(e.key)} className="absolute top-0 right-0"><XMarkIcon height={20} width={20} /></button>
+                <button onClick={onClose} className="absolute top-0 right-0"><XMarkIcon height={20} width={20} /></button>
                 <div className="p-4">
                     {children}
                 </div>

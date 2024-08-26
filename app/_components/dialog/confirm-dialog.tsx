@@ -11,15 +11,19 @@ export default function ConfirmDialog({
     onConfirm: () => void;
 }>) {
     return <DialogContainer onClose={onClose}>
-        <div className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={
+            e => {
+                e.preventDefault();
+                onConfirm();
+            }}>
             <div className="py-4">
                 {children}
             </div>
             <div className="flex justify-around">
                 <Button className="bg-gray-600" onClick={onClose}>No</Button>
-                <Button className="bg-orange-500" onClick={onConfirm}>Yes</Button>
+                <Button type="submit" className="bg-orange-500">Yes</Button>
             </div>
-        </div>
+        </form>
     </DialogContainer>
 }
 

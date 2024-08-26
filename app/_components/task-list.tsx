@@ -1,19 +1,20 @@
 'use client'
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, useState } from "react";
 import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
-import Task from "./task";
+import Task, { TaskStatus } from "./task";
 import DeleteTaskDialog from "./dialog/delete-task-dialog";
+import { TasksAction } from "../_reducers/tasks-reducer";
 
 
 export default function TaskList({
     highlightedTaskId,
     tasks,
-    setTasks,
+    dispatch,
 }: Readonly<{
     highlightedTaskId?: number | string,
-    tasks: TaskData[] | null,
-    setTasks: Dispatch<SetStateAction<TaskData[] | null>>,
+    tasks: TaskData[],
+    dispatch: Dispatch<TasksAction>
 }>) {
     const [showCompleted, setShowCompleted] = useState(true);
 
@@ -21,10 +22,6 @@ export default function TaskList({
     const [deletingTaskId, setDeletingTaskId] = useState(0);
     const isShowDeleteTaskConfirmDialog = deletingTaskId > 0;
     const [busyTaskId, setBusyTaskId] = useState(0);
-
-    if (tasks === null) {
-        return "Loading tasks...";
-    }
 
     if (tasks.length === 0) {
         return <div className="w-fit m-auto mt-20 text-2xl text-gray-200">{"Let's add your first task now!"}</div>
@@ -35,25 +32,30 @@ export default function TaskList({
     const todoTasks = tasks.filter(t => t.status === 'TO_DO');
 
     function handleCheckTask(task: TaskData) {
-        const toggledTask: TaskData = { ...task, status: toggleStatus(task) };
-        setTasks(
-            tasks!.map(t => task.id === t.id ? toggledTask : t)
-        );
+        dispatch({
+            type: 'check',
+            taskId: task.id,
+        })
     }
 
-    function toggleStatus(task: TaskData) {
-        return task.status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
-    }
+
 
     function showTasks(tasks: TaskData[]) {
-        return tasks.map(task => <Task
-            onCheck={e => handleCheckTask(task)}
-            status={busyTaskId === task.id ? 'submiting' : (task.status === "COMPLETED" ? 'checked' : 'unchecked')}
-            key={task.id}
-            name={task.name}
-            highlighted={task.id === highlightedTaskId}
-            onDelete={() => handleShowDeletingConfirmDialog(task.id)}
-        />)
+        return tasks.map(task => {
+            let taskStatus: TaskStatus = (task.status === "COMPLETED" ? 'checked' : 'unchecked');
+            if (busyTaskId === task.id) {
+                taskStatus = 'submitting';
+            }
+
+            return <Task
+                onCheck={e => handleCheckTask(task)}
+                status={taskStatus}
+                key={task.id}
+                name={task.name}
+                highlighted={task.id === highlightedTaskId}
+                onDelete={() => handleShowDeletingConfirmDialog(task.id)}
+            />
+        })
     }
 
     function handleShowDeletingConfirmDialog(taskId: number) {
@@ -80,7 +82,10 @@ export default function TaskList({
                 setDeletingTaskId(0);
             }}
             deleteSuccess={() => {
-                setTasks(tasks.filter(t => t.id != deletingTaskId))
+                dispatch({
+                    type: "delete",
+                    taskId: deletingTaskId,
+                });
             }}
         />}
     </div>

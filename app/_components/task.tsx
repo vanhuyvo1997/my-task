@@ -3,6 +3,8 @@ import Button from "./button";
 import TaskIcon, { IconStatus } from "./task-icon";
 import clsx from "clsx";
 
+export type TaskStatus = 'checked' | 'unchecked' | 'submitting';
+
 export default function Task({
     status = "checked",
     name,
@@ -10,13 +12,13 @@ export default function Task({
     highlighted,
     onDelete,
 }: Readonly<{
-    status: 'checked' | 'unchecked' | 'submiting',
+    status: TaskStatus,
     name: string,
     onCheck?: React.MouseEventHandler<HTMLButtonElement>,
     highlighted?: boolean,
     onDelete?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
-    const isDisabled = status === 'submiting';
+    const isDisabled = status === 'submitting';
     let iconStatus: IconStatus;
     if (status === 'checked') {
         iconStatus = 'checked';

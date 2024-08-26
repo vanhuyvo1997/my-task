@@ -1,9 +1,10 @@
 "use client"
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import AddTaskForm from "../_components/add-task-form";
 import TaskList from "../_components/task-list";
 import { useFormState } from "react-dom";
 import createTask from "../_actions/task-actions";
+import { tasksReducer } from "../_reducers/tasks-reducer";
 
 export type TaskData = {
     id: number,
@@ -22,13 +23,20 @@ export type CreateTaskState = {
 
 export default function UserPage() {
     const [addingTaskFormState, addTaskAction] = useFormState(createTask, { success: false });
-    const [tasks, setTasks] = useState<TaskData[] | null>(null);
+    const [tasks, dispatch] = useReducer(tasksReducer, []);
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
+    const [loadingTasks, setLoadingTasks] = useState(true);
 
     useEffect(() => {
         fetch(process.env.NEXT_PUBLIC_GET_USER_TASKS_PROXY_API)
             .then(rs => rs.json())
-            .then(data => setTasks(data))
+            .then(data => {
+                dispatch({
+                    type: "initialize",
+                    tasks: data,
+                })
+                setLoadingTasks(false);
+            })
             .catch(err => console.error(err));
     }, []);
 
@@ -40,13 +48,10 @@ export default function UserPage() {
             setHighlightedTaskId(createdTask.id);
             timeoutId = setTimeout(() => setHighlightedTaskId(undefined), 3000);
 
-            setTasks(tasks => {
-                const nextTasks = tasks ? [
-                    createdTask,
-                    ...tasks,
-                ] : [createdTask]
-                return nextTasks;
-            });
+            dispatch({
+                type: 'add',
+                task: createdTask,
+            })
 
             return () => {
                 clearTimeout(timeoutId);
@@ -60,7 +65,10 @@ export default function UserPage() {
             addTaskAction={addTaskAction}
         />
         <div className="mt-14">
-            <TaskList tasks={tasks} setTasks={setTasks} highlightedTaskId={highlightedTaskId} />
+            {
+                loadingTasks ? 'Loading tasks...' : <TaskList dispatch={dispatch} tasks={tasks} highlightedTaskId={highlightedTaskId} />
+            }
+
         </div>
     </div>
 }

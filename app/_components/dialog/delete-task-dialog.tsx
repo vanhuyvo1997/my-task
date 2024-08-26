@@ -9,17 +9,14 @@ export default function DeleteTaskDialog({
     beforeConfirm,
     deleteSuccess,
     afterConfirm,
-    // onShow,
 }: Readonly<{
     onClose?: () => void,
-    // onShow?: () => void,
     deletingTaskId: number,
     afterDelete?: () => void,
     beforeConfirm?: () => void,
     deleteSuccess?: () => void,
     afterConfirm?: () => void,
 }>) {
-    // onShow && onShow();
     function handleDeleteTask() {
         beforeConfirm && beforeConfirm();
         fetch(process.env.NEXT_PUBLIC_DELETE_USER_TASKS_PROXY_API + '/' + deletingTaskId, {
