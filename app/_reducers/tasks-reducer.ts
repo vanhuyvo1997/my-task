@@ -11,9 +11,9 @@ type AddTaskAction = {
     task: TaskData,
 }
 
-type CheckTaskAction = {
-    type: 'check',
-    taskId: number,
+type UpdateTaskAction = {
+    type: 'update',
+    task: TaskData,
 }
 
 type InitializeTasksAction = {
@@ -21,7 +21,7 @@ type InitializeTasksAction = {
     tasks: TaskData[]
 }
 
-export type TasksAction = InitializeTasksAction | DeleteTaskAction | AddTaskAction | CheckTaskAction;
+export type TasksAction = InitializeTasksAction | DeleteTaskAction | AddTaskAction | UpdateTaskAction;
 
 export function tasksReducer(tasks: TaskData[], action: TasksAction): TaskData[] {
 
@@ -38,11 +38,10 @@ export function tasksReducer(tasks: TaskData[], action: TasksAction): TaskData[]
         case "delete": {
             return tasks.filter(t => t.id !== action.taskId);
         }
-        case "check": {
+        case "update": {
             return tasks.map(t => {
-                if (t.id === action.taskId) {
-                    const nextStatus = t.status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
-                    return { ...t, status: nextStatus }
+                if (t.id === action.task.id) {
+                    return action.task;
                 } else {
                     return t;
                 }

@@ -33,10 +33,38 @@ export default function TaskList({
     const todoTasks = tasks.filter(t => t.status === 'TO_DO');
 
     function handleCheckTask(task: TaskData) {
-        dispatch({
-            type: 'check',
-            taskId: task.id,
-        })
+        setBusyTaskId(task.id)
+
+        const nextStatus = task.status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
+
+        fetch(process.env.NEXT_PUBLIC_CHANGE_TASK_STATUS_PROXY_API + `/${task.id}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: nextStatus })
+        }).then(rs => {
+            if (rs.ok) {
+                return rs.json();
+            } else if (rs.status === 404) {
+                throw new Error('Task not found');
+            } else throw new Error('Somethings went went wrong');
+        }).then(data => {
+            dispatch({
+                type: 'update',
+                task: data
+            });
+        }).catch(err => {
+            if (err.message === 'Task not found') {
+                showNotification('warning', 'Task not found');
+                dispatch({
+                    type: 'delete',
+                    taskId: task.id,
+                })
+            } else {
+                showNotification('error', err.message);
+            }
+        }).finally(() => setBusyTaskId(0));
     }
 
 
@@ -49,9 +77,9 @@ export default function TaskList({
             }
 
             return <Task
+                key={task.id}
                 onCheck={e => handleCheckTask(task)}
                 status={taskStatus}
-                key={task.id}
                 name={task.name}
                 highlighted={task.id === highlightedTaskId}
                 onDelete={() => handleShowDeletingConfirmDialog(task.id)}
