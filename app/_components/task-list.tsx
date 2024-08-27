@@ -1,21 +1,22 @@
 'use client'
-import { Dispatch, useState } from "react";
+import { useContext, useState } from "react";
 import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task, { TaskStatus } from "./task";
 import DeleteTaskDialog from "./dialog/delete-task-dialog";
-import { TasksAction } from "../_reducers/tasks-reducer";
+import { TasksContext, TasksDispatchContext } from "../_context/tasks-context";
+import { showNotification } from "../_lib/utils";
 
 
 export default function TaskList({
     highlightedTaskId,
-    tasks,
-    dispatch,
 }: Readonly<{
     highlightedTaskId?: number | string,
-    tasks: TaskData[],
-    dispatch: Dispatch<TasksAction>
 }>) {
+
+    const tasks = useContext(TasksContext);
+    const dispatch = useContext(TasksDispatchContext);
+
     const [showCompleted, setShowCompleted] = useState(true);
 
     //if there is no selected task to delete, the id is 0
