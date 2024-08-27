@@ -69,7 +69,7 @@ export default function UserPage() {
                 />
                 <div className="mt-14">
                     {
-                        loadingTasks ? 'Loading tasks...' : <TaskList dispatch={dispatch} tasks={tasks} highlightedTaskId={highlightedTaskId} />
+                        loadingTasks ? 'Loading tasks...' : <TaskList highlightedTaskId={highlightedTaskId} />
                     }
 
                 </div>
