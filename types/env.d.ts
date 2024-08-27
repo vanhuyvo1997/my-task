@@ -12,5 +12,6 @@ declare namespace NodeJS {
 
         NEXT_PUBLIC_GET_USER_TASKS_PROXY_API: string;
         NEXT_PUBLIC_DELETE_USER_TASKS_PROXY_API: string;
+        NEXT_PUBLIC_CHANGE_TASK_STATUS_PROXY_API: string;
     }
 }
