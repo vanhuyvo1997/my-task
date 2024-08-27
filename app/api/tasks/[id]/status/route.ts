@@ -2,22 +2,28 @@ import { auth } from "@/auth";
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
     const session = await auth();
+
     const token = session?.user?.accessToken;
 
-    const response = await fetch(process.env.CHANGE_TASK_STATUS_API + '/' + params.id + '/status',
+    const url = process.env.CHANGE_TASK_STATUS_API + '/' + params.id + '/status';
+
+    const body = await request.json();
+
+    const response = await fetch(url,
         {
             headers: {
                 'Authorization': 'Bearer ' + token,
+                'Content-type': 'application/json',
             },
             method: 'PATCH',
+            body: JSON.stringify(body),
         }
     );
 
-    let body = null;
-
+    let responseBody = null;
     if (response.ok) {
-        body = await response.json();
+        responseBody = await response.json();
     }
 
-    return new Response(body, { status: response.status });
+    return new Response(JSON.stringify(responseBody), { status: response.status });
 }
