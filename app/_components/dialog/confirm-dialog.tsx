@@ -8,22 +8,18 @@ export default function ConfirmDialog({
 }: Readonly<{
     onClose: React.MouseEventHandler<HTMLElement>,
     children: React.ReactNode,
-    onConfirm: () => void;
+    onConfirm: React.MouseEventHandler<HTMLButtonElement>;
 }>) {
     return <DialogContainer onClose={onClose}>
-        <form className="flex flex-col gap-4" onSubmit={
-            e => {
-                e.preventDefault();
-                onConfirm();
-            }}>
+        <div className="flex flex-col gap-4">
             <div className="py-4">
                 {children}
             </div>
             <div className="flex justify-around">
                 <Button className="bg-gray-600" onClick={onClose}>No</Button>
-                <Button type="submit" className="bg-orange-500">Yes</Button>
+                <Button type="submit" className="bg-orange-500" onClick={onConfirm}>Yes</Button>
             </div>
-        </form>
+        </div>
     </DialogContainer>
 }
 

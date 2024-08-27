@@ -6,7 +6,7 @@ import clsx from "clsx";
 export type TaskStatus = 'checked' | 'unchecked' | 'submitting';
 
 export default function Task({
-    status = "checked",
+    status = 'unchecked',
     name,
     onCheck,
     highlighted,
@@ -19,6 +19,7 @@ export default function Task({
     onDelete?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
     const isDisabled = status === 'submitting';
+
     let iconStatus: IconStatus;
     if (status === 'checked') {
         iconStatus = 'checked';

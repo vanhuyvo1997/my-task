@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useReducer, useState } from "react";
 import AddTaskForm from "../_components/add-task-form";
-import TaskList from "../_components/task-list";
+import TasksList from "../_components/tasks-list";
 import { useFormState } from "react-dom";
 import createTask from "../_actions/task-actions";
 import { tasksReducer } from "../_reducers/tasks-reducer";
@@ -69,7 +69,7 @@ export default function UserPage() {
                 />
                 <div className="mt-14">
                     {
-                        loadingTasks ? 'Loading tasks...' : <TaskList highlightedTaskId={highlightedTaskId} />
+                        loadingTasks ? 'Loading tasks...' : <TasksList highlightedTaskId={highlightedTaskId} />
                     }
 
                 </div>
