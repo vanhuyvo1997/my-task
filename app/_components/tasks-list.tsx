@@ -36,7 +36,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
 
         const nextStatus = task.status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
 
-        const url = process.env.NEXT_PUBLIC_CHANGE_TASK_STATUS_PROXY_API + `/${task.id}/status`;
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${task.id}/status`;
 
         try {
             const response = await fetch(url, {
@@ -123,7 +123,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
 
                         setDeletingTaskId(0);
 
-                        const url = process.env.NEXT_PUBLIC_DELETE_USER_TASKS_PROXY_API + '/' + deletingTaskId;
+                        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + '/' + deletingTaskId;
 
                         try {
 

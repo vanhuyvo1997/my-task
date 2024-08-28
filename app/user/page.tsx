@@ -29,7 +29,7 @@ export default function UserPage() {
     const [loadingTasks, setLoadingTasks] = useState(true);
 
     useEffect(() => {
-        fetch(process.env.NEXT_PUBLIC_GET_USER_TASKS_PROXY_API)
+        fetch(process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API)
             .then(rs => rs.json())
             .then(data => {
                 dispatch({
