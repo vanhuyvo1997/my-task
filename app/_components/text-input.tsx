@@ -48,9 +48,9 @@ export default function TextInput({
             id={id}
             name={name}
             className={clsx(
-                className,
                 isPassword ? 'pr-12' : 'pr-5',
                 'shadow-md rounded-md pl-3 py-2 border-none w-full disabled:opacity-60',
+                className,
             )}
             disabled={pending}
             onChange={onChange}

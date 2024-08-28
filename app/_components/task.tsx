@@ -2,8 +2,9 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import Button from "./button";
 import TaskIcon, { IconStatus } from "./task-icon";
 import clsx from "clsx";
+import EditTaskForm from "./edit-task-form";
 
-export type TaskStatus = 'checked' | 'unchecked' | 'submitting';
+export type TaskStatus = 'checked' | 'unchecked' | 'submitting' | 'editting';
 
 export default function Task({
     status = 'unchecked',
@@ -18,15 +19,17 @@ export default function Task({
     highlighted?: boolean,
     onDelete?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
-    const isDisabled = status === 'submitting';
 
-    let iconStatus: IconStatus;
+    const isDisabled = status === 'submitting';
+    const isEditting = status === 'editting';
+
+    let iconStatus: IconStatus = 'unchecked';
     if (status === 'checked') {
         iconStatus = 'checked';
-    } else if (status === 'unchecked') {
-        iconStatus = 'unchecked';
-    } else {
+    } else if (status === 'submitting') {
         iconStatus = 'busy';
+    } else if (status === 'editting') {
+        iconStatus = 'disabled'
     }
 
 
@@ -35,13 +38,13 @@ export default function Task({
         !isDisabled && 'hover:opacity-90',
         highlighted && "animate-pulse",
     )}>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full">
             <TaskIcon status={iconStatus} onClick={onCheck} />
-            <span>{name}</span>
+            {isEditting ? <EditTaskForm originName={name} /> : <span>{name}</span>}
         </div>
-        <div className="">
+        {!isEditting && <div className="flex">
             <Button disabled={isDisabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
             <Button disabled={isDisabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
-        </div>
+        </div>}
     </div>
 }
