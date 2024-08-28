@@ -5,7 +5,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
 
     const token = session?.user?.accessToken;
 
-    const url = process.env.CHANGE_TASK_STATUS_API + '/' + params.id + '/status';
+    const url = process.env.TASKS_BASE_API + '/' + params.id + '/status';
 
     const body = await request.json();
 
