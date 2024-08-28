@@ -1,10 +1,11 @@
 "use client"
 import { useEffect, useReducer, useState } from "react";
 import AddTaskForm from "../_components/add-task-form";
-import TaskList from "../_components/task-list";
+import TasksList from "../_components/tasks-list";
 import { useFormState } from "react-dom";
 import createTask from "../_actions/task-actions";
 import { tasksReducer } from "../_reducers/tasks-reducer";
+import { TasksContext, TasksDispatchContext } from "../_context/tasks-context";
 
 export type TaskData = {
     id: number,
@@ -59,16 +60,20 @@ export default function UserPage() {
         }
     }, [addingTaskFormState]);
 
-    return <div>
-        <AddTaskForm
-            addingTaskFormState={addingTaskFormState}
-            addTaskAction={addTaskAction}
-        />
-        <div className="mt-14">
-            {
-                loadingTasks ? 'Loading tasks...' : <TaskList dispatch={dispatch} tasks={tasks} highlightedTaskId={highlightedTaskId} />
-            }
+    return <TasksContext.Provider value={tasks}>
+        <TasksDispatchContext.Provider value={dispatch}>
+            <div>
+                <AddTaskForm
+                    addingTaskFormState={addingTaskFormState}
+                    addTaskAction={addTaskAction}
+                />
+                <div className="mt-14">
+                    {
+                        loadingTasks ? 'Loading tasks...' : <TasksList highlightedTaskId={highlightedTaskId} />
+                    }
 
-        </div>
-    </div>
+                </div>
+            </div>
+        </TasksDispatchContext.Provider>
+    </TasksContext.Provider>
 }
