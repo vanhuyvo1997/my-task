@@ -29,10 +29,10 @@ export default function AddTaskForm({
     useEffect(() => {
         if (addingTaskFormState.success) {
             setAddingTaskName("");
-            setAddingTaskState("normal");
         } else if (addingTaskFormState.message) {
             showNotification("error", addingTaskFormState.message);
         }
+        setAddingTaskState("normal");
     }, [addingTaskFormState]);
 
     return <form
