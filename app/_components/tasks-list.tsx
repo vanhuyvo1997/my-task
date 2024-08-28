@@ -125,10 +125,9 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
 
                         const url = process.env.NEXT_PUBLIC_DELETE_USER_TASKS_PROXY_API + '/' + deletingTaskId;
 
-
                         try {
 
-                            const response = await fetch(process.env.NEXT_PUBLIC_DELETE_USER_TASKS_PROXY_API + '/' + deletingTaskId, {
+                            const response = await fetch(url, {
                                 method: 'DELETE'
                             });
 
@@ -158,9 +157,10 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
                                 }
                             }
 
+                        } finally {
+                            setBusyTaskIds(ids => ids.filter(id => id !== deletingTaskId));
                         }
 
-                        setBusyTaskIds(ids => ids.filter(id => id !== deletingTaskId));
 
                     }
                 }
