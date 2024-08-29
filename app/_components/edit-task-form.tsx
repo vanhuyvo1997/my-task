@@ -1,7 +1,7 @@
 import { ArchiveBoxXMarkIcon, CheckIcon } from "@heroicons/react/20/solid";
 import Button from "./button";
 import TextInput from "./text-input";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function EditTaskForm({
     originName,
@@ -10,11 +10,16 @@ export default function EditTaskForm({
     originName: string,
     onCancel?: React.MouseEventHandler<HTMLButtonElement>
 }>) {
-
+    const newNameInputRef = useRef<HTMLInputElement>(null);
     const [newName, setNewName] = useState(originName);
+
+    useEffect(() => {
+        newNameInputRef.current?.focus();
+    }, []);
 
     return <form className="flex w-full justify-between items-center gap-3">
         <TextInput
+            ref={newNameInputRef}
             id="task-name"
             name="task-name"
             title="Task name"
