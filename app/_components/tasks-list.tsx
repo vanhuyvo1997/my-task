@@ -19,6 +19,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
 
     //if there is no selected task to delete, the id is 0
     const [deletingTaskId, setDeletingTaskId] = useState(0);
+    const [editingTaskId, setEditingTaskId] = useState(0);
     const isShowDeleteTaskConfirmDialog = deletingTaskId > 0;
 
     if (tasks.length === 0) {
@@ -84,9 +85,13 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
                 taskStatus = 'submitting';
             }
 
+            taskStatus = editingTaskId === task.id ? 'editing' : taskStatus;
+
             return <Task
                 key={task.id}
                 onCheck={() => toggleTaskStatus(task)}
+                onStartEditing={() => setEditingTaskId(task.id)}
+                onCancelEditing={() => setEditingTaskId(0)}
                 status={taskStatus}
                 name={task.name}
                 highlighted={task.id === highlightedTaskId}

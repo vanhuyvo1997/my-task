@@ -4,7 +4,7 @@ import TaskIcon, { IconStatus } from "./task-icon";
 import clsx from "clsx";
 import EditTaskForm from "./edit-task-form";
 
-export type TaskStatus = 'checked' | 'unchecked' | 'submitting' | 'editting';
+export type TaskStatus = 'checked' | 'unchecked' | 'submitting' | 'editing';
 
 export default function Task({
     status = 'unchecked',
@@ -12,39 +12,46 @@ export default function Task({
     onCheck,
     highlighted,
     onDelete,
+    onStartEditing,
+    onCancelEditing,
+    disabled,
 }: Readonly<{
     status: TaskStatus,
     name: string,
     onCheck?: React.MouseEventHandler<HTMLButtonElement>,
     highlighted?: boolean,
     onDelete?: React.MouseEventHandler<HTMLButtonElement>,
+    onStartEditing?: React.MouseEventHandler<HTMLButtonElement>,
+    onCancelEditing?: React.MouseEventHandler<HTMLButtonElement>,
+    disabled?: boolean,
 }>) {
-
-    const isDisabled = status === 'submitting';
-    const isEditting = status === 'editting';
+    const isEditing = status === 'editing'
 
     let iconStatus: IconStatus = 'unchecked';
     if (status === 'checked') {
         iconStatus = 'checked';
     } else if (status === 'submitting') {
         iconStatus = 'busy';
-    } else if (status === 'editting') {
-        iconStatus = 'disabled'
     }
 
 
     return <div className={clsx(
         "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white",
-        !isDisabled && 'hover:opacity-90',
+        !disabled && 'hover:opacity-90',
         highlighted && "animate-pulse",
+
     )}>
-        <div className="flex items-center gap-2 w-full">
-            <TaskIcon status={iconStatus} onClick={onCheck} />
-            {isEditting ? <EditTaskForm originName={name} /> : <span>{name}</span>}
-        </div>
-        {!isEditting && <div className="flex">
-            <Button disabled={isDisabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
-            <Button disabled={isDisabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
-        </div>}
+        {
+            isEditing ? <EditTaskForm originName={name} onCancel={onCancelEditing} /> : <>
+                <div className="flex items-center gap-2 w-full">
+                    <TaskIcon disabled={status === 'submitting'} status={iconStatus} onClick={onCheck} />
+                    <span>{name}</span>
+                </div>
+                <div className="flex">
+                    <Button onClick={onStartEditing} disabled={disabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
+                    <Button disabled={disabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
+                </div>
+            </>
+        }
     </div>
 }

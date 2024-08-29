@@ -19,6 +19,8 @@ export type CommonTextInputProps = {
     onClearText?: MouseEventHandler<HTMLButtonElement>,
     onFocus?: FocusEventHandler<HTMLInputElement>,
     onBlur?: FocusEventHandler<HTMLInputElement>,
+    disabled?: boolean,
+    title?: string,
 }
 
 
@@ -36,12 +38,16 @@ export default function TextInput({
     onFocus,
     onBlur,
     defaultValue,
+    disabled,
+    title,
 }: Readonly<TextInputProps>) {
     const isPassword = type === "password";
     const [internalType, setInternalType] = useState(type);
     const isShowPossword = internalType === "text";
     const isEmpty = !value;
     const { pending } = useFormStatus();
+
+    const isDisabled = pending || disabled;
 
     return <div className="relative w-full">
         <input
@@ -52,7 +58,7 @@ export default function TextInput({
                 'shadow-md rounded-md pl-3 py-2 border-none w-full disabled:opacity-60',
                 className,
             )}
-            disabled={pending}
+            disabled={isDisabled}
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
@@ -60,8 +66,10 @@ export default function TextInput({
             value={value}
             defaultValue={defaultValue}
             placeholder={placeholder}
+            title={title}
         />
-        {!isEmpty && <ClearButton
+        {!isDisabled && !isEmpty && <ClearButton
+            disabled={isDisabled}
             onClick={onClearText}
             className={clsx(
                 'hover:transition-colors hover:text-black text-gray-500 absolute top-1/2 right-0.5 -translate-y-1/2',
@@ -70,6 +78,7 @@ export default function TextInput({
 
         />}
         {isPassword && <ShowPasswordButton
+            disabled={isDisabled}
             onClick={() => { setInternalType(isShowPossword ? "password" : "text") }}
             isCloseEye={!isShowPossword}
             className="top-1/2 -translate-y-1/2 absolute right-2"

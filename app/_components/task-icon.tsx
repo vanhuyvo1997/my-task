@@ -2,24 +2,26 @@ import Image from "next/image";
 import clsx from "clsx";
 import AddIcon from "../_images/add-Icon.png";
 
-export type IconStatus = 'add' | 'unchecked' | 'checked' | 'busy' | 'disabled';
+export type IconStatus = 'add' | 'unchecked' | 'checked' | 'busy';
 
 export default function TaskIcon({
+    disabled,
     status,
     onClick,
 }: Readonly<{
     status: IconStatus,
+    disabled?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
     return (
         <button
             type="button"
             onClick={onClick}
-            disabled={status === 'busy' || status === 'add' || status === 'disabled'}
+            disabled={disabled}
             className={clsx(
                 'rounded-full h-6 w-6 relative p-0.5',
                 status === 'busy' && 'animate-spin border-dotted border-[5px] border-t-emerald-200 border-r-lime-500 border-l-red-500',
-                (status === 'checked' || status === 'unchecked' || status === 'disabled') && 'border-2 border-white',
+                (status === 'checked' || status === 'unchecked') && 'border-2 border-white',
                 status === 'checked' && 'bg-green-500',
             )}
         >
