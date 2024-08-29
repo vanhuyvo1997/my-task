@@ -1,11 +1,11 @@
 "use client"
 
-
 import clsx from "clsx"
 import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, ReactNode, useState } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
 import { CommonButtonProps } from "./button"
 import { useFormStatus } from "react-dom"
+import React from "react"
 
 export type CommonTextInputProps = {
     id?: string,
@@ -26,7 +26,9 @@ export type CommonTextInputProps = {
 
 type TextInputProps = CommonTextInputProps;
 
-export default function TextInput({
+
+
+const TextInput = React.forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
     value,
     type = "text",
     className,
@@ -40,7 +42,7 @@ export default function TextInput({
     defaultValue,
     disabled,
     title,
-}: Readonly<TextInputProps>) {
+}, ref) => {
     const isPassword = type === "password";
     const [internalType, setInternalType] = useState(type);
     const isShowPossword = internalType === "text";
@@ -51,6 +53,7 @@ export default function TextInput({
 
     return <div className="relative w-full">
         <input
+            ref={ref}
             id={id}
             name={name}
             className={clsx(
@@ -84,7 +87,10 @@ export default function TextInput({
             className="top-1/2 -translate-y-1/2 absolute right-2"
         />}
     </div>
-}
+});
+
+TextInput.displayName = 'TextInput';
+export default TextInput;
 
 
 type ClearButtonProps = CommonButtonProps;
