@@ -9,11 +9,15 @@ export async function PATCH(request: Request, { params }: { params: { id: number
         method: 'PATCH',
         headers: {
             'Authorization': 'Bearer ' + session?.user?.accessToken,
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(body)
     });
 
-    const data = await response.json();
+    let data = null;
+    if (response.ok) {
+        data = await response.json();
+    }
 
     return new Response(JSON.stringify(data), { status: response.status });
 }
