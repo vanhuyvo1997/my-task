@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import CompletedDropMark from "./completed-drop-mark";
 import { TaskData } from "../user/page";
 import Task, { TaskStatus } from "./task";
@@ -86,9 +86,55 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
                 highlighted={taskData.id === highlightedTaskId}
                 onDelete={() => setDeletingTaskId(taskData.id)}
                 taskUIStatus={calculatedTaskUIStatus(taskData)}
+                onSubmitChangeName={handleSubmitChangeName}
                 {...taskData}
             />
         })
+    }
+
+
+    async function handleSubmitChangeName(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        setBusyTaskIds([...busyTaskIds, editingTaskId])
+
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${editingTaskId}/name`;
+
+        const formData = new FormData(e.currentTarget);
+        const newName = formData.get('task-name');
+
+        try {
+            const response = await fetch(url, {
+                method: 'PATCH',
+                body: JSON.stringify({ name: newName })
+            });
+
+            if (response.ok) {
+                const updatedTask = await response.json();
+                dispatch({
+                    type: "update",
+                    task: updatedTask,
+                })
+            } else if (response.status === 404) {
+                throw Error('Task not found');
+            } else {
+                throw Error('Somethings went wrong');
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                if (error.message === 'Task not found') {
+                    showNotification('warning', 'Task not found');
+                    dispatch({
+                        type: 'delete',
+                        taskId: editingTaskId,
+                    });
+                } else {
+                    showNotification('error', error.message);
+                }
+            }
+        } finally {
+            setBusyTaskIds(ids => busyTaskIds.filter(id => id !== editingTaskId));
+        }
     }
 
     function calculatedTaskUIStatus(TaskData: TaskData): TaskStatus {
