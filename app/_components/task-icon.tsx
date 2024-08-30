@@ -13,11 +13,14 @@ export default function TaskIcon({
     disabled?: boolean,
     onClick?: React.MouseEventHandler<HTMLButtonElement>,
 }>) {
+
+    const isDisabled = disabled || status === 'busy';
+
     return (
         <button
             type="button"
             onClick={onClick}
-            disabled={disabled}
+            disabled={isDisabled}
             className={clsx(
                 'rounded-full h-6 w-6 relative p-0.5',
                 status === 'busy' && 'animate-spin border-dotted border-[5px] border-t-emerald-200 border-r-lime-500 border-l-red-500',

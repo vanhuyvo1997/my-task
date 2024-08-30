@@ -6,18 +6,24 @@ import { useEffect, useRef, useState } from "react";
 export default function EditTaskForm({
     originName,
     onCancel,
+    onSubmit,
 }: Readonly<{
     originName: string,
     onCancel?: React.MouseEventHandler<HTMLButtonElement>
+    onSubmit?: React.FormEventHandler<HTMLFormElement>
 }>) {
     const newNameInputRef = useRef<HTMLInputElement>(null);
     const [newName, setNewName] = useState(originName);
+
+    const disableSubmit = newName === originName || newName.length === 0;
 
     useEffect(() => {
         newNameInputRef.current?.focus();
     }, []);
 
-    return <form className="flex w-full justify-between items-center gap-3">
+
+
+    return <form className="flex w-full justify-between items-center gap-3" onSubmit={onSubmit}>
         <TextInput
             ref={newNameInputRef}
             id="task-name"
@@ -30,7 +36,7 @@ export default function EditTaskForm({
         />
         <div className="flex justify-between gap-3">
             <Button onClick={onCancel} className="bg-red-500 text-black" size="sm" ><ArchiveBoxXMarkIcon height={20} width={20} /></Button>
-            <Button type="submit" className="bg-green-400" size="sm"><CheckIcon height={20} width={20} /></Button>
+            <Button title={disableSubmit ? 'You have to make some change' : 'Change name'} disabled={disableSubmit} type="submit" className="bg-green-400" size="sm"><CheckIcon height={20} width={20} /></Button>
         </div>
     </form>
 }

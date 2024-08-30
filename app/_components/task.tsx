@@ -19,22 +19,26 @@ export default function Task({
     onStartEditing,
     onCancelEditing,
     disabled,
-    taskUIStatus
+    taskUIStatus,
+    onSubmitChangeName,
 }:
     Readonly<
         TaskData
         & {
-            taskUIStatus: TaskStatus,
             onCheck?: React.MouseEventHandler<HTMLButtonElement>,
             highlighted?: boolean,
             onDelete?: React.MouseEventHandler<HTMLButtonElement>,
             onStartEditing?: React.MouseEventHandler<HTMLButtonElement>,
             onCancelEditing?: React.MouseEventHandler<HTMLButtonElement>,
             disabled?: boolean,
+            taskUIStatus: TaskStatus,
+            onSubmitChangeName?: React.FormEventHandler<HTMLFormElement>
         }>
 ) {
 
     const isEditing = taskUIStatus === 'editing'
+    const isDisabled = disabled || taskUIStatus === 'submitting';
+
 
     let iconStatus: IconStatus = 'unchecked';
     if (taskUIStatus === 'checked') {
@@ -51,14 +55,14 @@ export default function Task({
 
     )}>
         {
-            isEditing ? <EditTaskForm originName={name} onCancel={onCancelEditing} /> : <>
+            isEditing ? <EditTaskForm originName={name} onCancel={onCancelEditing} onSubmit={onSubmitChangeName} /> : <>
                 <div className="flex items-center gap-2 w-full">
-                    <TaskIcon disabled={taskUIStatus === 'submitting'} status={iconStatus} onClick={onCheck} />
+                    <TaskIcon status={iconStatus} onClick={onCheck} />
                     <span>{name}</span>
                 </div>
                 <div className="flex">
-                    <Button onClick={onStartEditing} disabled={disabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
-                    <Button disabled={disabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
+                    <Button onClick={onStartEditing} disabled={isDisabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
+                    <Button disabled={isDisabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
                 </div>
             </>
         }
