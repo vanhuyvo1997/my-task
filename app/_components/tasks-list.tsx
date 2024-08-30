@@ -23,7 +23,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
     const showCompletedDropFlag = completedTasks.length > 0;
 
     function convertTaskDataToUI(tasks: TaskData[]) {
-        return tasks.map(taskData => <Task key={taskData.id} {...taskData} />);
+        return tasks.map(taskData => <Task key={taskData.id} {...taskData} highlighted={highlightedTaskId === taskData.id} />);
     }
 
     return <div className="flex flex-col gap-3">

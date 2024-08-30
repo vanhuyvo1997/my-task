@@ -10,7 +10,7 @@ import { TasksDispatchContext } from "../_context/tasks-context";
 import { showNotification } from "../_lib/utils";
 
 type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
-export default function TaskV2({ id, status, name }: Readonly<TaskData>) {
+export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>) {
     const taskDispatch = useContext(TasksDispatchContext);
 
     const [currentUiStatus, setCurrentUiStatus] = useState<TaskUiStatus>('normal');
@@ -167,7 +167,10 @@ export default function TaskV2({ id, status, name }: Readonly<TaskData>) {
 
     return <>
         <div className={
-            clsx("bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white")
+            clsx(
+                "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white",
+                highlighted && "animate-pulse"
+            )
         }>
 
             {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
