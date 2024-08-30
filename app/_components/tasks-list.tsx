@@ -134,6 +134,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
             }
         } finally {
             setBusyTaskIds(ids => busyTaskIds.filter(id => id !== editingTaskId));
+            setEditingTaskId(0);
         }
     }
 
