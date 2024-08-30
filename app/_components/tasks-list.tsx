@@ -81,8 +81,8 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
             return <Task
                 key={taskData.id}
                 onCheck={() => toggleTaskStatus(taskData)}
-                onStartEditing={() => setEditingTaskId(taskData.id)}
-                onCancelEditing={() => setEditingTaskId(0)}
+                onStartEditing={() => showEditNameForm(taskData.id)}
+                onCancelEditing={() => hideEditNameForm()}
                 highlighted={taskData.id === highlightedTaskId}
                 onDelete={() => setDeletingTaskId(taskData.id)}
                 taskUIStatus={calculatedTaskUIStatus(taskData)}
@@ -93,16 +93,35 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
     }
 
 
-    async function handleSubmitChangeName(e: FormEvent<HTMLFormElement>) {
+    function handleSubmitChangeName(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        setBusyTaskIds([...busyTaskIds, editingTaskId])
-
-        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${editingTaskId}/name`;
-
+        //get new task name
         const formData = new FormData(e.currentTarget);
         const newName = formData.get('task-name');
 
+        changeTaskName(newName, editingTaskId);
+
+        hideEditNameForm();
+    }
+
+    function hideEditNameForm() {
+        setEditingTaskId(0);
+    }
+
+    function showEditNameForm(taskId: number) {
+        setEditingTaskId(taskId);
+    }
+
+
+
+    async function changeTaskName(newName: FormDataEntryValue | null, taskId: number) {
+
+        setBusyTaskIds([...busyTaskIds, taskId]);
+
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${taskId}/name`;
+
+        await new Promise(resolve => setTimeout(resolve, 5000))
         try {
             const response = await fetch(url, {
                 method: 'PATCH',
@@ -126,15 +145,14 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
                     showNotification('warning', 'Task not found');
                     dispatch({
                         type: 'delete',
-                        taskId: editingTaskId,
+                        taskId
                     });
                 } else {
                     showNotification('error', error.message);
                 }
             }
         } finally {
-            setBusyTaskIds(ids => busyTaskIds.filter(id => id !== editingTaskId));
-            setEditingTaskId(0);
+            setBusyTaskIds(ids => ids.filter(id => id !== taskId));
         }
     }
 
@@ -223,3 +241,5 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
         }
     </>
 }
+
+
