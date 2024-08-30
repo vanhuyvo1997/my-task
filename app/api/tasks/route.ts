@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const response = await fetch(process.env.GET_USER_TASKS_API,
+        const response = await fetch(process.env.TASKS_BASE_API,
             {
                 method: 'GET',
                 headers: {

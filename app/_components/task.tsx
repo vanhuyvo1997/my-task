@@ -1,47 +1,191 @@
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import Button from "./button";
-import TaskIcon, { IconStatus } from "./task-icon";
 import clsx from "clsx";
+import { TaskData } from "../user/page";
+import TaskIcon, { IconStatus } from "./task-icon";
+import Button from "./button";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import DeleteTaskDialog from "./dialog/delete-task-dialog";
+import EditTaskForm from "./edit-task-form";
+import { FormEvent, useContext, useState } from "react";
+import { TasksDispatchContext } from "../_context/tasks-context";
+import { showNotification } from "../_lib/utils";
 
-export type TaskStatus = 'checked' | 'unchecked' | 'submitting';
+type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
+export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>) {
+    const taskDispatch = useContext(TasksDispatchContext);
 
-export default function Task({
-    status = 'unchecked',
-    name,
-    onCheck,
-    highlighted,
-    onDelete,
-}: Readonly<{
-    status: TaskStatus,
-    name: string,
-    onCheck?: React.MouseEventHandler<HTMLButtonElement>,
-    highlighted?: boolean,
-    onDelete?: React.MouseEventHandler<HTMLButtonElement>,
-}>) {
-    const isDisabled = status === 'submitting';
+    const [currentUiStatus, setCurrentUiStatus] = useState<TaskUiStatus>('normal');
 
-    let iconStatus: IconStatus;
-    if (status === 'checked') {
-        iconStatus = 'checked';
-    } else if (status === 'unchecked') {
-        iconStatus = 'unchecked';
-    } else {
-        iconStatus = 'busy';
+    const isSubmiting = currentUiStatus === 'submiting';
+    const isDeleting = currentUiStatus === 'deleting';
+    const isEditing = currentUiStatus === 'editing';
+
+    function changeToSubmiting() {
+        setCurrentUiStatus('submiting');
     }
 
+    function changeToEditing() {
+        setCurrentUiStatus('editing');
+    }
 
-    return <div className={clsx(
-        "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white",
-        !isDisabled && 'hover:opacity-90',
-        highlighted && "animate-pulse",
-    )}>
-        <div className="flex items-center gap-2">
-            <TaskIcon status={iconStatus} onClick={onCheck} />
-            <span>{name}</span>
+    function changeToDeleting() {
+        setCurrentUiStatus('deleting');
+    }
+
+    function changeToNormal() {
+        setCurrentUiStatus('normal');
+    }
+
+    function findTaskIconStatus(): IconStatus {
+        if (isSubmiting) {
+            return 'busy';
+        }
+        return status === 'COMPLETED' ? 'checked' : 'unchecked';
+    }
+
+    async function handleChangeTaskSatus() {
+        changeToSubmiting();
+
+        const nextStatus = status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
+
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/status`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: nextStatus })
+            });
+
+            if (response.ok) {
+                const updatedTask = await response.json();
+                taskDispatch({
+                    type: 'update',
+                    task: updatedTask,
+                });
+            } else if (response.status === 404) {
+                throw new Error('Task not found');
+            } else {
+                throw new Error('Somethings went went wrong');
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                if (error.message === 'Task not found') {
+                    showNotification('warning', 'Task not found');
+                    taskDispatch({
+                        type: 'delete',
+                        taskId: id,
+                    })
+                } else {
+                    showNotification('error', error.message);
+                }
+            }
+        } finally {
+            changeToNormal();
+        }
+    }
+
+    async function handleDeleteTask() {
+        changeToSubmiting();
+
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + '/' + id;
+
+        try {
+            const response = await fetch(url, { method: 'DELETE' });
+
+            if (response.status === 204) {
+                taskDispatch({
+                    type: "delete",
+                    taskId: id,
+                });
+                showNotification('success', 'The task has been removed successfully.');
+            } else if (response.status === 404) {
+                throw new Error('Task not found');
+            } else {
+                throw new Error('Somethings went wrong');
+            }
+        } catch (error) {
+
+            if (error instanceof Error) {
+                if (error.message === 'Task not found') {
+                    showNotification('warning', "The task doesn't exist.");
+                    taskDispatch({
+                        type: "delete",
+                        taskId: id,
+                    });
+                } else {
+                    showNotification('error', 'Something went wrong. Could delete task.');
+                }
+            }
+
+        } finally {
+            changeToNormal();
+        }
+    }
+
+    async function handleChangeTaskName(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        changeToSubmiting();
+
+        const fomrData = new FormData(e.currentTarget);
+        const newName = fomrData.get('task-name');
+
+        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/name`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'PATCH',
+                body: JSON.stringify({ name: newName })
+            });
+
+            if (response.ok) {
+                const updatedTask = await response.json();
+                taskDispatch({
+                    type: "update",
+                    task: updatedTask,
+                })
+            } else if (response.status === 404) {
+                throw Error('Task not found');
+            } else {
+                throw Error('Somethings went wrong');
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                if (error.message === 'Task not found') {
+                    showNotification('warning', 'Task not found');
+                    taskDispatch({
+                        type: 'delete',
+                        taskId: id,
+                    });
+                } else {
+                    showNotification('error', error.message);
+                }
+            }
+        } finally {
+            changeToNormal();
+        }
+    }
+
+    return <>
+        <div className={
+            clsx(
+                "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white",
+                highlighted && "animate-pulse"
+            )
+        }>
+
+            {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
+                <div className="flex items-center gap-2 w-full">
+                    <TaskIcon onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
+                    <span>{name}</span>
+                </div>
+                <div className="flex">
+                    <Button onClick={changeToEditing} disabled={isSubmiting} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
+                    <Button onClick={changeToDeleting} disabled={isSubmiting} size="sm" ><TrashIcon height={20} width={20} /></Button>
+                </div>
+            </>}
         </div>
-        <div className="">
-            <Button disabled={isDisabled} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
-            <Button disabled={isDisabled} size="sm" onClick={onDelete} ><TrashIcon height={20} width={20} /></Button>
-        </div>
-    </div>
+        {isDeleting && <DeleteTaskDialog
+            onClose={changeToNormal}
+            onConfirm={handleDeleteTask} />}
+    </>
 }
