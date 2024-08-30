@@ -77,29 +77,31 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
     }
 
     function convertTasks(tasks: TaskData[]) {
-        return tasks.map(task => {
-
-            let taskStatus: TaskStatus = (task.status === "COMPLETED" ? 'checked' : 'unchecked');
-
-            if (busyTaskIds.includes(task.id)) {
-                taskStatus = 'submitting';
-            }
-
-            taskStatus = editingTaskId === task.id ? 'editing' : taskStatus;
-
+        return tasks.map(taskData => {
             return <Task
-                key={task.id}
-                onCheck={() => toggleTaskStatus(task)}
-                onStartEditing={() => setEditingTaskId(task.id)}
+                key={taskData.id}
+                onCheck={() => toggleTaskStatus(taskData)}
+                onStartEditing={() => setEditingTaskId(taskData.id)}
                 onCancelEditing={() => setEditingTaskId(0)}
-                status={taskStatus}
-                name={task.name}
-                highlighted={task.id === highlightedTaskId}
-                onDelete={() => setDeletingTaskId(task.id)}
+                highlighted={taskData.id === highlightedTaskId}
+                onDelete={() => setDeletingTaskId(taskData.id)}
+                taskUIStatus={calculatedTaskUIStatus(taskData)}
+                {...taskData}
             />
         })
     }
 
+    function calculatedTaskUIStatus(TaskData: TaskData): TaskStatus {
+        let result: TaskStatus = TaskData.status === 'COMPLETED' ? 'checked' : 'unchecked';
+
+        if (busyTaskIds.includes(TaskData.id)) {
+            result = 'submitting';
+        } else if (editingTaskId === TaskData.id) {
+            result = 'editing';
+        }
+
+        return result;
+    }
     return <>
         <div className="flex flex-col gap-2">
             {

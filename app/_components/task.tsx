@@ -3,34 +3,43 @@ import Button from "./button";
 import TaskIcon, { IconStatus } from "./task-icon";
 import clsx from "clsx";
 import EditTaskForm from "./edit-task-form";
+import { TaskData } from "../user/page";
 
 export type TaskStatus = 'checked' | 'unchecked' | 'submitting' | 'editing';
 
 export default function Task({
-    status = 'unchecked',
+    id,
     name,
+    status,
+    createdAt,
+    completedAt,
     onCheck,
     highlighted,
     onDelete,
     onStartEditing,
     onCancelEditing,
     disabled,
-}: Readonly<{
-    status: TaskStatus,
-    name: string,
-    onCheck?: React.MouseEventHandler<HTMLButtonElement>,
-    highlighted?: boolean,
-    onDelete?: React.MouseEventHandler<HTMLButtonElement>,
-    onStartEditing?: React.MouseEventHandler<HTMLButtonElement>,
-    onCancelEditing?: React.MouseEventHandler<HTMLButtonElement>,
-    disabled?: boolean,
-}>) {
-    const isEditing = status === 'editing'
+    taskUIStatus
+}:
+    Readonly<
+        TaskData
+        & {
+            taskUIStatus: TaskStatus,
+            onCheck?: React.MouseEventHandler<HTMLButtonElement>,
+            highlighted?: boolean,
+            onDelete?: React.MouseEventHandler<HTMLButtonElement>,
+            onStartEditing?: React.MouseEventHandler<HTMLButtonElement>,
+            onCancelEditing?: React.MouseEventHandler<HTMLButtonElement>,
+            disabled?: boolean,
+        }>
+) {
+
+    const isEditing = taskUIStatus === 'editing'
 
     let iconStatus: IconStatus = 'unchecked';
-    if (status === 'checked') {
+    if (taskUIStatus === 'checked') {
         iconStatus = 'checked';
-    } else if (status === 'submitting') {
+    } else if (taskUIStatus === 'submitting') {
         iconStatus = 'busy';
     }
 
@@ -44,7 +53,7 @@ export default function Task({
         {
             isEditing ? <EditTaskForm originName={name} onCancel={onCancelEditing} /> : <>
                 <div className="flex items-center gap-2 w-full">
-                    <TaskIcon disabled={status === 'submitting'} status={iconStatus} onClick={onCheck} />
+                    <TaskIcon disabled={taskUIStatus === 'submitting'} status={iconStatus} onClick={onCheck} />
                     <span>{name}</span>
                 </div>
                 <div className="flex">

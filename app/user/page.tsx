@@ -12,7 +12,7 @@ export type TaskData = {
     name: string,
     status: "COMPLETED" | "TO_DO",
     createdAt?: Date,
-    COMPLETEDAt?: Date,
+    completedAt?: Date,
     ownerId?: string
 }
 
