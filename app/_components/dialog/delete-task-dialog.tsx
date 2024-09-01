@@ -11,10 +11,8 @@ export default function DeleteTaskDialog({
     return <ConfirmDialog
         onClose={(e) => onClose && onClose()}
         onConfirm={onConfirm}
+        icon={<TrashIcon className="m-auto" height={60} width={60} />}
     >
-        <div>
-            <TrashIcon className="m-auto" height={60} width={60} />
-            <p className="text-center">The task will be delete <b>permanently</b>.<br /> Are you sure?</p>
-        </div>
+        <p className="text-center">The task will be delete <b>permanently</b>.<br /> Are you sure?</p>
     </ConfirmDialog>
 }
