@@ -4,15 +4,18 @@ import DialogContainer from "./dialog-container";
 export default function ConfirmDialog({
     onClose,
     onConfirm,
-    children
+    children,
+    icon,
 }: Readonly<{
     onClose: React.MouseEventHandler<HTMLElement>,
     children: React.ReactNode,
     onConfirm: React.MouseEventHandler<HTMLButtonElement>;
+    icon?: React.ReactNode;
 }>) {
     return <DialogContainer onClose={onClose}>
         <div className="flex flex-col gap-4">
-            <div className="py-4">
+            <div className="py-4 flex flex-col items-center gap-3">
+                {icon}
                 {children}
             </div>
             <div className="flex justify-around">

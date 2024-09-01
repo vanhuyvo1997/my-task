@@ -1,5 +1,5 @@
 import { User } from "next-auth";
-import AccountInfo from "./account-info";
+import AccountInfo from "./account/account-info";
 import BarsButton from "./bars-button";
 import SearchBar from "./search-bar";
 
