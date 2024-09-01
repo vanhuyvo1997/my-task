@@ -1,10 +1,8 @@
 import Image from "next/image";
-import Button from "./button";
-import { signOut } from "@/auth";
-import LimitedText from "./limited-text";
-import DefaultAvatar from "../_images/logo.png"
+import LimitedText from "../limited-text";
+import DefaultAvatar from "../../_images/logo.png"
 import { User } from "next-auth";
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/20/solid";
+import LogoutButton from "./logout-button";
 
 
 export default async function AccountInfo({ user }: Readonly<{ user: User }>) {
@@ -21,13 +19,6 @@ export default async function AccountInfo({ user }: Readonly<{ user: User }>) {
                 <i>{user.email}</i>
             </LimitedText>
         </div>
-        <form action={async () => {
-            'use server'
-            await signOut();
-        }}>
-            <Button title="Log out" className="bg-orange-400" type="submit" size="sm" >
-                <ArrowLeftStartOnRectangleIcon className="rotate-180" height={20} width={20} />
-            </Button>
-        </form>
+        <LogoutButton />
     </div>
 }
