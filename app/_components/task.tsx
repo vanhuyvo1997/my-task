@@ -175,8 +175,8 @@ export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskD
 
             {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
                 <div className="flex items-center gap-2 w-full">
-                    <TaskIcon onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
-                    <span>{name}</span>
+                    <TaskIcon className="shrink-0" onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
+                    <span className="text-justify">{name}</span>
                 </div>
                 <div className="flex">
                     <Button onClick={changeToEditing} disabled={isSubmiting} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
