@@ -6,6 +6,7 @@ import { useFormState } from "react-dom";
 import createTask from "../_actions/task-actions";
 import { tasksReducer } from "../_reducers/tasks-reducer";
 import { TasksContext, TasksDispatchContext } from "../_context/tasks-context";
+import { useSearchParams } from "next/navigation";
 
 export type TaskData = {
     id: number,
@@ -27,19 +28,39 @@ export default function UserPage() {
     const [tasks, dispatch] = useReducer(tasksReducer, []);
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
+    const searchParams = useSearchParams();
+    const query = searchParams.get('query');
+
 
     useEffect(() => {
-        fetch(process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API)
+        let tasksUrl = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API;
+
+        const params = new URLSearchParams();
+        if (query) {
+            params.append('query', query);
+        }
+
+        if (params.size > 0) {
+            tasksUrl += `?${params.toString()}`;
+        }
+
+        let ignore = false;
+
+        fetch(tasksUrl)
             .then(rs => rs.json())
             .then(data => {
-                dispatch({
-                    type: "initialize",
-                    tasks: data,
-                })
-                setLoadingTasks(false);
+                if (!ignore) {
+                    dispatch({
+                        type: "initialize",
+                        tasks: data,
+                    })
+                    setLoadingTasks(false);
+                }
             })
             .catch(err => console.error(err));
-    }, []);
+
+        return () => { ignore = true };
+    }, [query]);
 
     useEffect(() => {
         if (addingTaskFormState.success) {
