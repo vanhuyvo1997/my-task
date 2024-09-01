@@ -22,7 +22,7 @@ export default function SerchBar() {
         replace(`${pathName}?${params.toString()}`);
         setSearchTerm(term);
     }
-    return <form className="flex border-2 border-solid border-blue-500 rounded-lg">
+    return <form className="flex border-2 border-solid border-blue-500 rounded-lg" onSubmit={e => e.preventDefault()}>
         <TextInput
             onChange={(e) => handleSearch(e.target.value)}
             onClearText={(e) => handleSearch('')}
@@ -30,6 +30,6 @@ export default function SerchBar() {
             className="outline-none rounded-r-none bg-transparent"
             value={searchTerm}
         />
-        <Button className="rounded-l-none bg-blue-500"><MagnifyingGlassIcon height={20} width={20} /></Button>
+        <Button disabled className="rounded-l-none bg-blue-500"><MagnifyingGlassIcon height={20} width={20} /></Button>
     </form>
 }
