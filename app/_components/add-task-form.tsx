@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import TaskIcon, { IconStatus } from "./task-icon"
 import TextInput from "./text-input"
 import { CreateTaskState } from "../user/page";
@@ -13,7 +13,7 @@ export default function AddTaskForm({
     addingTaskFormState: CreateTaskState,
 }>) {
 
-
+    const nameInputRef = useRef<HTMLInputElement>(null);
     const [addingTaskName, setAddingTaskName] = useState('');
     const [addingTaskState, setAddingTaskState] = useState<"typing" | "submitting" | "normal">("normal");
 
@@ -45,8 +45,9 @@ export default function AddTaskForm({
             }
         }}
         className="flex px-2 items-center bg-[#414141] rounded-md shadow-sm fixed w-[95.5%] lg:w-[calc(100%-375px)] top-20 hover:opacity-70 z-40">
-        <TaskIcon status={iconStatus} />
+        <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
         <TextInput
+            ref={nameInputRef}
             onFocus={e => setAddingTaskState("typing")}
             onBlur={e => setAddingTaskState('normal')}
             onChange={e => setAddingTaskName(e.target.value)}
