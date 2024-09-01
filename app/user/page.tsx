@@ -59,7 +59,7 @@ export default function UserPage() {
             })
             .catch(err => console.error(err));
 
-        return () => { ignore = true };
+        return () => { ignore = true; };
     }, [query]);
 
     useEffect(() => {

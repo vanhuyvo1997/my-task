@@ -8,8 +8,15 @@ export async function GET(request: NextRequest) {
         throw new Error("Unauthenticated");
     }
 
+    const params = request.nextUrl.searchParams;
+
+    let url = process.env.TASKS_BASE_API;
+    if (params.size > 0) {
+        url += '?' + params.toString();
+    }
+
     try {
-        const response = await fetch(process.env.TASKS_BASE_API,
+        const response = await fetch(url,
             {
                 method: 'GET',
                 headers: {
