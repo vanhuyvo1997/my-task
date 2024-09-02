@@ -7,6 +7,7 @@ import createTask from "../_actions/task-actions";
 import { tasksReducer } from "../_reducers/tasks-reducer";
 import { TasksContext, TasksDispatchContext } from "../_context/tasks-context";
 import { useSearchParams } from "next/navigation";
+import SearchBar from "../_components/search-bar";
 
 export type TaskData = {
     id: number,
@@ -88,6 +89,7 @@ export default function UserPage() {
                     addingTaskFormState={addingTaskFormState}
                     addTaskAction={addTaskAction}
                 />
+                <SearchBar className="fixed w-[98%] right-[1%] top-20 lg:hidden bg-gray-500 z-40" />
                 <div className="mt-14">
                     {
                         loadingTasks ? 'Loading tasks...' : <TasksList highlightedTaskId={highlightedTaskId} />

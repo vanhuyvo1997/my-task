@@ -8,7 +8,7 @@ export default function SideMenu({ id, user }: Readonly<{ id: string, user: User
         <BarsButton toggleElementId="side-menu" className="relative top-[1.5px]" />
         <div className="flex flex-col gap-4 py-5 lg:py-0">
             <AccountInfo user={user} />
-            <SearchBar />
+            <SearchBar className="hidden lg:flex" />
         </div>
     </div>
 }

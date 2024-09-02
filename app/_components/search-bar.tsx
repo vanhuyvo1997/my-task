@@ -5,9 +5,10 @@ import TextInput from "./text-input";
 import Button from "./button";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import clsx from "clsx";
 
 
-export default function SerchBar() {
+export default function SearchBar({ className }: Readonly<{ className?: string }>) {
     const searchParams = useSearchParams();
     const pathName = usePathname();
     const { replace } = useRouter();
@@ -26,7 +27,10 @@ export default function SerchBar() {
         return () => { clearTimeout(timeoutId) }
     }, [pathName, replace, searchParams, searchTerm]);
 
-    return <form className="flex border-2 border-solid border-blue-500 rounded-lg" onSubmit={e => e.preventDefault()}>
+    return <form className={clsx(
+        "flex border-2 border-solid border-blue-500 rounded-lg",
+        className,
+    )} onSubmit={e => e.preventDefault()}>
         <TextInput
             onChange={(e) => setSearchTerm(e.target.value)}
             onClearText={(e) => setSearchTerm('')}
