@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import HeaderBar from "../_components/header-bar";
 import SideMenu from "../_components/side-menu";
 import { redirect } from "next/navigation";
+import SearchTasksContextWrapper from "../_wrapper/search-tasks-context-wrapper";
 
 
 export default async function UserLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -12,7 +13,7 @@ export default async function UserLayout({ children }: Readonly<{ children: Reac
     }
 
 
-    return <div>
+    return <SearchTasksContextWrapper>
         <SideMenu user={user} id="side-menu" />
         <div className="w-auto min-w-[344px] lg:pl-[344px]">
             <HeaderBar toggleElementId="side-menu" />
@@ -20,5 +21,5 @@ export default async function UserLayout({ children }: Readonly<{ children: Reac
                 {children}
             </div>
         </div>
-    </div>
+    </SearchTasksContextWrapper>
 }

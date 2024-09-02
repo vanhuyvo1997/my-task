@@ -95,12 +95,13 @@ export default TextInput;
 
 type ClearButtonProps = CommonButtonProps;
 
-function ClearButton({ onClick, className }: Readonly<ClearButtonProps>) {
+function ClearButton({ onClick, className, disabled }: Readonly<ClearButtonProps>) {
     return <button
         title="clear"
         className={className}
         onClick={onClick}
         type="button"
+        disabled={disabled}
     >
         <XMarkIcon
             height={20}
@@ -119,6 +120,7 @@ function ShowPasswordButton({
     onClick,
     isCloseEye = true,
     className,
+    disabled,
 }: Readonly<ShowPasswordButtonProps>) {
 
     return <button
@@ -126,6 +128,7 @@ function ShowPasswordButton({
         onClick={onClick}
         type="button"
         className={className}
+        disabled={disabled}
     >
         {!isCloseEye ? <EyeIcon height={20} width={20} /> : <EyeSlashIcon height={20} width={20} />}
 

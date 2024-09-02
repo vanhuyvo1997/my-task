@@ -15,7 +15,7 @@ export default function LogoutButton() {
         </Button>
         {showConfirmDialog && <ConfirmDialog
             onClose={() => setShowConfirmDialog(false)}
-            onConfirm={async () => { await signOut() }}
+            onConfirm={async () => { await signOut({ callbackUrl: '/login' }) }}
             icon={<ArrowLeftStartOnRectangleIcon className="rotate-180" height={60} width={60} />}
         >
             <p>You will be logged out. Are you sure?</p>
