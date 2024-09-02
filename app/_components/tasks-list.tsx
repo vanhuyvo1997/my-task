@@ -26,7 +26,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
         return tasks.map(taskData => <Task key={taskData.id} {...taskData} highlighted={highlightedTaskId === taskData.id} />);
     }
 
-    return <div className="flex flex-col gap-3">
+    return <div className="flex flex-col gap-3 mb-20">
         {<div className="flex flex-col gap-2">{convertTaskDataToUI(todoTasks)}</div>}
         {showCompletedDropFlag && <CompletedDropMark
             numOfCompleted={completedTasks.length}

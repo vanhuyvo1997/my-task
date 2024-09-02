@@ -16,7 +16,7 @@ export default async function UserLayout({ children }: Readonly<{ children: Reac
         <SideMenu user={user} id="side-menu" />
         <div className="w-auto min-w-[344px] lg:pl-[344px]">
             <HeaderBar toggleElementId="side-menu" />
-            <div className="px-4 pt-20">
+            <div className="px-[2%] pt-20">
                 {children}
             </div>
         </div>

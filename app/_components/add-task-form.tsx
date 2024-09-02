@@ -44,7 +44,9 @@ export default function AddTaskForm({
                 setAddingTaskState('submitting');
             }
         }}
-        className="flex px-2 items-center bg-[#414141] rounded-md shadow-sm fixed w-[95.5%] lg:w-[calc(100%-375px)] top-20 hover:opacity-70 z-40">
+        className="flex px-2 items-center bg-[#414141] rounded-md shadow-sm fixed w-[98%] right-[1%] 
+         hover:bg-gray-700 z-40 bottom-6 
+         lg:w-[calc(100%-344px-2%)]  lg:top-20 lg:bottom-auto">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
         <TextInput
             ref={nameInputRef}
