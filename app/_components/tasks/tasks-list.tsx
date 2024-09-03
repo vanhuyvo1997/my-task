@@ -1,8 +1,8 @@
 'use client'
 import { useContext, useState } from "react";
-import CompletedDropMark from "./completed-drop-mark";
-import { TaskData } from "../user/page";
-import { TasksContext } from "../_context/tasks-context";
+import CompletedDropMark from "../buttons/completed-drop-mark";
+import { TaskData } from "../../user/page";
+import { TasksContext } from "../../_context/tasks-context";
 import Task from "./task";
 import clsx from "clsx";
 

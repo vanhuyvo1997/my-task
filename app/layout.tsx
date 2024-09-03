@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NotificationWrapper from "./_components/notification-wrapper";
+import NotificationWrapper from "./_wrapper/notification-wrapper";
 import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className + " bg-[#858585]"}>
+    <html lang="en" className="dark">
+      <body className={inter.className + " bg-white dark:bg-black"}>
         <SessionProvider>
           {children}
           <NotificationWrapper />

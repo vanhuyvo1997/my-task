@@ -1,11 +1,11 @@
 "use client"
 
 import clsx from "clsx"
-import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, ReactNode, useState } from "react"
+import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, useState, forwardRef } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
-import { CommonButtonProps } from "./button"
+import { CommonButtonProps } from "./buttons/button"
 import { useFormStatus } from "react-dom"
-import React from "react"
+
 
 export type CommonTextInputProps = {
     id?: string,
@@ -28,7 +28,7 @@ type TextInputProps = CommonTextInputProps;
 
 
 
-const TextInput = React.forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
+const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
     value,
     type = "text",
     className,

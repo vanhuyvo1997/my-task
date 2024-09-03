@@ -1,5 +1,5 @@
 import Image from "next/image";
-import LimitedText from "../limited-text";
+import LimitedText from "../layouts/limited-text";
 import DefaultAvatar from "../../_images/logo.png"
 import { User } from "next-auth";
 import LogoutButton from "./logout-button";

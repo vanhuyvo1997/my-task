@@ -1,7 +1,7 @@
 import { ArchiveBoxXMarkIcon, CheckIcon } from "@heroicons/react/20/solid";
-import Button from "./button";
-import TextInput from "./text-input";
 import { useEffect, useRef, useState } from "react";
+import TextInput from "../text-inputs/text-input";
+import Button from "../buttons/button";
 
 export default function EditTaskForm({
     originName,

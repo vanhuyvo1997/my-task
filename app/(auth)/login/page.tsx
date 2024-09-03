@@ -1,6 +1,6 @@
 'use client'
 
-import LabelTextInput from "@/app/_components/label-text-input";
+import LabelTextInput from "@/app/_components/text-inputs/label-text-input";
 import Link from "next/link";
 import AuthCommonForm from "../auth-common-form";
 import { useEffect, useState } from "react";

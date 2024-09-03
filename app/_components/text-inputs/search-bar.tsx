@@ -2,11 +2,11 @@
 
 import { useContext, useEffect } from "react";
 import TextInput from "./text-input";
-import Button from "./button";
+import Button from "../buttons/button";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { SearchTermContext, SetSearchTermContext } from "../_context/search-tasks-context";
+import { SearchTermContext, SetSearchTermContext } from "../../_context/search-tasks-context";
 
 
 export default function SearchBar({ className }: Readonly<{ className?: string }>) {

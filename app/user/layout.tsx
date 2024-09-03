@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import HeaderBar from "../_components/header-bar";
-import SideMenu from "../_components/side-menu";
+import HeaderBar from "../_components/layouts/header-bar";
+import SideMenu from "../_components/layouts/side-menu";
 import { redirect } from "next/navigation";
 import SearchTasksContextWrapper from "../_wrapper/search-tasks-context-wrapper";
 

@@ -1,9 +1,10 @@
 "use client"
+import { CreateTaskState } from "@/app/user/page";
 import { useEffect, useRef, useState } from "react"
-import TaskIcon, { IconStatus } from "./task-icon"
-import TextInput from "./text-input"
-import { CreateTaskState } from "../user/page";
-import { showNotification } from "../_lib/utils";
+import TaskIcon, { IconStatus } from "../tasks/task-icon";
+import { showNotification } from "@/app/_lib/utils";
+import TextInput from "../text-inputs/text-input";
+
 
 export default function AddTaskForm({
     addTaskAction,

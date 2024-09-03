@@ -1,13 +1,15 @@
+import { TasksDispatchContext } from "@/app/_context/tasks-context";
+import { TaskData } from "@/app/user/page";
 import clsx from "clsx";
-import { TaskData } from "../user/page";
-import TaskIcon, { IconStatus } from "./task-icon";
-import Button from "./button";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import DeleteTaskDialog from "./dialog/delete-task-dialog";
-import EditTaskForm from "./edit-task-form";
 import { FormEvent, useContext, useState } from "react";
-import { TasksDispatchContext } from "../_context/tasks-context";
-import { showNotification } from "../_lib/utils";
+import TaskIcon, { IconStatus } from "./task-icon";
+import { showNotification } from "@/app/_lib/utils";
+import EditTaskForm from "../forms/edit-task-form";
+import Button from "../buttons/button";
+import DeleteTaskDialog from "../dialog/delete-task-dialog";
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/20/solid";
+
 
 type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
 export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>) {

@@ -1,11 +1,11 @@
 'use client'
-import LabelTextInput from '@/app/_components/label-text-input';
+import LabelTextInput from '@/app/_components/text-inputs/label-text-input';
 import AuthCommonForm from '../auth-common-form';
 import { register } from '@/app/_actions/auth-actions';
 import { useFormState } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { showNotification } from '@/app/_lib/utils';
-import CommonLink from '@/app/_components/common-link';
+import CommonLink from '@/app/_components/layouts/common-link';
 
 type RegisterFormData = { firstName: string, lastName: string, email: string, password: string, retypePassword: string };
 const initialFormData = { lastName: '', firstName: '', email: '', password: '', retypePassword: '' };

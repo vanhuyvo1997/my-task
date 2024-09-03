@@ -1,6 +1,6 @@
 import Image from "next/image";
 import clsx from "clsx";
-import AddIcon from "../_images/add-Icon.png";
+import AddIcon from "../../_images/add-Icon.png";
 
 export type IconStatus = 'add' | 'unchecked' | 'checked' | 'busy';
 

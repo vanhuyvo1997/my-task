@@ -1,6 +1,7 @@
-import BarsButton from "./bars-button";
+
+import BarsButton from "../buttons/bars-button";
 import Image from "next/image";
-import logo from "../_images/logo.png";
+import logo from "../../_images/logo.png";
 
 export default function HeaderBar({
     toggleElementId

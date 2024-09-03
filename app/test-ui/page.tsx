@@ -1,10 +1,10 @@
 "use client"
 import { useState } from "react";
-import Button from "../_components/button";
+import Button from "../_components/buttons/button";
 import TextInput from "../_components/text-input";
-import LabelTextInput from "../_components/label-text-input";
+import LabelTextInput from "../_components/text-inputs/label-text-input";
 import SubmitButton from "../_components/submit-button";
-import TaskIcon from "../_components/task-icon";
+import TaskIcon from "../_components/tasks/task-icon";
 import AddTaskForm from "../_components/add-task-form";
 
 export default function TestUIPage() {

@@ -1,7 +1,7 @@
 "use client"
 
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/20/solid";
-import Button from "../button";
+import Button from "../buttons/button";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import ConfirmDialog from "../dialog/confirm-dialog";
