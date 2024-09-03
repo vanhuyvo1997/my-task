@@ -3,8 +3,8 @@
 import clsx from "clsx"
 import { ChangeEventHandler, FocusEventHandler, MouseEventHandler, useState, forwardRef } from "react"
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/20/solid'
-import { CommonButtonProps } from "./buttons/button"
 import { useFormStatus } from "react-dom"
+import { CommonButtonProps } from "../buttons/button"
 
 
 export type CommonTextInputProps = {
