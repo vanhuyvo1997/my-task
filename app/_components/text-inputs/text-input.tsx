@@ -58,7 +58,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             name={name}
             className={clsx(
                 isPassword ? 'pr-12' : 'pr-5',
-                'shadow-md rounded-md pl-3 py-2 border-none w-full disabled:opacity-60',
+                'shadow-md rounded-md pl-3 py-1.5 border-none w-full disabled:opacity-60',
                 className,
             )}
             disabled={isDisabled}
