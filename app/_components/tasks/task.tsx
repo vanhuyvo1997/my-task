@@ -1,5 +1,5 @@
 import { TasksDispatchContext } from "@/app/_context/tasks-context";
-import { TaskData } from "@/app/user/page";
+import { TaskData } from "@/app/(authenticated)/tasks/page";
 import clsx from "clsx";
 import { FormEvent, useContext, useState } from "react";
 import TaskIcon, { IconStatus } from "./task-icon";

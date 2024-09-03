@@ -53,42 +53,48 @@ export default function RegisterPage() {
             buttonContent='Register'
             action={dispatch}
         >
-            <LabelTextInput
-                id='firstName'
-                name='firstName'
-                title='First name'
-                placeholder='Your first name'
-                onChange={handleChangeFormData}
-                value={formData.firstName}
-                onClearText={() => handleClearText('firstName')}
-            />
-            {
-                formState.fieldErrors?.firstName && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.firstName?.map(e => <p key={e}>(*) {e}</p>)}
+            <div className='flex justify-between gap-4'>
+                <div className='w-1/2'>
+                    <LabelTextInput
+                        id='firstName'
+                        name='firstName'
+                        title='First name'
+                        placeholder='Your first name'
+                        onChange={handleChangeFormData}
+                        value={formData.firstName}
+                        onClearText={() => handleClearText('firstName')}
+                    />
+                    {
+                        formState.fieldErrors?.firstName && <div aria-live='polite' className='text-red-500'>
+                            {formState.fieldErrors?.firstName?.map(e => <p key={e}>(*) {e}</p>)}
+                        </div>
+                    }
                 </div>
-            }
 
-            <LabelTextInput
-                id='lastName'
-                name='lastName'
-                title='Last name'
-                placeholder='Your last name'
-                onChange={handleChangeFormData}
-                value={formData.lastName}
-                onClearText={() => handleClearText('lastName')}
-            />
-            {
-                formState.fieldErrors?.lastName && <div aria-live='polite' className='text-red-500'>
-                    {formState.fieldErrors?.lastName?.map(e => <p key={e}>(*) {e}</p>)}
+                <div className='w-1/2'>
+                    <LabelTextInput
+                        id='lastName'
+                        name='lastName'
+                        title='Last name'
+                        placeholder='Your last name'
+                        onChange={handleChangeFormData}
+                        value={formData.lastName}
+                        onClearText={() => handleClearText('lastName')}
+                    />
+                    {
+                        formState.fieldErrors?.lastName && <div aria-live='polite' className='text-red-500'>
+                            {formState.fieldErrors?.lastName?.map(e => <p key={e}>(*) {e}</p>)}
+                        </div>
+                    }
                 </div>
-            }
+            </div>
 
             <LabelTextInput
                 id='email'
                 type='email'
                 name='email'
-                title='Last email'
-                placeholder='Your last name'
+                title='Email'
+                placeholder='Your email'
                 onChange={handleChangeFormData}
                 value={formData.email}
                 onClearText={() => handleClearText('email')}
@@ -104,7 +110,7 @@ export default function RegisterPage() {
                 type='password'
                 name='password'
                 title='Password'
-                placeholder='Your last name'
+                placeholder='Your password'
                 onChange={handleChangeFormData}
                 value={formData.password}
                 onClearText={() => handleClearText('password')}

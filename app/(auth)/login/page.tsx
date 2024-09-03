@@ -41,8 +41,26 @@ export default function LoginPage() {
             buttonContent="Login"
             action={action}
         >
-            <LabelTextInput id="email" type="email" name="email" title="Last email" placeholder="Your last name" value={formData.email} onChange={handleChangeFormData} onClearText={() => handleClearText('email')} />
-            <LabelTextInput id="password" type="password" name="password" title="Password" placeholder="Your last name" value={formData.password} onChange={handleChangeFormData} onClearText={() => handleClearText('password')} />
+            <LabelTextInput
+                id="email"
+                type="email"
+                name="email"
+                title="Email"
+                placeholder="Your email"
+                value={formData.email}
+                onChange={handleChangeFormData}
+                onClearText={() => handleClearText('email')}
+            />
+            <LabelTextInput
+                id="password"
+                type="password"
+                name="password"
+                title="Password"
+                placeholder="Your password"
+                value={formData.password}
+                onChange={handleChangeFormData}
+                onClearText={() => handleClearText('password')}
+            />
         </AuthCommonForm>
     )
 }

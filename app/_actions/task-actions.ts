@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 
 import { redirect } from "next/navigation";
-import { CreateTaskState } from "../user/page";
+import { CreateTaskState } from "../(authenticated)/tasks/page";
 
 export default async function createTask(prevState: CreateTaskState, formData: FormData): Promise<CreateTaskState> {
     try {
