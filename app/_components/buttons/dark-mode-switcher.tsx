@@ -1,10 +1,18 @@
 'use client'
 import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function DarkModeSwitcher() {
     const [isOn, setIsOn] = useState(false);
+
+    useEffect(() => {
+        if (isOn) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [isOn])
 
     function handleSwitch() {
         const nextIsOn = !isOn;
