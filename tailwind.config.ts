@@ -17,16 +17,16 @@ const config: Config = {
         'headerbar-light': 'white',
 
         'background-dark': '#000000',
+        'headerbar-dark': '#000000',
         'sidebar-dark': '#101010',
-        'headerbar-dark': '#202020',
-        'account-info-dark': '#303030',
-        'task-dark': '#353535',
-        'showtask-button-dark': '#404040',
-        'dialog-background-dark': '#454545',
+        'account-info-dark': '#202020',
+        'task-dark': '#303030',
+        'showtask-button-dark': '#303030',
+        'dialog-background-dark': '#404040',
         'text-dark': '#dddddd',
         'add-task-background-dark': '#454545',
-        'login-form-background-dark': '#303030',
-        'text-input-background-dark': 'black',
+        'login-form-background-dark': '#202020',
+        'text-input-background-dark': '#000000',
       }
     }
   },
