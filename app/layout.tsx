@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NotificationWrapper from "./_wrapper/notification-wrapper";
 import { SessionProvider } from "next-auth/react";
+import ApplicationWrapper from "./_wrapper/application-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className + "bg-background-light  dark:bg-background-dark dark:text-text-dark"}>
-        <SessionProvider>
-          {children}
-          <NotificationWrapper />
-        </SessionProvider>
+        <ApplicationWrapper>
+          <SessionProvider>
+            {children}
+            <NotificationWrapper />
+          </SessionProvider>
+        </ApplicationWrapper>
       </body>
     </html>
   );
