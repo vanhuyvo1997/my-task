@@ -1,9 +1,9 @@
 'use client'
-import LabelTextInput from '@/app/_components/text-inputs/label-text-input';
+import { LabelTextInput } from '@/app/_components/text-inputs/label-text-input';
 import AuthCommonForm from '../auth-common-form';
 import { register } from '@/app/_actions/auth-actions';
 import { useFormState } from 'react-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { showNotification } from '@/app/_lib/utils';
 import CommonLink from '@/app/_components/layouts/common-link';
 
@@ -14,10 +14,10 @@ export default function RegisterPage() {
 
     const [formState, dispatch] = useFormState(register, { success: false });
     const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
-
+    const firstNameInputRef = useRef<HTMLInputElement>(null);
     //focus first element on first load
     useEffect(() => {
-        document.getElementById('firstName')?.focus();
+        firstNameInputRef.current?.focus();
     }, []);
 
     //clear form affter submitting successfully
@@ -58,6 +58,7 @@ export default function RegisterPage() {
                     <LabelTextInput
                         className='dark:bg-text-input-background-dark'
                         id='firstName'
+                        ref={firstNameInputRef}
                         name='firstName'
                         title='First name'
                         placeholder='Your first name'

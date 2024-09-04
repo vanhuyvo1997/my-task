@@ -21,6 +21,7 @@ export type CommonTextInputProps = {
     onBlur?: FocusEventHandler<HTMLInputElement>,
     disabled?: boolean,
     title?: string,
+    tabIndex?: number,
 }
 
 
@@ -42,6 +43,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
     defaultValue,
     disabled,
     title,
+    tabIndex,
 }, ref) => {
     const isPassword = type === "password";
     const [internalType, setInternalType] = useState(type);
@@ -70,6 +72,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             defaultValue={defaultValue}
             placeholder={placeholder}
             title={title}
+            tabIndex={tabIndex}
         />
         {!isDisabled && !isEmpty && <ClearButton
             disabled={isDisabled}

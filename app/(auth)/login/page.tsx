@@ -1,9 +1,9 @@
 'use client'
 
-import LabelTextInput from "@/app/_components/text-inputs/label-text-input";
+import { LabelTextInput } from "@/app/_components/text-inputs/label-text-input";
 import Link from "next/link";
 import AuthCommonForm from "../auth-common-form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { login, LoginFormState } from "@/app/_actions/auth-actions";
 import { showNotification } from "@/app/_lib/utils";
@@ -12,7 +12,7 @@ const initialState: LoginFormState = { success: false, message: '' };
 
 export default function LoginPage() {
     const [formData, setFormData] = useState<{ email?: string, password?: string }>({});
-
+    const emailInputRef = useRef<HTMLInputElement>(null);
     const [formStatus, action] = useFormState(login, initialState);
 
     function handleChangeFormData(e: React.ChangeEvent<HTMLInputElement>) {
@@ -33,7 +33,12 @@ export default function LoginPage() {
         if (!formStatus.success && formStatus.message) {
             showNotification('error', formStatus.message);
         }
+        emailInputRef.current?.focus();
     }, [formStatus]);
+
+    useEffect(() => {
+        emailInputRef.current?.focus();
+    }, []);
 
     return (
         <AuthCommonForm
@@ -47,6 +52,7 @@ export default function LoginPage() {
                 type="email"
                 name="email"
                 title="Email"
+                ref={emailInputRef}
                 placeholder="Your email"
                 value={formData.email}
                 onChange={handleChangeFormData}
