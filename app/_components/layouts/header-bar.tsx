@@ -1,11 +1,10 @@
-import logo from "../../_images/logo.png";
-import Image from "next/image";
 import DarkModeSwitcher from "../buttons/dark-mode-switcher";
 import Button from "../buttons/button";
 import { auth } from "@/auth";
 import BarsButton from "../buttons/bars-button";
 import clsx from "clsx";
 import Link from "next/link";
+import Logo from "./logo";
 
 export default async function HeaderBar() {
     const session = await auth();
@@ -16,7 +15,7 @@ export default async function HeaderBar() {
         authenticated && 'lg:w-[calc(100%-344px)]',
     )}>
         {authenticated && <div className="lg:hidden"><BarsButton toggleElementId={'side-menu'} /></div>}
-        <Image src={logo} alt="logo" height={65} width={65} />
+        <Logo width={65} />
         <div className="flex items-center gap-2">
             <DarkModeSwitcher />
             {!authenticated && <>
