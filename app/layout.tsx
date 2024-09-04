@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + "bg-background-light  dark:bg-background-dark dark:text-text-dark"}>
+      <body className={inter.className + "bg-background-light text-text-light  dark:bg-background-dark dark:text-text-dark"}>
         <ApplicationWrapper>
           <SessionProvider>
             {children}

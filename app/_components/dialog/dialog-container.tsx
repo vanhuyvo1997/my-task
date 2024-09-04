@@ -25,10 +25,10 @@ export default function DialogContainer({
 
     return (
         <div
-            className="overflow-auto bg-black/65 fixed top-0 w-full left-0 h-full z-50"
+            className="overflow-auto bg-[#888888]/50 fixed top-0 w-full left-0 h-full z-50"
             onClick={onClose}>
             <div className={clsx(
-                "bg-white dark:bg-dialog-background-dark my-20 m-auto relative rounded-md",
+                "bg-dialog-background-light dark:bg-dialog-background-dark my-20 m-auto relative rounded-md",
                 size === 'sm' && "max-w-sm",
                 size === 'md' && "max-w-md",
                 size === 'lg' && "max-w-lg",

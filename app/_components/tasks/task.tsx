@@ -170,7 +170,7 @@ export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskD
     return <>
         <div className={
             clsx(
-                "bg-slate-700 hover:bg-hover-background dark:bg-task-dark rounded-md p-1 flex items-center justify-between gap-2 text-white",
+                "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2",
                 highlighted && "animate-pulse"
             )
         }>

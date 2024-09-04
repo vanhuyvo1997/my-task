@@ -11,20 +11,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'hover-background': '#475569',
+        'hover-background': '#888888',
 
-        'background-light': '#c2cfce',
-        'headerbar-light': 'white',
+        'background-light': '#ffffff',
+        'headerbar-light': '#ffffff',
+        'sidemenu-background-light': '#e0e0e0',
+        'account-info-background-light': '#d0d0d0',
+        'task-background-light': '#c0c0c0',
+        'showtask-button-background-light': '#c0c0c0',
+        'dialog-background-light': '#ffffff',
+        'text-light': '#222222',
+        'add-task-background-light': '#b8b8b8',
+        'login-form-background-light': '#d0d0d0',
+        'text-input-background-light': '#ffffff',
 
         'background-dark': '#000000',
         'headerbar-dark': '#000000',
-        'sidebar-dark': '#101010',
-        'account-info-dark': '#202020',
-        'task-dark': '#303030',
-        'showtask-button-dark': '#303030',
-        'dialog-background-dark': '#404040',
+        'sidemenu-background-dark': '#101010',
+        'account-info-background-dark': '#202020',
+        'task-background-dark': '#303030',
+        'showtask-button-background-dark': '#303030',
+        'dialog-background-dark': '#000000',
         'text-dark': '#dddddd',
-        'add-task-background-dark': '#454545',
+        'add-task-background-dark': '#484848',
         'login-form-background-dark': '#202020',
         'text-input-background-dark': '#000000',
       }

@@ -42,7 +42,7 @@ export default function LoginPage() {
             action={action}
         >
             <LabelTextInput
-                className="dark:bg-text-input-background-dark"
+                className="bg-text-input-background-light dark:bg-text-input-background-dark"
                 id="email"
                 type="email"
                 name="email"
@@ -53,7 +53,7 @@ export default function LoginPage() {
                 onClearText={() => handleClearText('email')}
             />
             <LabelTextInput
-                className="dark:bg-text-input-background-dark"
+                className="bg-text-input-background-light dark:bg-text-input-background-dark"
                 id="password"
                 type="password"
                 name="password"

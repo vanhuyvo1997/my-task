@@ -75,7 +75,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             disabled={isDisabled}
             onClick={onClearText}
             className={clsx(
-                'hover:transition-colors hover:text-black text-gray-900 absolute top-1/2 right-0.5 -translate-y-1/2 dark:text-text-dark',
+                'hover:transition-colors hover:text-black absolute top-1/2 right-0.5 -translate-y-1/2',
                 isPassword && 'right-7'
             )}
 
