@@ -10,13 +10,13 @@ import { CommonButtonProps } from "../buttons/button"
 export type CommonTextInputProps = {
     id?: string,
     name?: string,
-    value?: string,
+    value: string,
     defaultValue?: string,
     className?: string,
     type?: "text" | "password" | "email",
     placeholder?: string,
-    onChange?: ChangeEventHandler<HTMLInputElement>,
-    onClearText?: MouseEventHandler<HTMLButtonElement>,
+    onChange: ChangeEventHandler<HTMLInputElement>,
+    onClearText: MouseEventHandler<HTMLButtonElement>,
     onFocus?: FocusEventHandler<HTMLInputElement>,
     onBlur?: FocusEventHandler<HTMLInputElement>,
     disabled?: boolean,
@@ -68,11 +68,12 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             onFocus={onFocus}
             onBlur={onBlur}
             type={internalType}
-            value={value}
+            value={typeof value !== 'string' ? '' : value}
             defaultValue={defaultValue}
             placeholder={placeholder}
             title={title}
             tabIndex={tabIndex}
+            autoComplete="off"
         />
         {!isDisabled && !isEmpty && <ClearButton
             disabled={isDisabled}
