@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-white dark:bg-black"}>
+      <body className={inter.className + "bg-background-light  dark:bg-background-dark dark:text-text-dark"}>
         <SessionProvider>
           {children}
           <NotificationWrapper />

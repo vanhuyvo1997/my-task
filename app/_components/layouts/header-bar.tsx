@@ -12,7 +12,7 @@ export default async function HeaderBar() {
     let authenticated = !!session?.user;
 
     return <div className={clsx(
-        "fixed p-2 bg-slate-300 w-full top-0 flex items-center justify-between z-50 lg:right-0",
+        "fixed p-2 bg-headerbar-light dark:bg-headerbar-dark w-full top-0 flex items-center justify-between z-50 lg:right-0",
         authenticated && 'lg:w-[calc(100%-344px)]',
     )}>
         {authenticated && <div className="lg:hidden"><BarsButton toggleElementId={'side-menu'} /></div>}

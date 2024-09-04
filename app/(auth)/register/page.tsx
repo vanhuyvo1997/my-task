@@ -56,6 +56,7 @@ export default function RegisterPage() {
             <div className='flex justify-between gap-4'>
                 <div className='w-1/2'>
                     <LabelTextInput
+                        className='dark:bg-text-input-background-dark'
                         id='firstName'
                         name='firstName'
                         title='First name'
@@ -73,6 +74,7 @@ export default function RegisterPage() {
 
                 <div className='w-1/2'>
                     <LabelTextInput
+                        className='dark:bg-text-input-background-dark'
                         id='lastName'
                         name='lastName'
                         title='Last name'
@@ -90,6 +92,7 @@ export default function RegisterPage() {
             </div>
 
             <LabelTextInput
+                className='dark:bg-text-input-background-dark'
                 id='email'
                 type='email'
                 name='email'
@@ -106,6 +109,7 @@ export default function RegisterPage() {
             }
 
             <LabelTextInput
+                className='dark:bg-text-input-background-dark'
                 id='password'
                 type='password'
                 name='password'
@@ -122,6 +126,7 @@ export default function RegisterPage() {
             }
 
             <LabelTextInput
+                className='dark:bg-text-input-background-dark'
                 id='retypePassword'
                 type='password'
                 name='retypePassword'

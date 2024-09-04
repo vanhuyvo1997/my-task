@@ -45,8 +45,8 @@ export default function AddTaskForm({
                 setAddingTaskState('submitting');
             }
         }}
-        className="flex px-2 items-center bg-[#414141] rounded-md shadow-sm fixed w-[98%] right-[1%] 
-         hover:bg-gray-700 z-40 bottom-6 
+        className="flex px-2 items-center bg-[#414141] dark:bg-add-task-background-dark rounded-md shadow-sm fixed w-[98%] right-[1%] 
+         hover:bg-hover-background z-40 bottom-6 
          lg:w-[calc(100%-344px-2%)]  lg:top-20 lg:bottom-auto">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
         <TextInput
@@ -56,7 +56,7 @@ export default function AddTaskForm({
             onChange={e => setAddingTaskName(e.target.value)}
             value={addingTaskName}
             onClearText={e => setAddingTaskName('')}
-            className="bg-transparent outline-none shadow-none text-white"
+            className="bg-transparent outline-none shadow-none"
             placeholder={addingTaskState === "typing" ? '' : 'Add new task'}
             name="name"
         />
