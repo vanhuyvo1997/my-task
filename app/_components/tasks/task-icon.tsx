@@ -37,7 +37,7 @@ export default function TaskIcon({
             }
 
             {
-                status === 'add' && <Image src={AddIcon} alt="icon" className="w-full h-full" />
+                status === 'add' && <Image src={AddIcon} alt="icon" className="w-full h-auto" />
             }
         </button >
     );

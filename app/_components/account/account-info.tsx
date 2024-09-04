@@ -10,7 +10,6 @@ export default async function AccountInfo({ user }: Readonly<{ user: User }>) {
         <Image className="rounded-full" src={!user.image ? DefaultAvatar : user.image}
             alt="avatar"
             width={50}
-            height={50}
         />
         <div className="basis-[225px]">
             <LimitedText title={user.name!} className="w-30">
