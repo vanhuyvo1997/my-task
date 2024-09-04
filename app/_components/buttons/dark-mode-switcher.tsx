@@ -3,16 +3,8 @@ import { MoonIcon, SunIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { useEffect, useState } from "react"
 
-function checkDark() {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 export default function DarkModeSwitcher() {
-    const [isOn, setIsOn] = useState(checkDark());
+    const [isOn, setIsOn] = useState(false);
 
     useEffect(() => {
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -38,9 +30,9 @@ export default function DarkModeSwitcher() {
 
     return <button title="Toggle dark/light mode" onClick={handleSwitch} className="bg-gray-400 rounded-full w-[40px] h-[26px]">
         <div className={
-            clsx("inline-block rounded-full", isOn ? 'float-right bg-green-500' : 'float-left bg-gray-500')
+            clsx("inline-block rounded-full", isOn ? 'float-right bg-gray-800' : 'float-left bg-yellow-200')
         }>
-            {isOn ? <MoonIcon height={26} width={26} /> : <SunIcon height={26} width={26} />}
+            {isOn ? <MoonIcon height={26} width={26} className="text-yellow-200" /> : <SunIcon height={26} width={26} className="text-yellow-500" />}
         </div>
     </button>
 }
