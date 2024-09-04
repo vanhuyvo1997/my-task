@@ -1,5 +1,5 @@
 import { createContext, Dispatch } from "react";
-import { TaskData } from "../user/page";
+import { TaskData } from "../(authenticated)/tasks/page";
 import { TasksAction } from "../_reducers/tasks-reducer";
 
 export const TasksContext = createContext<TaskData[]>([]);

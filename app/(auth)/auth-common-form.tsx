@@ -15,7 +15,7 @@ export default function AuthCommonForm({
 }>) {
     return (
         <form
-            className=" flex flex-col items-stretch gap-14"
+            className="flex flex-col items-stretch gap-8"
             action={action}
         >
             <div className="flex flex-col gap-3">

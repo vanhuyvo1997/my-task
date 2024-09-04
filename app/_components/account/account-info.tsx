@@ -1,12 +1,12 @@
 import Image from "next/image";
 import LimitedText from "../layouts/limited-text";
-import DefaultAvatar from "../../_images/logo.png"
+import DefaultAvatar from "../../_images/logo-light.png"
 import { User } from "next-auth";
 import LogoutButton from "./logout-button";
 
 
 export default async function AccountInfo({ user }: Readonly<{ user: User }>) {
-    return <div className="w-full bg-white rounded-md px-2 py-4 shadow-sm flex items-center justify-between">
+    return <div className="w-full bg-account-info-background-light dark:bg-account-info-background-dark rounded-md px-2 py-4 shadow-sm flex items-center justify-between">
         <Image className="rounded-full" src={!user.image ? DefaultAvatar : user.image}
             alt="avatar"
             width={50}

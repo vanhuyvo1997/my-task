@@ -1,7 +1,9 @@
-import Image from "next/image";
+import HeaderBar from "./_components/layouts/header-bar";
 
 export default function Home() {
-  return (
+  return (<>
+    <HeaderBar />
     <div>123</div>
+  </>
   );
 }

@@ -58,7 +58,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             name={name}
             className={clsx(
                 isPassword ? 'pr-12' : 'pr-5',
-                'shadow-md rounded-md pl-3 py-2 border-none w-full disabled:opacity-60',
+                'shadow-md rounded-md pl-3 py-1.5 border-none w-full disabled:opacity-60',
                 className,
             )}
             disabled={isDisabled}
@@ -75,7 +75,7 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
             disabled={isDisabled}
             onClick={onClearText}
             className={clsx(
-                'hover:transition-colors hover:text-black text-gray-900 absolute top-1/2 right-0.5 -translate-y-1/2',
+                'hover:transition-colors hover:text-black absolute top-1/2 right-0.5 -translate-y-1/2',
                 isPassword && 'right-7'
             )}
 

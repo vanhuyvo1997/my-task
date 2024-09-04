@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useReducer, useState } from "react";
 
-import TasksList from "../_components/tasks/tasks-list";
+import TasksList from "../../_components/tasks/tasks-list";
 import { useFormState } from "react-dom";
-import createTask from "../_actions/task-actions";
-import { tasksReducer } from "../_reducers/tasks-reducer";
-import { TasksContext, TasksDispatchContext } from "../_context/tasks-context";
+import createTask from "../../_actions/task-actions";
+import { tasksReducer } from "../../_reducers/tasks-reducer";
+import { TasksContext, TasksDispatchContext } from "../../_context/tasks-context";
 import { useSearchParams } from "next/navigation";
-import SearchBar from "../_components/text-inputs/search-bar";
-import AddTaskForm from "../_components/forms/add-task-form";
+import SearchBar from "../../_components/text-inputs/search-bar";
+import AddTaskForm from "../../_components/forms/add-task-form";
 
 export type TaskData = {
     id: number,

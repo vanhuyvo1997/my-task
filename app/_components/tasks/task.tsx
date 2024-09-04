@@ -1,5 +1,5 @@
 import { TasksDispatchContext } from "@/app/_context/tasks-context";
-import { TaskData } from "@/app/user/page";
+import { TaskData } from "@/app/(authenticated)/tasks/page";
 import clsx from "clsx";
 import { FormEvent, useContext, useState } from "react";
 import TaskIcon, { IconStatus } from "./task-icon";
@@ -170,7 +170,7 @@ export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskD
     return <>
         <div className={
             clsx(
-                "bg-slate-700 rounded-md p-1 flex items-center justify-between gap-2 text-white",
+                "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2",
                 highlighted && "animate-pulse"
             )
         }>

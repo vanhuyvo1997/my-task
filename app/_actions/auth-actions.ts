@@ -107,7 +107,7 @@ export async function login(prevFormState: LoginFormState, FormData: FormData): 
     }
 
     try {
-        await signIn('credentials', { redirect: true, redirectTo: '/user', ...validateResult.data });
+        await signIn('credentials', { redirect: true, redirectTo: '/tasks', ...validateResult.data });
         return { success: true, };
     } catch (error) {
         if (error instanceof AuthError) {
