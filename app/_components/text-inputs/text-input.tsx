@@ -73,7 +73,13 @@ const TextInput = forwardRef<HTMLInputElement, Readonly<TextInputProps>>(({
         />
         {!isDisabled && !isEmpty && <ClearButton
             disabled={isDisabled}
-            onClick={onClearText}
+            onClick={e => {
+                onClearText && onClearText(e);
+                const input = e.currentTarget.previousElementSibling;
+                if (input && input.tagName === 'INPUT') {
+                    (input as HTMLInputElement).focus();
+                }
+            }}
             className={clsx(
                 'hover:transition-colors hover:text-black absolute top-1/2 right-0.5 -translate-y-1/2',
                 isPassword && 'right-7'
