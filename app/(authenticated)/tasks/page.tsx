@@ -86,12 +86,16 @@ export default function UserPage() {
     return <TasksContext.Provider value={tasks}>
         <TasksDispatchContext.Provider value={dispatch}>
             <div>
-                <AddTaskForm
-                    addingTaskFormState={addingTaskFormState}
-                    addTaskAction={addTaskAction}
-                />
+                <div className="fixed pb-6 pt-4 px-[2%] w-full right-0 lg:top-16 lg:bottom-auto lg:w-[calc(100%-344px)] lg:pb-2 lg:pt-4
+                 lg:px-[1%]
+                 bg-background-light dark:bg-background-dark bottom-0 z-40">
+                    <AddTaskForm
+                        addingTaskFormState={addingTaskFormState}
+                        addTaskAction={addTaskAction}
+                    />
+                </div>
                 <SearchBar className="fixed w-[98%] right-[1%] top-20 lg:hidden bg-gray-500 z-40" />
-                <div className="mt-14">
+                <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">
                     {
                         loadingTasks ? 'Loading tasks...' : <TasksList highlightedTaskId={highlightedTaskId} />
                     }
