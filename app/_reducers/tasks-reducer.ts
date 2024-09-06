@@ -2,43 +2,48 @@ import { TaskData } from "../(authenticated)/tasks/page";
 
 
 type DeleteTaskAction = {
-    type: 'delete',
+    type: 'deleted',
     taskId: number,
 }
 
 type AddTaskAction = {
-    type: 'add',
+    type: 'added',
     task: TaskData,
 }
 
 type UpdateTaskAction = {
-    type: 'update',
+    type: 'updated',
     task: TaskData,
 }
 
 type InitializeTasksAction = {
-    type: 'initialize',
+    type: 'initialized',
     tasks: TaskData[]
 }
 
-export type TasksAction = InitializeTasksAction | DeleteTaskAction | AddTaskAction | UpdateTaskAction;
+type SearchTasksAction = {
+    type: 'searched',
+    term: string,
+}
+
+export type TasksAction = InitializeTasksAction | DeleteTaskAction | AddTaskAction | UpdateTaskAction | SearchTasksAction;
 
 export function tasksReducer(tasks: TaskData[], action: TasksAction): TaskData[] {
 
     switch (action.type) {
-        case "initialize": {
+        case "initialized": {
             return action.tasks;
         }
-        case "add": {
+        case "added": {
             return [
                 action.task,
                 ...tasks,
             ];
         }
-        case "delete": {
+        case "deleted": {
             return tasks.filter(t => t.id !== action.taskId);
         }
-        case "update": {
+        case "updated": {
             return tasks.map(t => {
                 if (t.id === action.task.id) {
                     return action.task;
@@ -46,6 +51,9 @@ export function tasksReducer(tasks: TaskData[], action: TasksAction): TaskData[]
                     return t;
                 }
             });
+        }
+        case "searched": {
+            return tasks.filter(task => task.name.includes(action.term));
         }
         default: {
             return tasks;

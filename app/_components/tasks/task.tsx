@@ -63,7 +63,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (response.ok) {
                 const updatedTask = await response.json();
                 taskDispatch({
-                    type: 'update',
+                    type: 'updated',
                     task: updatedTask,
                 });
             } else if (response.status === 404) {
@@ -76,7 +76,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 if (error.message === 'Task not found') {
                     showNotification('warning', 'Task not found');
                     taskDispatch({
-                        type: 'delete',
+                        type: 'deleted',
                         taskId: id,
                     })
                 } else {
@@ -98,7 +98,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
 
             if (response.status === 204) {
                 taskDispatch({
-                    type: "delete",
+                    type: "deleted",
                     taskId: id,
                 });
                 showNotification('success', 'The task has been removed successfully.');
@@ -113,7 +113,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 if (error.message === 'Task not found') {
                     showNotification('warning', "The task doesn't exist.");
                     taskDispatch({
-                        type: "delete",
+                        type: "deleted",
                         taskId: id,
                     });
                 } else {
@@ -145,7 +145,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (response.ok) {
                 const updatedTask = await response.json();
                 taskDispatch({
-                    type: "update",
+                    type: "updated",
                     task: updatedTask,
                 })
             } else if (response.status === 404) {
@@ -158,7 +158,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 if (error.message === 'Task not found') {
                     showNotification('warning', 'Task not found');
                     taskDispatch({
-                        type: 'delete',
+                        type: 'deleted',
                         taskId: id,
                     });
                 } else {
