@@ -1,12 +1,14 @@
 import { auth } from "@/auth";
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+
     const session = await auth();
+    if (!session) {
+        return new Response('You are not authenticated', { status: 401 });
+    }
 
     const token = session?.user?.accessToken;
-
     const url = process.env.TASKS_BASE_API + '/' + params.id + '/status';
-
     const body = await request.json();
 
     const response = await fetch(url,
@@ -25,5 +27,5 @@ export async function PATCH(request: Request, { params }: { params: { id: string
         responseBody = await response.json();
     }
 
-    return new Response(JSON.stringify(responseBody), { status: response.status });
+    return Response.json(responseBody, { status: response.status });
 }

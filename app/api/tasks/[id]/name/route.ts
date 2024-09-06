@@ -2,6 +2,10 @@ import { auth } from "@/auth"
 
 export async function PATCH(request: Request, { params }: { params: { id: number } }) {
     const session = await auth();
+    if (!session) {
+        return new Response('You are not authenticated', { status: 401 });
+    }
+
     const url = process.env.TASKS_BASE_API + `/${params.id}/name`;
     const body = await request.json();
 
@@ -19,5 +23,5 @@ export async function PATCH(request: Request, { params }: { params: { id: number
         data = await response.json();
     }
 
-    return new Response(JSON.stringify(data), { status: response.status });
+    return Response.json(data, { status: response.status });
 }
