@@ -25,7 +25,7 @@ export type CreateTaskState = {
     createdTask?: TaskData
 }
 
-export default function UserPage() {
+export default function TasksPage() {
     const [addingTaskFormState, addTaskAction] = useFormState(createTask, { success: false });
     const [tasks, dispatch] = useReducer(tasksReducer, []);
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
