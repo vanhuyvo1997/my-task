@@ -8,6 +8,7 @@ export type CommonButtonProps = {
     disabled?: boolean;
     children?: React.ReactNode,
     title?: string,
+    tabIndex?: number,
 }
 
 type ButtonProps = CommonButtonProps & {
@@ -23,8 +24,10 @@ export default function Button({
     onClick,
     disabled,
     title,
+    tabIndex,
 }: Readonly<ButtonProps>) {
     return <button
+        tabIndex={tabIndex}
         title={title}
         aria-disabled={disabled}
         disabled={disabled}
