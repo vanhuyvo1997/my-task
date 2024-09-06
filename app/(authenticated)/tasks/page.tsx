@@ -49,7 +49,9 @@ export default function TasksPage() {
         let ignore = false;
 
         fetch(tasksUrl)
-            .then(rs => rs.json())
+            .then(rs => {
+                return rs.status === 404 ? [] : rs.json();
+            })
             .then(data => {
                 if (!ignore) {
                     dispatch({
