@@ -5,6 +5,7 @@ import { TaskData } from "../../(authenticated)/tasks/page";
 import { TasksContext } from "../../_context/tasks-context";
 import { Task } from "./task";
 import clsx from "clsx";
+import EmptyTasksBanner from "./empty-tasks-banner";
 
 
 
@@ -15,7 +16,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
     const [showCompleted, setShowCompleted] = useState(true);
 
     if (tasks.length === 0) {
-        return <div className="w-fit m-auto mt-20 text-2xl text-gray-200">{"Let's add your first task now!"}</div>
+        return <EmptyTasksBanner />
     }
 
     const todoTasks = tasks.filter(t => t.status === 'TO_DO');
