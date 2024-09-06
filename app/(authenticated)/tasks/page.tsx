@@ -66,12 +66,12 @@ export default function UserPage() {
 
     useEffect(() => {
         if (addingTaskFormState.success) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
             let timeoutId: NodeJS.Timeout;
             const createdTask: TaskData = addingTaskFormState.createdTask!;
 
             setHighlightedTaskId(createdTask.id);
             timeoutId = setTimeout(() => setHighlightedTaskId(undefined), 3000);
-
             dispatch({
                 type: 'add',
                 task: createdTask,

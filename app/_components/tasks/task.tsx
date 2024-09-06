@@ -1,7 +1,7 @@
 import { TasksDispatchContext } from "@/app/_context/tasks-context";
 import { TaskData } from "@/app/(authenticated)/tasks/page";
 import clsx from "clsx";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from "react";
 import TaskIcon, { IconStatus } from "./task-icon";
 import { showNotification } from "@/app/_lib/utils";
 import EditTaskForm from "../forms/edit-task-form";
@@ -11,8 +11,11 @@ import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import { TrashIcon } from "@heroicons/react/20/solid";
 
 
+export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
+
 type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
-export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>) {
+
+function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>, ref: ForwardedRef<HTMLDivElement>) {
     const taskDispatch = useContext(TasksDispatchContext);
 
     const [currentUiStatus, setCurrentUiStatus] = useState<TaskUiStatus>('normal');
@@ -173,7 +176,9 @@ export default function TaskV2({ id, status, name, highlighted }: Readonly<TaskD
                 "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2",
                 highlighted && "animate-pulse"
             )
-        }>
+        }
+            ref={ref}
+        >
 
             {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
                 <div className="flex items-center gap-2 w-full">
