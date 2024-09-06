@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
-import { join } from "path";
 
 export const GET = auth(async (req) => {
 
