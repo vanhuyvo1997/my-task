@@ -1,9 +1,12 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from "react";
+import { Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { DarkModeContext, SetDarkModeContext } from "../_context/dark-mode-context"
 
-export default function ApplicationWrapper({ children }: Readonly<{ children: ReactNode }>) {
+export default function ApplicationProvider({ children }: Readonly<{ children: ReactNode }>) {
     const [isOnDarkMode, setIsOnDarkMode] = useState(false);
     useEffect(() => {
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -15,7 +18,7 @@ export default function ApplicationWrapper({ children }: Readonly<{ children: Re
         }
     }, []);
 
-    function setDarkMode(value: boolean) {
+    const setDarkMode = useCallback((value: boolean) => {
         if (value) {
             localStorage.theme = 'dark';
             document.documentElement.classList.add('dark');
@@ -24,11 +27,25 @@ export default function ApplicationWrapper({ children }: Readonly<{ children: Re
             document.documentElement.classList.remove('dark');
         }
         setIsOnDarkMode(value);
-    }
+    }, []);
+
 
     return <DarkModeContext.Provider value={isOnDarkMode}>
         <SetDarkModeContext.Provider value={setDarkMode}>
             {children}
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme={isOnDarkMode ? 'dark' : 'light'}
+                transition={Bounce}
+            />
         </SetDarkModeContext.Provider>
     </DarkModeContext.Provider>
 }

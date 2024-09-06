@@ -18,13 +18,16 @@ export default function AddTaskForm({
     const [addingTaskName, setAddingTaskName] = useState('');
     const [addingTaskState, setAddingTaskState] = useState<"typing" | "submitting" | "normal">("normal");
 
-    let iconStatus: IconStatus;
-    if (addingTaskState === 'typing') {
-        iconStatus = 'unchecked';
-    } else if (addingTaskState === 'submitting') {
-        iconStatus = 'busy';
-    } else {
-        iconStatus = 'add'
+    let iconStatus: IconStatus = findIconStatus();
+
+    function findIconStatus() {
+        if (addingTaskState === 'typing') {
+            return 'unchecked';
+        } else if (addingTaskState === 'submitting') {
+            return 'busy';
+        } else {
+            return 'add'
+        }
     }
 
     useEffect(() => {
@@ -45,9 +48,9 @@ export default function AddTaskForm({
                 setAddingTaskState('submitting');
             }
         }}
-        className="flex px-2 items-center bg-add-task-background-light dark:bg-add-task-background-dark rounded-md shadow-sm fixed w-[98%] right-[1%] 
-         hover:bg-hover-background z-40 bottom-6 
-         lg:w-[calc(100%-344px-2%)]  lg:top-20 lg:bottom-auto">
+        className="flex px-2 items-center bg-add-task-background-light dark:bg-add-task-background-dark
+         rounded-md shadow-sm
+         hover:bg-hover-background">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
         <TextInput
             ref={nameInputRef}

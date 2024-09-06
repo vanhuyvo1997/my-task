@@ -8,7 +8,6 @@ const toastifyConfig: ToastOptions = {
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "light",
     transition: Bounce,
 }
 
