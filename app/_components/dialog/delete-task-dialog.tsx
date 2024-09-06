@@ -6,10 +6,10 @@ export default function DeleteTaskDialog({
     onClose,
 }: Readonly<{
     onClose?: () => void,
-    onConfirm: React.MouseEventHandler<HTMLButtonElement>
+    onConfirm: () => void,
 }>) {
     return <ConfirmDialog
-        onClose={(e) => onClose && onClose()}
+        onClose={onClose}
         onConfirm={onConfirm}
         icon={<TrashIcon className="m-auto" height={60} width={60} />}
     >

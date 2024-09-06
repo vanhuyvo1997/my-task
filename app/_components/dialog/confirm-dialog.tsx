@@ -7,9 +7,9 @@ export default function ConfirmDialog({
     children,
     icon,
 }: Readonly<{
-    onClose: React.MouseEventHandler<HTMLElement>,
+    onClose?: () => void,
     children: React.ReactNode,
-    onConfirm: React.MouseEventHandler<HTMLButtonElement>;
+    onConfirm: () => void;
     icon?: React.ReactNode;
 }>) {
     return <DialogContainer onClose={onClose}>
