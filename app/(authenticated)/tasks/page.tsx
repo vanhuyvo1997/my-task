@@ -31,7 +31,7 @@ export default function UserPage() {
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
     const searchParams = useSearchParams();
-    const query = searchParams.get('query');
+    const query = searchParams.get('query') || '';
 
 
     useEffect(() => {
@@ -53,7 +53,7 @@ export default function UserPage() {
             .then(data => {
                 if (!ignore) {
                     dispatch({
-                        type: "initialize",
+                        type: "initialized",
                         tasks: data,
                     })
                     setLoadingTasks(false);
@@ -73,7 +73,7 @@ export default function UserPage() {
             setHighlightedTaskId(createdTask.id);
             timeoutId = setTimeout(() => setHighlightedTaskId(undefined), 3000);
             dispatch({
-                type: 'add',
+                type: 'added',
                 task: createdTask,
             })
 
