@@ -9,6 +9,7 @@ import { TasksContext, TasksDispatchContext } from "../../_context/tasks-context
 import { useSearchParams } from "next/navigation";
 import SearchBar from "../../_components/text-inputs/search-bar";
 import AddTaskForm from "../../_components/forms/add-task-form";
+import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
 
 export type TaskData = {
     id: number,
@@ -35,6 +36,8 @@ export default function TasksPage() {
 
 
     useEffect(() => {
+        setLoadingTasks(true);
+
         let tasksUrl = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API;
 
         const params = new URLSearchParams();
@@ -48,22 +51,29 @@ export default function TasksPage() {
 
         let ignore = false;
 
-        fetch(tasksUrl)
-            .then(rs => {
-                return rs.status === 404 ? [] : rs.json();
-            })
-            .then(data => {
-                if (!ignore) {
-                    dispatch({
-                        type: "initialized",
-                        tasks: data,
-                    })
-                    setLoadingTasks(false);
-                }
-            })
-            .catch(err => console.error(err));
+        function fetchTasks() {
+            fetch(tasksUrl)
+                .then(rs => {
+                    return rs.status === 404 ? [] : rs.json();
+                })
+                .then(data => {
+                    if (!ignore) {
+                        dispatch({
+                            type: "initialized",
+                            tasks: data,
+                        })
+                    }
+                })
+                .catch(err => console.error(err))
+                .finally(() => setLoadingTasks(false));
+        }
 
-        return () => { ignore = true; };
+        const timeoutId = setTimeout(fetchTasks, query ? 1000 : 0);
+
+        return () => {
+            ignore = true;
+            clearTimeout(timeoutId);
+        };
     }, [query]);
 
     useEffect(() => {
@@ -99,7 +109,7 @@ export default function TasksPage() {
                 <SearchBar className="fixed w-[98%] right-[1%] top-20 lg:hidden bg-gray-500 z-40" />
                 <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">
                     {
-                        loadingTasks ? 'Loading tasks...' : <TasksList highlightedTaskId={highlightedTaskId} />
+                        loadingTasks ? <TasksListSkeleton /> : <TasksList highlightedTaskId={highlightedTaskId} />
                     }
 
                 </div>

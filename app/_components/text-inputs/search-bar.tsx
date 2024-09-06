@@ -17,17 +17,14 @@ export default function SearchBar({ className }: Readonly<{ className?: string }
     const setSearchTerm = useContext(SetSearchTermContext)!;
 
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            const params = new URLSearchParams(searchParams);
-            if (searchTerm) {
-                params.set('query', searchTerm);
-            } else {
-                params.delete('query');
-            }
-            replace(`${pathName}?${params.toString()}`);
-            setSearchTerm(params.get('query')?.toString()!);
-        }, 500);
-        return () => { clearTimeout(timeoutId) }
+        const params = new URLSearchParams(searchParams);
+        if (searchTerm) {
+            params.set('query', searchTerm);
+        } else {
+            params.delete('query');
+        }
+        replace(`${pathName}?${params.toString()}`);
+        setSearchTerm(params.get('query')?.toString()!);
     }, [pathName, replace, searchParams, searchTerm, setSearchTerm]);
 
     return <form className={clsx(
