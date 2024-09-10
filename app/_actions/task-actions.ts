@@ -11,7 +11,7 @@ export default async function createTask(prevState: CreateTaskState, formData: F
         if (!session?.user) {
             redirect("/login");
         }
-        const response = await fetch(process.env.TASKS_BASE_API, {
+        const response = await fetch(process.env.MY_TASK_BASE_API, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": session.user.accessToken!,

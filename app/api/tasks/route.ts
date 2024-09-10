@@ -10,7 +10,7 @@ export const GET = auth(async (req) => {
 
     const params = req.nextUrl.searchParams;
 
-    let url = process.env.TASKS_BASE_API;
+    let url = process.env.MY_TASK_BASE_API;
     if (params.size > 0) {
         url += '?' + params.toString();
     }

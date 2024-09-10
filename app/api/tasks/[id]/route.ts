@@ -8,7 +8,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     }
 
     const deletedId = params.id;
-    const url = process.env.TASKS_BASE_API + '/' + deletedId;
+    const url = process.env.MY_TASK_BASE_API + '/' + deletedId;
     const response = await fetch(url, {
         headers: {
             'Authorization': 'Bearer ' + session?.user?.accessToken,

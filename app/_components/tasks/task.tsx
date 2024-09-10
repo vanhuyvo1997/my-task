@@ -7,8 +7,7 @@ import { showNotification } from "@/app/_lib/utils";
 import EditTaskForm from "../forms/edit-task-form";
 import Button from "../buttons/button";
 import DeleteTaskDialog from "../dialog/delete-task-dialog";
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
