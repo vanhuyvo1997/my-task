@@ -6,7 +6,7 @@ export async function PATCH(request: Request, { params }: { params: { id: number
         return new Response('You are not authenticated', { status: 401 });
     }
 
-    const url = process.env.MY_TASK_BASE_API + `/${params.id}/name`;
+    const url = process.env.MY_TASK_TASKS_BASE_API + `/${params.id}/name`;
     const body = await request.json();
 
     const response = await fetch(url, {
