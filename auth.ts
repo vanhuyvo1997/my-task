@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import NextAuth, { User } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import * as jose from 'jose'
+import { JWT } from "next-auth/jwt";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -31,13 +32,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }),
     ],
     callbacks: {
-        jwt({ token, user }) {
+        async jwt({ token, user }): Promise<JWT> {
             if (user) {
-                token.accessToken = user.accessToken;
-                token.refreshToken = user.refreshToken;
-            }
+                return {
+                    ...token,
+                    accessToken: user.accessToken,
+                    refreshToken: user.refreshToken,
+                    expires_at: user.expires_at,
+                }
+            } else if (Date.now() / 1000 < token.expires_at) {
+                return token;
+            } else {
+                try {
+                    const response = await fetch(process.env.MY_TASK_REFRESH_TOKEN, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + token.refreshToken,
+                        }
+                    });
 
-            return token;
+                    const newTokens = await response.json();
+
+                    if (!response.ok) throw newTokens;
+
+                    const expiresAt = Date.now() / 1000 + 7 * 24 * 60 * 60;
+
+                    return {
+                        ...token,
+                        accessToken: newTokens.accessToken,
+                        refreshToken: newTokens.refreshToken,
+                        expires_at: expiresAt,
+                    }
+                } catch (error) {
+                    console.error("Error refreshing access token", error);
+                    return { ...token, error: "RefreshAccessTokenError" }
+                }
+            }
         },
         session({ session, token }) {
             if (session.user) {
@@ -52,13 +83,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 })
 
-
-
-async function extractUser(accessToken: string): Promise<User> {
+async function getPayload(accessToken: string) {
     let key = readFileSync(process.env.PUBLIC_KEY_FILE).toString();
     let header = jose.decodeProtectedHeader(accessToken);
     const publicKey = await jose.importSPKI(key, header.alg!)
-    const { payload } = await jose.jwtVerify<{ id?: string, lastName?: string, firstName?: string, role?: string, img?: string }>(accessToken, publicKey)
+    return jose.jwtVerify<{ id: string, lastName: string, firstName: string, role: string, img: string, expires_at: number }>(accessToken, publicKey);
+}
+
+async function extractUser(accessToken: string): Promise<User> {
+    const { payload } = await getPayload(accessToken);
 
     return {
         id: payload.id,
@@ -67,5 +100,12 @@ async function extractUser(accessToken: string): Promise<User> {
         role: payload.role,
         name: payload.firstName + " " + payload.lastName,
         image: payload.img,
+        expires_at: payload.exp!,
+        refreshToken: '',
     }
 }
+async function getExpireDate(accessToken: string) {
+    const { payload } = await getPayload(accessToken);
+    return payload.exp!;
+}
+
