@@ -1,10 +1,11 @@
 import { auth } from "@/auth";
+import { Session } from "next-auth";
 import { NextResponse } from "next/server";
 
 export const GET = auth(async (req) => {
 
-    const sesion = req.auth;
-    if (!sesion?.user) {
+    const session = req.auth;
+    if (!session?.user) {
         return NextResponse.json('You are not authenticated', { status: 401 })
     }
 
@@ -21,7 +22,7 @@ export const GET = auth(async (req) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + sesion.user.accessToken,
+                    'Authorization': 'Bearer ' + session.user.accessToken,
                 },
             }
         );
@@ -34,10 +35,33 @@ export const GET = auth(async (req) => {
             return Response.json("No tasks found", { status: 404 });
         }
 
-        throw new Error('Somethings went wrong.');
+        if (response.status === 403) {
+            // Refresh token
+            refreshToken(session);
+            // retry action one morthime.
+        }
+
+        throw new Error('Somethings went wrong:' + response.status);
 
     } catch (error) {
         console.error(error);
         return Response.json(null, { status: 500 });
     }
 })
+
+async function refreshToken(session: Session): Promise<{ refreshToken: string, accessToken: string }> {
+    const url = process.env.MY_TASK_REFRESH_TOKEN;
+    const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + session.user?.refreshToken
+        },
+        method: "POST"
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to refresh token');
+    }
+
+    return await response.json();
+}

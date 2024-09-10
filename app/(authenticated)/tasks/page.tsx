@@ -54,7 +54,7 @@ export default function TasksPage() {
         function fetchTasks() {
             fetch(tasksUrl)
                 .then(rs => {
-                    return rs.status === 404 ? [] : rs.json();
+                    return rs.status !== 200 ? [] : rs.json();
                 })
                 .then(data => {
                     if (!ignore) {
