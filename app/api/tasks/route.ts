@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { Session } from "next-auth";
 import { NextResponse } from "next/server";
 
 export const GET = auth(async (req) => {
@@ -11,7 +10,7 @@ export const GET = auth(async (req) => {
 
     const params = req.nextUrl.searchParams;
 
-    let url = process.env.MY_TASK_BASE_API;
+    let url = process.env.MY_TASK_TASKS_BASE_API;
     if (params.size > 0) {
         url += '?' + params.toString();
     }
@@ -36,9 +35,7 @@ export const GET = auth(async (req) => {
         }
 
         if (response.status === 403) {
-            // Refresh token
-            refreshToken(session);
-            // retry action one morthime.
+            return new Response(null, { status: 403 });
         }
 
         throw new Error('Somethings went wrong:' + response.status);
@@ -48,20 +45,3 @@ export const GET = auth(async (req) => {
         return Response.json(null, { status: 500 });
     }
 })
-
-async function refreshToken(session: Session): Promise<{ refreshToken: string, accessToken: string }> {
-    const url = process.env.MY_TASK_REFRESH_TOKEN;
-    const response = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + session.user?.refreshToken
-        },
-        method: "POST"
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to refresh token');
-    }
-
-    return await response.json();
-}

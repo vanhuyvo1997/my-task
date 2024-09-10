@@ -32,7 +32,7 @@ export default function TasksPage() {
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
     const searchParams = useSearchParams();
-    const query = searchParams.get('query') || '';
+    const query = searchParams.get('query') ?? '';
 
 
     useEffect(() => {
