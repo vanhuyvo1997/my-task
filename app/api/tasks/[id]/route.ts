@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
 
     const session = await auth();
-    if (!session) {
+    if (!session || session.error === 'RefreshAccessTokenError') {
         return new Response('You are not authenticated', { status: 401 });
     }
 
@@ -11,7 +11,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     const url = process.env.MY_TASK_TASKS_BASE_API + '/' + deletedId;
     const response = await fetch(url, {
         headers: {
-            'Authorization': 'Bearer ' + session?.user?.accessToken,
+            'Authorization': 'Bearer ' + session.user?.accessToken,
         },
         method: 'DELETE'
     });

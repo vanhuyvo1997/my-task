@@ -8,12 +8,17 @@ declare module "next-auth" {
         role: string
         expires_at: number
     }
+
+    interface Session {
+        error?: "RefreshAccessTokenError"
+    }
 }
 
 declare module "next-auth/jwt" {
-    interface JWT extends DefaultJWT {
+    interface JWT {
         accessToken: string
         refreshToken: string
         expires_at: number
+        error?: "RefreshAccessTokenError"
     }
 }

@@ -2,7 +2,7 @@ import { auth } from "@/auth"
 
 export async function PATCH(request: Request, { params }: { params: { id: number } }) {
     const session = await auth();
-    if (!session) {
+    if (!session || session.error === 'RefreshAccessTokenError') {
         return new Response('You are not authenticated', { status: 401 });
     }
 

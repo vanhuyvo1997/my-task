@@ -48,8 +48,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json",
-                            "Authorization": "Bearer " + token.refreshToken,
-                        }
+                        },
+                        body: JSON.stringify({ refreshToken: token.refreshToken }),
                     });
 
                     const newTokens = await response.json();
@@ -66,7 +66,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     }
                 } catch (error) {
                     console.error("Error refreshing access token", error);
-                    return { ...token, error: "RefreshAccessTokenError" }
+                    return { ...token, error: "RefreshAccessTokenError" as const }
                 }
             }
         },
@@ -75,6 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 session.user.accessToken = token.accessToken;
                 session.user.refreshToken = token.refreshToken;
             }
+            session.error = token.error;
             return session;
         }
     },

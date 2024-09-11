@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const GET = auth(async (req) => {
 
     const session = req.auth;
-    if (!session?.user) {
+    if (!session || session.error === 'RefreshAccessTokenError') {
         return NextResponse.json('You are not authenticated', { status: 401 })
     }
 
@@ -21,7 +21,7 @@ export const GET = auth(async (req) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + session.user.accessToken,
+                    'Authorization': 'Bearer ' + session.user?.accessToken,
                 },
             }
         );
