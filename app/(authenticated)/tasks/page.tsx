@@ -123,13 +123,13 @@ export default function TasksPage() {
             <div>
                 <div className="fixed pb-6 pt-4 px-[2%] w-full right-0 lg:top-16
                  lg:bottom-auto lg:w-[calc(100%-344px)] lg:pb-3 lg:pt-4 lg:px-[1%]
-                 bg-background-light/75 dark:bg-background-dark/75 backdrop-blur-sm bottom-0 z-40">
+                 bg-background-light/75 dark:bg-background-dark/75 backdrop-blur-sm bottom-0 z-20">
                     <AddTaskForm
                         addingTaskFormState={addingTaskFormState}
                         addTaskAction={addTaskAction}
                     />
                 </div>
-                <SearchBar className="fixed w-[98%] right-[1%] top-20 lg:hidden bg-gray-500 z-40" />
+                <SearchBar className="fixed w-[98%] right-[1%] top-20 lg:hidden bg-gray-500 z-20" />
                 <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">
                     {
                         loadingTasks ? <TasksListSkeleton /> : <TasksList highlightedTaskId={highlightedTaskId} />
