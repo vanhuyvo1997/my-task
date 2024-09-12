@@ -10,6 +10,8 @@ import { useSearchParams } from "next/navigation";
 import SearchBar from "../../_components/text-inputs/search-bar";
 import AddTaskForm from "../../_components/forms/add-task-form";
 import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
+import { signOut } from "next-auth/react";
+import { showNotification } from "@/app/_lib/utils";
 
 export type TaskData = {
     id: number,
@@ -32,7 +34,7 @@ export default function TasksPage() {
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
     const searchParams = useSearchParams();
-    const query = searchParams.get('query') || '';
+    const query = searchParams.get('query') ?? '';
 
 
     useEffect(() => {
@@ -51,21 +53,40 @@ export default function TasksPage() {
 
         let ignore = false;
 
-        function fetchTasks() {
-            fetch(tasksUrl)
-                .then(rs => {
-                    return rs.status === 404 ? [] : rs.json();
-                })
-                .then(data => {
-                    if (!ignore) {
-                        dispatch({
-                            type: "initialized",
-                            tasks: data,
-                        })
-                    }
-                })
-                .catch(err => console.error(err))
-                .finally(() => setLoadingTasks(false));
+        async function fetchTasks() {
+            try {
+
+                const response = await fetch(tasksUrl);
+
+                if (response.status === 401) {
+                    signOut();
+                    return;
+                }
+
+                if (response.status === 200 && !ignore) {
+                    const data = await response.json();
+                    dispatch({
+                        type: "initialized",
+                        tasks: data,
+                    })
+                    return;
+                }
+
+                if (response.status === 404) {
+                    dispatch({
+                        type: "initialized",
+                        tasks: [],
+                    })
+                    return;
+                }
+
+                throw Error('LoadTasksError');
+            } catch (error) {
+                showNotification("error", "Couldn't load tasks now")
+                console.error(error);
+            } finally {
+                setLoadingTasks(false)
+            };
         }
 
         const timeoutId = setTimeout(fetchTasks, query ? 1000 : 0);
@@ -92,6 +113,8 @@ export default function TasksPage() {
             return () => {
                 clearTimeout(timeoutId);
             }
+        } else if (addingTaskFormState.message === 'RefreshAccessTokenError') {
+            signOut();
         }
     }, [addingTaskFormState]);
 

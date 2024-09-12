@@ -3,14 +3,14 @@ import { NextResponse } from "next/server";
 
 export const GET = auth(async (req) => {
 
-    const sesion = req.auth;
-    if (!sesion?.user) {
+    const session = req.auth;
+    if (!session || session.error === 'RefreshAccessTokenError') {
         return NextResponse.json('You are not authenticated', { status: 401 })
     }
 
     const params = req.nextUrl.searchParams;
 
-    let url = process.env.TASKS_BASE_API;
+    let url = process.env.MY_TASK_TASKS_BASE_API;
     if (params.size > 0) {
         url += '?' + params.toString();
     }
@@ -21,7 +21,7 @@ export const GET = auth(async (req) => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + sesion.user.accessToken,
+                    'Authorization': 'Bearer ' + session.user?.accessToken,
                 },
             }
         );
@@ -34,7 +34,11 @@ export const GET = auth(async (req) => {
             return Response.json("No tasks found", { status: 404 });
         }
 
-        throw new Error('Somethings went wrong.');
+        if (response.status === 403) {
+            return new Response(null, { status: 403 });
+        }
+
+        throw new Error('Somethings went wrong:' + response.status);
 
     } catch (error) {
         console.error(error);

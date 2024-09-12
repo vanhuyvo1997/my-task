@@ -7,8 +7,8 @@ import { showNotification } from "@/app/_lib/utils";
 import EditTaskForm from "../forms/edit-task-form";
 import Button from "../buttons/button";
 import DeleteTaskDialog from "../dialog/delete-task-dialog";
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { signOut } from "next-auth/react";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
@@ -59,8 +59,9 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 method: 'PATCH',
                 body: JSON.stringify({ status: nextStatus })
             });
-
-            if (response.ok) {
+            if (response.status === 401) {
+                signOut();
+            } else if (response.ok) {
                 const updatedTask = await response.json();
                 taskDispatch({
                     type: 'updated',
@@ -95,8 +96,9 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
 
         try {
             const response = await fetch(url, { method: 'DELETE' });
-
-            if (response.status === 204) {
+            if (response.status === 401) {
+                signOut();
+            } else if (response.status === 204) {
                 taskDispatch({
                     type: "deleted",
                     taskId: id,
@@ -142,7 +144,9 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 body: JSON.stringify({ name: newName })
             });
 
-            if (response.ok) {
+            if (response.status === 401) {
+                signOut();
+            } else if (response.ok) {
                 const updatedTask = await response.json();
                 taskDispatch({
                     type: "updated",

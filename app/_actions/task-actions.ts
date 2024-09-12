@@ -2,23 +2,23 @@
 
 import { auth } from "@/auth";
 
-import { redirect } from "next/navigation";
 import { CreateTaskState } from "../(authenticated)/tasks/page";
 
 export default async function createTask(prevState: CreateTaskState, formData: FormData): Promise<CreateTaskState> {
     try {
         const session = await auth();
-        if (!session?.user) {
-            redirect("/login");
+        if (!session || session.error === 'RefreshAccessTokenError') {
+            return { success: false, message: session?.error }
         }
-        const response = await fetch(process.env.TASKS_BASE_API, {
+        const response = await fetch(process.env.MY_TASK_TASKS_BASE_API, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": session.user.accessToken!,
+                "Authorization": "Bearer " + session.user?.accessToken,
             },
             method: 'POST',
             body: JSON.stringify({ name: formData.get('name')?.toString() })
         });
+
         if (!response.ok) {
             return { success: false, message: response.status.toString() }
         }
