@@ -56,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                     if (!response.ok) throw newTokens;
 
-                    const expiresAt = Date.now() / 1000 + 7 * 24 * 60 * 60;
+                    const expiresAt = await getExpireDate(newTokens.accessToken);
 
                     return {
                         ...token,
@@ -106,7 +106,7 @@ async function extractUser(accessToken: string): Promise<User> {
     }
 }
 async function getExpireDate(accessToken: string) {
-    const { payload } = await getPayload(accessToken);
-    return payload.exp!;
+    const result = jose.decodeJwt(accessToken).exp;
+    return result ?? Date.now() / 1000;
 }
 

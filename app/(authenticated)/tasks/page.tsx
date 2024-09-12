@@ -59,7 +59,6 @@ export default function TasksPage() {
                 const response = await fetch(tasksUrl);
 
                 if (response.status === 401) {
-                    showNotification("error", "You are unauthorized");
                     signOut();
                     return;
                 }
@@ -114,6 +113,8 @@ export default function TasksPage() {
             return () => {
                 clearTimeout(timeoutId);
             }
+        } else if (addingTaskFormState.message === 'RefreshAccessTokenError') {
+            signOut();
         }
     }, [addingTaskFormState]);
 
