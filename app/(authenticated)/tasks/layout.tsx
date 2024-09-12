@@ -1,6 +1,4 @@
-import { auth } from "@/auth";
 import SideMenu from "../../_components/layouts/side-menu";
-import { redirect } from "next/navigation";
 import SearchTasksProvider from "../../_provider/search-tasks-provider";
 
 

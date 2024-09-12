@@ -1,4 +1,4 @@
-import { EventHandler, MouseEventHandler, useCallback, useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 
