@@ -177,7 +177,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
     return <>
         <div className={
             clsx(
-                "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2",
+                "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2 w-full",
                 highlighted && "animate-pulse"
             )
         }
@@ -185,9 +185,9 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
         >
 
             {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
-                <div className="flex items-center gap-2 w-full">
+                <div className="flex items-center gap-2 w-[calc(100%-80px)]">
                     <TaskIcon className="shrink-0" onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
-                    <span className="text-justify">{name}</span>
+                    <span className="overflow-hidden text-ellipsis" title={name}>{name}</span>
                 </div>
                 <div className="flex">
                     <Button onClick={changeToEditing} disabled={isSubmiting} size="sm" ><PencilSquareIcon height={20} width={20} /></Button>
