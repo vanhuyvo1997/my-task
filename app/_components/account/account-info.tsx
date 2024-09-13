@@ -16,15 +16,17 @@ export default async function AccountInfo() {
 
     const user = session.user!;
 
-    return <div className="w-full bg-account-info-background-light dark:bg-account-info-background-dark rounded-md px-2 py-4 shadow-sm flex items-center justify-between">
+    return <div className="w-full bg-account-info-background-light dark:bg-account-info-background-dark
+     rounded-md px-2 py-4 shadow-sm flex items-center justify-between">
         <Image className="rounded-full" src={!user.image ? DefaultAvatar : user.image}
             alt="avatar"
             width={50}
         />
-        <div className="basis-[225px]">
-            <LimitedText title={user.name!} className="w-30">
-                <b>{user.name}</b></LimitedText>
-            <LimitedText title={user.email!} className="w-30 text-sm">
+        <div className="basis-[220px] shrink-0">
+            <LimitedText title={user.name!} className="w-[220px]">
+                <b>{user.name}</b>
+            </LimitedText>
+            <LimitedText title={user.email!} className="w-[220px] text-sm">
                 <i>{user.email}</i>
             </LimitedText>
         </div>
