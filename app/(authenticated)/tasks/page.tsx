@@ -3,7 +3,7 @@ import { useEffect, useReducer, useState } from "react";
 
 import TasksList from "../../_components/tasks/tasks-list";
 import { useFormState } from "react-dom";
-import createTask from "../../_actions/task-actions";
+import createTask, { TaskData } from "../../_actions/task-actions";
 import { tasksReducer } from "../../_reducers/tasks-reducer";
 import { TasksContext, TasksDispatchContext } from "../../_context/tasks-context";
 import { useSearchParams } from "next/navigation";
@@ -12,21 +12,6 @@ import AddTaskForm from "../../_components/forms/add-task-form";
 import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
 import { signOut } from "next-auth/react";
 import { showNotification } from "@/app/_lib/utils";
-
-export type TaskData = {
-    id: number,
-    name: string,
-    status: "COMPLETED" | "TO_DO",
-    createdAt?: Date,
-    completedAt?: Date,
-    ownerId?: string
-}
-
-export type CreateTaskState = {
-    success: boolean,
-    message?: string,
-    createdTask?: TaskData
-}
 
 export default function TasksPage() {
     const [addingTaskFormState, addTaskAction] = useFormState(createTask, { success: false });

@@ -2,7 +2,27 @@
 
 import { auth } from "@/auth";
 
-import { CreateTaskState } from "../(authenticated)/tasks/page";
+
+export type TaskData = {
+    id: number,
+    name: string,
+    status: "COMPLETED" | "TO_DO",
+    createdAt?: Date,
+    completedAt?: Date,
+    ownerId?: string
+}
+
+type CreateTaskSuccessfulState = {
+    success: true,
+    createdTask?: TaskData,
+}
+
+type CreateTaskFailedState = {
+    success: false,
+    message?: string,
+}
+
+export type CreateTaskState = CreateTaskFailedState | CreateTaskSuccessfulState;
 
 export default async function createTask(prevState: CreateTaskState, formData: FormData): Promise<CreateTaskState> {
     try {

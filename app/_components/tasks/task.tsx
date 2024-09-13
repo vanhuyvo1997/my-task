@@ -1,5 +1,4 @@
 import { TasksDispatchContext } from "@/app/_context/tasks-context";
-import { TaskData } from "@/app/(authenticated)/tasks/page";
 import clsx from "clsx";
 import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from "react";
 import TaskIcon, { IconStatus } from "./task-icon";
@@ -9,6 +8,7 @@ import Button from "../buttons/button";
 import DeleteTaskDialog from "../dialog/delete-task-dialog";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
+import { TaskData } from "@/app/_actions/task-actions";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);

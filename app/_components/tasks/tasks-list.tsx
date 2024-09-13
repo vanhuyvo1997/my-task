@@ -1,11 +1,11 @@
 'use client'
 import { useContext, useState } from "react";
 import CompletedDropMark from "../buttons/completed-drop-mark";
-import { TaskData } from "../../(authenticated)/tasks/page";
 import { TasksContext } from "../../_context/tasks-context";
 import { Task } from "./task";
 import clsx from "clsx";
 import EmptyTasksBanner from "./empty-tasks-banner";
+import { TaskData } from "@/app/_actions/task-actions";
 
 
 
