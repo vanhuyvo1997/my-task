@@ -34,7 +34,7 @@ export default function DialogContainer({
 
     return (
         <div
-            className="overflow-auto bg-[#888888]/50 fixed top-0 w-full left-0 h-full z-50"
+            className="overflow-auto bg-[#888888]/50 backdrop-blur-sm fixed top-0 w-full left-0 h-full z-50"
             onClick={onClose}
             onKeyDown={handleKeyDown}
         >

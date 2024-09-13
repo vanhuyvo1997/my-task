@@ -108,7 +108,7 @@ export default function TasksPage() {
             <div>
                 <div className="fixed pb-6 pt-4 px-[2%] w-full right-0 lg:top-16
                  lg:bottom-auto lg:w-[calc(100%-344px)] lg:pb-3 lg:pt-4 lg:px-[1%]
-                 bg-background-light/75 dark:bg-background-dark/75 backdrop-blur-sm bottom-0 z-20">
+                 bg-background-light/50 dark:bg-background-dark/50 backdrop-blur-sm bottom-0 z-20">
                     <AddTaskForm
                         addingTaskFormState={addingTaskFormState}
                         addTaskAction={addTaskAction}
