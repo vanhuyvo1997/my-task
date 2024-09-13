@@ -1,31 +1,15 @@
 "use client"
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import TextInput from "./text-input";
 import Button from "../buttons/button";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import { SearchTermContext, SetSearchTermContext } from "../../_context/search-tasks-context";
 
-
 export default function SearchBar({ className }: Readonly<{ className?: string }>) {
-    const searchParams = useSearchParams();
-    const pathName = usePathname();
-    const { replace } = useRouter();
     const searchTerm = useContext(SearchTermContext);
-    const setSearchTerm = useContext(SetSearchTermContext)!;
-
-    useEffect(() => {
-        const params = new URLSearchParams(searchParams);
-        if (searchTerm) {
-            params.set('query', searchTerm);
-        } else {
-            params.delete('query');
-        }
-        replace(`${pathName}?${params.toString()}`);
-        setSearchTerm(params.get('query')?.toString()!);
-    }, [pathName, replace, searchParams, searchTerm, setSearchTerm]);
+    const setSearchTerm = useContext(SetSearchTermContext);
 
     return <form className={clsx(
         "flex border-2 border-solid border-blue-500 rounded-lg",
