@@ -1,4 +1,5 @@
-import { TaskData } from "../(authenticated)/tasks/page";
+import { TaskData } from "../_actions/task-actions"
+
 
 
 type DeleteTaskAction = {

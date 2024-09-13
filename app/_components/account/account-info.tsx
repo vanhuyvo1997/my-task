@@ -1,5 +1,5 @@
 import Image from "next/image";
-import LimitedText from "../layouts/limited-text";
+import OneLineLimitedText from "../layouts/limited-text";
 import DefaultAvatar from "../../_images/logo-light.png"
 
 import LogoutButton from "./logout-button";
@@ -22,13 +22,13 @@ export default async function AccountInfo() {
             alt="avatar"
             width={50}
         />
-        <div className="basis-[220px] shrink-0">
-            <LimitedText title={user.name!} className="w-[220px]">
+        <div className="w-[220px]">
+            <OneLineLimitedText title={user.name!} >
                 <b>{user.name}</b>
-            </LimitedText>
-            <LimitedText title={user.email!} className="w-[220px] text-sm">
+            </OneLineLimitedText>
+            <OneLineLimitedText title={user.email!} >
                 <i>{user.email}</i>
-            </LimitedText>
+            </OneLineLimitedText>
         </div>
         <LogoutButton />
     </div>
