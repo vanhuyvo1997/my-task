@@ -1,6 +1,7 @@
 "use server"
 
 import { auth } from "@/auth";
+import { TaskNameSchema } from "../_lib/zod";
 
 
 export type TaskData = {
@@ -30,13 +31,23 @@ export default async function createTask(prevState: CreateTaskState, formData: F
         if (!session || session.error === 'RefreshAccessTokenError') {
             return { success: false, message: session?.error }
         }
+
+        const newTaskName = formData.get('name')?.toString();
+        const validateResult = TaskNameSchema.safeParse(newTaskName);
+        if (!validateResult.success) {
+            return {
+                success: false,
+                message: 'Task name must be less than 255 charater.',
+            }
+        }
+
         const response = await fetch(process.env.MY_TASK_TASKS_BASE_API, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + session.user?.accessToken,
             },
             method: 'POST',
-            body: JSON.stringify({ name: formData.get('name')?.toString() })
+            body: JSON.stringify({ name: newTaskName })
         });
 
         if (!response.ok) {

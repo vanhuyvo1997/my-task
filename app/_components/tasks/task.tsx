@@ -9,6 +9,7 @@ import DeleteTaskDialog from "../dialog/delete-task-dialog";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
 import { TaskData } from "@/app/_actions/task-actions";
+import { TaskNameSchema } from "@/app/_lib/zod";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
@@ -130,15 +131,15 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
 
     async function handleChangeTaskName(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-
         changeToSubmiting();
-
         const fomrData = new FormData(e.currentTarget);
         const newName = fomrData.get('task-name');
-
-        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/name`;
-
         try {
+            const validateResult = TaskNameSchema.safeParse(newName);
+            if (!validateResult.success) {
+                throw Error('TooLongTaskNameError');
+            }
+            const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/name`;
             const response = await fetch(url, {
                 method: 'PATCH',
                 body: JSON.stringify({ name: newName })
@@ -153,18 +154,20 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                     task: updatedTask,
                 })
             } else if (response.status === 404) {
-                throw Error('Task not found');
+                throw Error('TaskNotFoundError');
             } else {
-                throw Error('Somethings went wrong');
+                throw Error('UnexpectedError');
             }
         } catch (error) {
             if (error instanceof Error) {
-                if (error.message === 'Task not found') {
+                if (error.message === 'TaskNotFoundError') {
                     showNotification('warning', 'Task not found');
                     taskDispatch({
                         type: 'deleted',
                         taskId: id,
                     });
+                } else if (error.message === 'TooLongTaskNameError') {
+                    showNotification("error", "Task name must bee less than 255 character.");
                 } else {
                     showNotification('error', error.message);
                 }

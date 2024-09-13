@@ -29,3 +29,5 @@ export const LoginFormSchema = z.object({
     email: EmailSchema,
     password: PasswordSchema,
 })
+
+export const TaskNameSchema = RequiredStringSchema.max(255, 'This filed must be less than 255 character');
