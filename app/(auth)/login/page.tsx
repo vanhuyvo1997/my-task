@@ -54,7 +54,7 @@ export default function LoginPage() {
                 title="Email"
                 ref={emailInputRef}
                 placeholder="Your email"
-                value={formData.email}
+                value={formData.email ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('email')}
             />
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 name="password"
                 title="Password"
                 placeholder="Your password"
-                value={formData.password}
+                value={formData.password ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('password')}
             />
