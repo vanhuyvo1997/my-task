@@ -6,12 +6,14 @@ import { useFormState } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { showNotification } from '@/app/_lib/utils';
 import CommonLink from '@/app/_components/layouts/common-link';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type RegisterFormData = { firstName: string, lastName: string, email: string, password: string, retypePassword: string };
 const initialFormData = { lastName: '', firstName: '', email: '', password: '', retypePassword: '' };
 
 export default function RegisterPage() {
-
+    const router = useRouter();
     const [formState, dispatch] = useFormState(register, { success: false });
     const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
     const firstNameInputRef = useRef<HTMLInputElement>(null);
@@ -23,7 +25,7 @@ export default function RegisterPage() {
     //clear form affter submitting successfully
     useEffect(() => {
         if (formState.success) {
-            showNotification('success', <>Congratulation! You have registered successfully.<CommonLink className='text-blue-600' href='/login'> Log in now.</CommonLink></>)
+            showNotification('success', <>Congratulation! You have registered successfully.<FakeLink href='/login'> Log in now.</FakeLink></>)
             setFormData(initialFormData);
         } else if (formState.message) {
             showNotification('error', <>Failed! <br />  {formState.message}</>);
@@ -49,7 +51,7 @@ export default function RegisterPage() {
 
     return (
         <AuthCommonForm
-            footerContent={<>or Already had an account? <CommonLink className='text-blue-600' href='/login'>Log in now.</CommonLink></>}
+            footerContent={<>or Already had an account?<Link href={'/login'}>test</Link> <FakeLink href='/login'>Log in now</FakeLink></>}
             buttonContent='Register'
             action={dispatch}
         >
@@ -144,4 +146,8 @@ export default function RegisterPage() {
             }
         </AuthCommonForm>
     );
+}
+
+export function FakeLink({ children, href }: Readonly<{ children: string, href: string }>) {
+    return <button className='text-blue-600 bg-transparent hover:underline' onClick={() => { location.href = href }} >{children}</button>
 }

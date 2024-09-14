@@ -4,16 +4,25 @@ import { LabelTextInput } from "@/app/_components/text-inputs/label-text-input";
 import Link from "next/link";
 import AuthCommonForm from "../auth-common-form";
 import { useEffect, useRef, useState } from "react";
-import { useFormState } from "react-dom";
-import { login, LoginFormState } from "@/app/_actions/auth-actions";
 import { showNotification } from "@/app/_lib/utils";
+import { signIn } from "next-auth/react";
+import { LoginFormSchema } from "@/app/_lib/zod";
+import { useSearchParams } from "next/navigation";
 
-const initialState: LoginFormState = { success: false, message: '' };
+
+
 
 export default function LoginPage() {
     const [formData, setFormData] = useState<{ email?: string, password?: string }>({});
     const emailInputRef = useRef<HTMLInputElement>(null);
-    const [formStatus, action] = useFormState(login, initialState);
+    const params = useSearchParams();
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        if (params.get('error') === 'CredentialsSignin' && params.get('code') === 'credentials') {
+            setErrorMessage('Email or password is invalid');
+        }
+    }, [params])
 
     function handleChangeFormData(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData({
@@ -29,12 +38,18 @@ export default function LoginPage() {
         })
     }
 
-    useEffect(() => {
-        if (!formStatus.success && formStatus.message) {
-            showNotification('error', formStatus.message);
+    async function handleSignIn(signInData: typeof formData) {
+        const validateResult = LoginFormSchema.safeParse({
+            email: signInData.email,
+            password: signInData.password,
+        });
+
+        if (!validateResult.success) {
+            showNotification('error', 'Email or password is incorrect.');
+            return;
         }
-        emailInputRef.current?.focus();
-    }, [formStatus]);
+        await signIn('credentials', signInData);
+    }
 
     useEffect(() => {
         emailInputRef.current?.focus();
@@ -44,7 +59,7 @@ export default function LoginPage() {
         <AuthCommonForm
             footerContent={<>or <Link href="/register" className="text-blue-600">Create an new account</Link> now?</>}
             buttonContent="Login"
-            action={action}
+            action={async () => { await handleSignIn(formData); }}
         >
             <LabelTextInput
                 className="bg-text-input-background-light dark:bg-text-input-background-dark"
@@ -69,6 +84,7 @@ export default function LoginPage() {
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('password')}
             />
+            {errorMessage && <div aria-live='polite' className='text-red-500'>{errorMessage}</div>}
         </AuthCommonForm>
     )
 }

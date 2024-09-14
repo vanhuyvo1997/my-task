@@ -1,9 +1,8 @@
 "use server"
 
 
-import { LoginFormSchema, RegisterFormSchema } from "../_lib/zod";
-import { signIn } from "@/auth";
-import { AuthError } from "next-auth";
+import { RegisterFormSchema } from "../_lib/zod";
+
 
 export type RegisterFormState = {
     success: boolean,
@@ -16,7 +15,6 @@ export type RegisterFormState = {
         retypePassword?: string[],
     },
 }
-
 
 export async function register(state: any, RegisterFormData: FormData): Promise<RegisterFormState> {
 
@@ -85,42 +83,5 @@ export async function register(state: any, RegisterFormData: FormData): Promise<
             success: false,
             message: 'Something went wrong: ' + message,
         }
-    }
-}
-
-
-export type LoginFormState = {
-    success: boolean,
-    message?: string,
-}
-export async function login(prevFormState: LoginFormState, FormData: FormData): Promise<LoginFormState> {
-    const validateResult = LoginFormSchema.safeParse({
-        email: FormData.get('email'),
-        password: FormData.get('password'),
-    });
-
-    if (!validateResult.success) {
-        return {
-            success: false,
-            message: 'Email or password is incorrect.'
-        }
-    }
-
-    try {
-        await signIn('credentials', { redirect: true, redirectTo: '/tasks', ...validateResult.data });
-        return { success: true, };
-    } catch (error) {
-        if (error instanceof AuthError) {
-            const result: LoginFormState = { success: false };
-            let message = '';
-            if (error.type === "CredentialsSignin") {
-                message = 'Invalid credentials';
-            } else {
-                message = 'Something went wrong';
-            }
-            result.message = message;
-            return result;
-        }
-        throw error;
     }
 }
