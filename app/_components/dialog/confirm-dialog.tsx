@@ -1,5 +1,5 @@
 import Button from "../buttons/button";
-import ModalContainer from "./modal-container";
+import DialogContainer from "./dialog-container";
 
 export default function ConfirmDialog({
     onClose,
@@ -12,8 +12,8 @@ export default function ConfirmDialog({
     onConfirm: () => void;
     icon?: React.ReactNode;
 }>) {
-    return <ModalContainer onClose={onClose}>
-        <form className="flex flex-col gap-4 p-4" onSubmit={e => { e.preventDefault(); onConfirm() }}>
+    return <DialogContainer onClose={onClose}>
+        <form className="flex flex-col gap-4" onSubmit={e => { e.preventDefault(); onConfirm() }}>
             <div className="py-4 flex flex-col items-center gap-3">
                 {icon}
                 {children}
@@ -23,6 +23,6 @@ export default function ConfirmDialog({
                 <Button type="submit" className="bg-orange-500">Yes</Button>
             </div>
         </form>
-    </ModalContainer>
+    </DialogContainer>
 }
 

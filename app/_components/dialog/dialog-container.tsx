@@ -1,9 +1,8 @@
-'use client'
 import { useCallback, useEffect } from "react"
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 
-export default function ModalContainer({
+export default function DialogContainer({
     children,
     onClose,
     size = "md",
@@ -40,7 +39,7 @@ export default function ModalContainer({
             onKeyDown={handleKeyDown}
         >
             <div className={clsx(
-                "bg-dialog-background-light dark:bg-dialog-background-dark my-20 mx-auto relative rounded-md",
+                "bg-dialog-background-light dark:bg-dialog-background-dark my-20 m-auto relative rounded-md",
                 size === 'sm' && "max-w-sm",
                 size === 'md' && "max-w-md",
                 size === 'lg' && "max-w-lg",
@@ -52,7 +51,9 @@ export default function ModalContainer({
                     <XMarkIcon height={20} width={20} />
                 </button>
 
-                {children}
+                <div className="p-4">
+                    {children}
+                </div>
             </div>
         </div>
     )
