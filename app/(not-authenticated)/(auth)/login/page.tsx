@@ -2,11 +2,12 @@
 
 import { LabelTextInput } from "@/app/_components/text-inputs/label-text-input";
 import Link from "next/link";
-import AuthCommonForm from "../auth-common-form";
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { login, LoginFormState } from "@/app/_actions/auth-actions";
 import { showNotification } from "@/app/_lib/utils";
+import AuthCommonForm from "../auth-common-form";
+import { useRouter } from "next/navigation";
 
 const initialState: LoginFormState = { success: false, message: '' };
 
@@ -14,6 +15,7 @@ export default function LoginPage() {
     const [formData, setFormData] = useState<{ email?: string, password?: string }>({});
     const emailInputRef = useRef<HTMLInputElement>(null);
     const [formStatus, action] = useFormState(login, initialState);
+    const router = useRouter();
 
     function handleChangeFormData(e: React.ChangeEvent<HTMLInputElement>) {
         setFormData({
@@ -30,11 +32,13 @@ export default function LoginPage() {
     }
 
     useEffect(() => {
-        if (!formStatus.success && formStatus.message) {
+        if (formStatus.success) {
+            router.push('/');
+        } else if (formStatus.message) {
             showNotification('error', formStatus.message);
+            emailInputRef.current?.focus();
         }
-        emailInputRef.current?.focus();
-    }, [formStatus]);
+    }, [formStatus, router]);
 
     useEffect(() => {
         emailInputRef.current?.focus();
@@ -54,7 +58,7 @@ export default function LoginPage() {
                 title="Email"
                 ref={emailInputRef}
                 placeholder="Your email"
-                value={formData.email}
+                value={formData.email ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('email')}
             />
@@ -65,7 +69,7 @@ export default function LoginPage() {
                 name="password"
                 title="Password"
                 placeholder="Your password"
-                value={formData.password}
+                value={formData.password ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('password')}
             />

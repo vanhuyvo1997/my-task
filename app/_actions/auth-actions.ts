@@ -1,9 +1,9 @@
 "use server"
 
-
 import { LoginFormSchema, RegisterFormSchema } from "../_lib/zod";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+
 
 export type RegisterFormState = {
     success: boolean,
@@ -107,7 +107,7 @@ export async function login(prevFormState: LoginFormState, FormData: FormData): 
     }
 
     try {
-        await signIn('credentials', { redirect: true, redirectTo: '/tasks', ...validateResult.data });
+        await signIn('credentials', { redirect: false, ...validateResult.data });
         return { success: true, };
     } catch (error) {
         if (error instanceof AuthError) {

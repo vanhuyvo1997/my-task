@@ -38,6 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     ...token,
                     accessToken: user.accessToken,
                     refreshToken: user.refreshToken,
+                    role: user.role,
                     expires_at: user.expires_at,
                 }
             } else if (Date.now() / 1000 < token.expires_at) {
@@ -74,6 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             if (session.user) {
                 session.user.accessToken = token.accessToken;
                 session.user.refreshToken = token.refreshToken;
+                session.user.role = token.role;
             }
             session.error = token.error;
             return session;
@@ -88,12 +90,11 @@ async function getPayload(accessToken: string) {
     let key = readFileSync(process.env.PUBLIC_KEY_FILE).toString();
     let header = jose.decodeProtectedHeader(accessToken);
     const publicKey = await jose.importSPKI(key, header.alg!)
-    return jose.jwtVerify<{ id: string, lastName: string, firstName: string, role: string, img: string, expires_at: number }>(accessToken, publicKey);
+    return jose.jwtVerify<{ id: string, lastName: string, firstName: string, role: 'ADMIN' | 'USER', img: string, expires_at: number }>(accessToken, publicKey);
 }
 
 async function extractUser(accessToken: string): Promise<User> {
     const { payload } = await getPayload(accessToken);
-
     return {
         id: payload.id,
         email: payload.sub,
