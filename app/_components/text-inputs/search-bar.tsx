@@ -12,16 +12,16 @@ export default function SearchBar({ className }: Readonly<{ className?: string }
     const setSearchTerm = useContext(SetSearchTermContext);
 
     return <form className={clsx(
-        "flex border-2 border-solid border-blue-500 rounded-lg",
+        "flex border-b-2 border-solid rounded-sm border-blue-400",
         className,
     )} onSubmit={e => e.preventDefault()}>
         <TextInput
             onChange={(e) => setSearchTerm(e.target.value)}
             onClearText={(e) => setSearchTerm('')}
             placeholder="Search..."
-            className="outline-none rounded-r-none bg-transparent"
+            className="outline-none rounded-r-none bg-transparent shadow-none"
             value={searchTerm}
         />
-        <Button disabled className="rounded-l-none bg-blue-500"><MagnifyingGlassIcon height={20} width={20} /></Button>
+        <Button disabled className="rounded-l-none bg-transparent shadow-none"><MagnifyingGlassIcon height={20} width={20} /></Button>
     </form>
 }
