@@ -1,6 +1,6 @@
 'use client'
 
-import SubmitButton from "../_components/buttons/submit-button";
+import SubmitButton from "@/app/_components/buttons/submit-button";
 
 export default function AuthCommonForm({
     children,

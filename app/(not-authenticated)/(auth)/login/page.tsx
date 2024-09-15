@@ -2,11 +2,11 @@
 
 import { LabelTextInput } from "@/app/_components/text-inputs/label-text-input";
 import Link from "next/link";
-import AuthCommonForm from "../auth-common-form";
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { login, LoginFormState } from "@/app/_actions/auth-actions";
 import { showNotification } from "@/app/_lib/utils";
+import AuthCommonForm from "../auth-common-form";
 
 const initialState: LoginFormState = { success: false, message: '' };
 
@@ -54,7 +54,7 @@ export default function LoginPage() {
                 title="Email"
                 ref={emailInputRef}
                 placeholder="Your email"
-                value={formData.email}
+                value={formData.email ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('email')}
             />
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 name="password"
                 title="Password"
                 placeholder="Your password"
-                value={formData.password}
+                value={formData.password ?? ''}
                 onChange={handleChangeFormData}
                 onClearText={() => handleClearText('password')}
             />
