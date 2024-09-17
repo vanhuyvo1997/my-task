@@ -7,6 +7,15 @@ input::-ms-reveal,
         display: none;
 }
 
+.edit-avatar-panel {
+  visibility: hidden;
+}
+
+.avatar-container:hover .edit-avatar-panel {
+  visibility: visible;
+}
+
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
