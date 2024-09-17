@@ -24,30 +24,22 @@ export default function TasksPage() {
 
     useEffect(() => {
         setLoadingTasks(true);
-
         let tasksUrl = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API;
-
         const params = new URLSearchParams();
         if (query) {
             params.append('query', query);
         }
-
         if (params.size > 0) {
             tasksUrl += `?${params.toString()}`;
         }
-
         let ignore = false;
-
         async function fetchTasks() {
             try {
-
                 const response = await fetch(tasksUrl);
-
                 if (response.status === 401) {
                     signOut();
                     return;
                 }
-
                 if (response.status === 200 && !ignore) {
                     const data = await response.json();
                     dispatch({
@@ -56,7 +48,6 @@ export default function TasksPage() {
                     })
                     return;
                 }
-
                 if (response.status === 404) {
                     dispatch({
                         type: "initialized",
@@ -64,7 +55,6 @@ export default function TasksPage() {
                     })
                     return;
                 }
-
                 throw Error('LoadTasksError');
             } catch (error) {
                 showNotification("error", "Couldn't load tasks now")
@@ -73,9 +63,7 @@ export default function TasksPage() {
                 setLoadingTasks(false)
             };
         }
-
         const timeoutId = setTimeout(fetchTasks, query ? 1000 : 0);
-
         return () => {
             ignore = true;
             clearTimeout(timeoutId);
@@ -114,16 +102,15 @@ export default function TasksPage() {
                         addTaskAction={addTaskAction}
                     />
                 </div>
-                {isShowSearchTasks && <div className="bg-dialog-background-light/75 dark:bg-dialog-background-light/75 backdrop-blur-sm fixed w-[98%] right-[1%] top-20 z-20
+                {isShowSearchTasks && <div className="bg-dialog-background-light/75 dark:bg-dialog-background-dark/75 backdrop-blur-sm fixed w-[98%] right-[1%] top-20 z-20
                  lg:w-[200px] lg:top-4 lg:right-28 lg:z-50">
-                    <SearchBar />
+                    <SearchBar placeholder="Search for tasks..." />
                 </div>
                 }
                 <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">
                     {
                         loadingTasks ? <TasksListSkeleton /> : <TasksList highlightedTaskId={highlightedTaskId} />
                     }
-
                 </div>
             </div>
         </TasksDispatchContext.Provider>

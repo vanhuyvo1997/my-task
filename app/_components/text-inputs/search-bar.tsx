@@ -7,18 +7,18 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import { SearchTermContext, SetSearchTermContext } from "../../_context/search-tasks-context";
 
-export default function SearchBar({ className }: Readonly<{ className?: string }>) {
+export default function SearchBar({ className, placeholder = "Search..." }: Readonly<{ className?: string, placeholder?: string }>) {
     const searchTerm = useContext(SearchTermContext);
     const setSearchTerm = useContext(SetSearchTermContext);
 
     return <form className={clsx(
-        "flex border-b-2 border-solid rounded-sm border-blue-400",
+        "flex border-b-2 border-solid rounded-sm border-orange-400",
         className,
     )} onSubmit={e => e.preventDefault()}>
         <TextInput
             onChange={(e) => setSearchTerm(e.target.value)}
             onClearText={(e) => setSearchTerm('')}
-            placeholder="Search..."
+            placeholder={placeholder}
             className="outline-none rounded-r-none bg-transparent shadow-none"
             value={searchTerm}
         />
