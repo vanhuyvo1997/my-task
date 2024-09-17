@@ -18,7 +18,7 @@ export default function ProfilePage() {
             <div className="text-3xl w-fit text-center">{user?.name}</div>
             <div className="max-w-full text-xl p-2">
                 <OneLineLimitedText title={user?.email ?? ''} className="w-full"><i><b>Email: </b>{user?.email}</i></OneLineLimitedText>
-                <b>Role:</b> <i>{user?.role}</i>
+                <i><b>Role:</b> {user?.role}</i>
             </div>
         </div>
     </div>
