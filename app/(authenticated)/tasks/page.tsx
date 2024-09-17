@@ -103,7 +103,7 @@ export default function TasksPage() {
                     />
                 </div>
                 {isShowSearchTasks && <div className="bg-dialog-background-light/75 dark:bg-dialog-background-dark/75 backdrop-blur-sm fixed w-[98%] right-[1%] top-20 z-20
-                 lg:w-[200px] lg:top-4 lg:right-28 lg:z-50">
+                 lg:w-[200px] lg:top-4 lg:right-28 lg:z-30">
                     <SearchBar placeholder="Search for tasks..." />
                 </div>
                 }
