@@ -100,8 +100,6 @@ async function extractUser(accessToken: string): Promise<User> {
         email: payload.sub,
         accessToken: accessToken,
         role: payload.role,
-        name: payload.firstName + " " + payload.lastName,
-        image: payload.img,
         expires_at: payload.exp!,
         refreshToken: '',
     }
