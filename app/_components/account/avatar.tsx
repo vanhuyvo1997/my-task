@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import avatar from '@/app/_images/logo-light.png';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { showNotification } from '@/app/_lib/utils';
-export default function Avatar({ diameter = '50' }: Readonly<{ diameter?: `${number}` }>) {
+import defaultAvatar from "@/app/_images/logo-light.png";
+import { useRefreshUserContext } from '@/app/_context/user-context';
+
+export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diameter?: `${number}`, avatarUrl?: string }>) {
     const [busy, setBusy] = useState(false);
-    const [avatarFileUrl, setAvatarFileUrl] = useState('');
+    const refreshUser = useRefreshUserContext();
+
 
     return <div style={{ height: diameter + 'px', width: diameter + 'px' }}
         className={
@@ -16,12 +19,12 @@ export default function Avatar({ diameter = '50' }: Readonly<{ diameter?: `${num
                 `avatar-container border-solid border-2 border-transparent relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark`,
             )
         }>
-        <Image alt="avatar" className='h-full w-auto' src={avatarFileUrl ?? avatar} width={200} height={200} />
+        <Image alt="avatar" className='h-full w-auto' src={avatarUrl ?? defaultAvatar} width={diameter} height={diameter} />
         <div className={
             clsx(
                 'absolute top-0 left-0 w-full h-full hover:bg-slate-900/50 opacity-50 rounded-full',
                 !busy && 'edit-avatar-panel',
-                busy && 'border-4 border-t-red-500 border-b-purple-500 border-r-yellow-500 border-blue-500 animate-spin'
+                busy && 'border-8 border-t-red-500 border-b-purple-500 border-r-yellow-500 border-blue-500 animate-spin'
             )}
             title='select another avatar'
         >
@@ -33,31 +36,29 @@ export default function Avatar({ diameter = '50' }: Readonly<{ diameter?: `${num
             </button>}
 
             <input onChange={(e) => {
-                setBusy(true);
                 const selectedFile = e.target.files?.item(0);
                 if (selectedFile) {
+                    setBusy(true);
                     const body = new FormData();
-                    body.append('avatar', selectedFile);
-                    fetch('https://a8025dac-e97f-4b23-a884-4d6442f85827.mock.pstmn.io/api/users/avatar', {
-                        method: 'POST',
-                        headers: {
-                            "Content-type": "multipart/form-data",
-                        },
+                    body.append('avatarFile', selectedFile);
+                    fetch('/api/profiles/avatar', {
+                        method: 'PUT',
                         body: body,
                     }).then(async rs => {
                         if (rs.ok) {
-                            const data = await rs.json();
-                            setAvatarFileUrl(data.avatarUrl);
+                            refreshUser();
                         }
                     }).catch(err => {
+                        console.error(err);
                         showNotification("error", "Couldn't change avatar now");
                     }).finally(
                         () => setBusy(false)
                     )
                 } else {
-
+                    showNotification('error', "Something went wrong");
                 }
-            }} id='avatar-file-selector' accept='image/png, image/jpeg' type='file' className='h-full w-full hidden' />
+            }}
+                id='avatar-file-selector' accept='image/png,image/jpeg' type='file' className='h-full w-full hidden' />
         </div>
     </div>
 }
