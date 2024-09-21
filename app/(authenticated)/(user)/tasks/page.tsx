@@ -1,13 +1,13 @@
 "use client"
 import { useEffect, useReducer, useState } from "react";
 
-import TasksList from "../../_components/tasks/tasks-list";
+import TasksList from "../../../_components/tasks/tasks-list";
 import { useFormState } from "react-dom";
-import createTask, { TaskData } from "../../_actions/task-actions";
-import { tasksReducer } from "../../_reducers/tasks-reducer";
-import { TasksContext, TasksDispatchContext } from "../../_context/tasks-context";
-import SearchBar from "../../_components/text-inputs/search-bar";
-import AddTaskForm from "../../_components/forms/add-task-form";
+import createTask, { TaskData } from "../../../_actions/task-actions";
+import { tasksReducer } from "../../../_reducers/tasks-reducer";
+import { TasksContext, TasksDispatchContext } from "../../../_context/tasks-context";
+import SearchBar from "../../../_components/text-inputs/search-bar";
+import AddTaskForm from "../../../_components/forms/add-task-form";
 import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
 import { signOut } from "next-auth/react";
 import { showNotification } from "@/app/_lib/utils";

@@ -6,16 +6,15 @@ import clsx from "clsx";
 import Link from "next/link";
 import Logo from "./logo";
 
-export default async function HeaderBar() {
+export default async function HeaderBar({ mode }: Readonly<{ mode: "short" | "full" }>) {
     const session = await auth();
-    let authenticated = !!session?.user;
-
+    const authenticated = !!session;
     return <div className={clsx(
         "fixed p-2 bg-headerbar-light dark:bg-headerbar-dark w-full top-0 flex items-center justify-between z-30 lg:right-0",
-        authenticated && 'lg:w-[calc(100%-344px)]',
+        mode === 'short' && 'lg:w-[calc(100%-344px)]',
     )}>
         {authenticated && <div className="lg:hidden"><BarsButton toggleElementId={'side-menu'} /></div>}
-        <Logo width={65} />
+        <Link href={"/"}><Logo width={65} /></Link>
         <div className="flex items-center gap-2">
             <DarkModeSwitcher />
             {!authenticated && <>
