@@ -14,7 +14,7 @@ export default async function HeaderBar({ mode }: Readonly<{ mode: "short" | "fu
         mode === 'short' && 'lg:w-[calc(100%-344px)]',
     )}>
         {authenticated && <div className="lg:hidden"><BarsButton toggleElementId={'side-menu'} /></div>}
-        <Logo width={65} />
+        <Link href={"/"}><Logo width={65} /></Link>
         <div className="flex items-center gap-2">
             <DarkModeSwitcher />
             {!authenticated && <>

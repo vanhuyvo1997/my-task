@@ -12,7 +12,7 @@ export const PUT = auth(async (request) => {
         body: formData
     });
     if (response.ok) {
-        const data = await await response.json();
+        const data = await response.json();
         return Response.json(data, { status: 200 })
     };
     return Response.json({ error: response.body }, { status: response.status });

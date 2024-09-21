@@ -14,11 +14,7 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
 
 
     return <div style={{ height: diameter + 'px', width: diameter + 'px' }}
-        className={
-            clsx(
-                `avatar-container border-solid border-2 border-transparent relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark`,
-            )
-        }>
+        className="avatar-container border-solid border-2 border-transparent relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark">
         <Image alt="avatar" className='h-full w-auto' src={avatarUrl ?? defaultAvatar} width={diameter} height={diameter} />
         <div className={
             clsx(
@@ -35,30 +31,29 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
                 <PencilSquareIcon className='w-full h-full' />
             </button>}
 
-            <input onChange={(e) => {
-                const selectedFile = e.target.files?.item(0);
-                if (selectedFile) {
+            <input
+                id='avatar-file-selector' accept='image/png,image/jpeg' type='file' className='h-full w-full hidden'
+                onChange={(e) => {
+                    const selectedFile = e.target.files?.item(0);
+
+                    if (!selectedFile) return;
+
                     setBusy(true);
                     const body = new FormData();
                     body.append('avatarFile', selectedFile);
                     fetch('/api/profiles/avatar', {
                         method: 'PUT',
                         body: body,
-                    }).then(async rs => {
+                    }).then(rs => {
                         if (rs.ok) {
                             refreshUser();
                         }
                     }).catch(err => {
                         console.error(err);
                         showNotification("error", "Couldn't change avatar now");
-                    }).finally(
-                        () => setBusy(false)
-                    )
-                } else {
-                    showNotification('error', "Something went wrong");
-                }
-            }}
-                id='avatar-file-selector' accept='image/png,image/jpeg' type='file' className='h-full w-full hidden' />
+                    }).finally(() => setBusy(false))
+                }} />
+
         </div>
     </div>
 }
