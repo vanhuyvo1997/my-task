@@ -5,12 +5,13 @@ import LogoutButton from "./logout-button";
 import Link from "next/link";
 import { useUserContext } from "@/app/_context/user-context";
 import Avatar from "./avatar";
+import AccountInfoSkeleton from "../skeletons/account-info-skeleton";
 
 export default function AccountInfo() {
     const user = useUserContext();
 
     if (!user) {
-        return <>Loading...</>
+        return <AccountInfoSkeleton />
     }
     const fullname = user.firstName + " " + user.lastName;
 
@@ -21,7 +22,7 @@ export default function AccountInfo() {
             <OneLineLimitedText title={fullname} >
                 <Link href="/profile"><b>{fullname}</b></Link>
             </OneLineLimitedText>
-            <OneLineLimitedText title={user.email!} >
+            <OneLineLimitedText title={user.email} >
                 <i>{user.email}</i>
             </OneLineLimitedText>
         </div>
