@@ -14,7 +14,7 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
 
 
     return <div style={{ height: diameter + 'px', width: diameter + 'px' }}
-        className="avatar-container border-solid border-2 border-transparent relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark">
+        className="avatar-container border-solid border-2 border-[#888888] relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark">
         <Image alt="avatar" className='h-full w-auto' src={avatarUrl ?? defaultAvatar} width={diameter} height={diameter} />
         <div className={
             clsx(

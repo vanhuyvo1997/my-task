@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import HeaderBar from "../../_components/layouts/header-bar";
 import SideMenu from "../../_components/layouts/side-menu";
 
-export default async function AuthenticatedLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function UserLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     const session = await auth();
     if (!session) {
         redirect('/');

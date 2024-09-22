@@ -1,3 +1,4 @@
+'use client'
 import { useUserContext } from "@/app/_context/user-context";
 import Avatar from "./avatar";
 import OneLineLimitedText from "../layouts/limited-text";
@@ -10,7 +11,7 @@ export default function Profile() {
         return <ProfileSkeleton />
     }
     const fullName = user?.firstName + " " + user?.lastName;
-    return <div className="py-4 px-4 rounded-md bg-[#888888]">
+    return <div className="py-4 px-4 rounded-md bg-dialog-background-light dark:bg-dialog-background-dark">
         <div className="py-4">
             <div className="w-fit h-fit mx-auto">
                 <Avatar diameter="200" avatarUrl={user?.avatarUrl} />

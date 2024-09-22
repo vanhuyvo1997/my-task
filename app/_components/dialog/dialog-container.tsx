@@ -1,3 +1,4 @@
+"use client"
 import { useCallback, useEffect } from "react"
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
