@@ -10,9 +10,9 @@ export default function ProfileSkeleton() {
         </div>
         <div className="flex flex-col gap-5 mx-auto w-full items-center">
             <div className="w-1/2 text-center"><TextSkeleton className="h-8" /></div>
-            <div className="w-3/4 p-2">
-                <TextSkeleton className="h-6" />
-                <TextSkeleton className="h-6 mt-1" />
+            <div className="w-5/6 p-2">
+                <TextSkeleton className="h-6 my-1" />
+                <TextSkeleton className="h-6 my-1" />
             </div>
         </div>
     </div>

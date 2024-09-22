@@ -8,8 +8,8 @@ export default function TaskSkeleton() {
             <TextSkeleton />
         </div>
         <div className="flex">
-            <ButtonSkeleton />
-            <ButtonSkeleton />
+            <ButtonSkeleton className="mx-2 my-1" />
+            <ButtonSkeleton className="mx-2 my-1" />
         </div>
     </div>
 }
