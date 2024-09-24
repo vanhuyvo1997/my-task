@@ -7,7 +7,7 @@ export default async function ProfileLayout({ children }: Readonly<{ children: R
     if (!session) redirect("/");
     return <>
         <HeaderBar mode="full" />
-        <div className="md:w-1/3 mx-auto mt-24">
+        <div className="md:w-1/3 mx-auto mt-24 bg-task-background-light dark:bg-task-background-dark rounded-md">
             {children}
         </div>
     </>

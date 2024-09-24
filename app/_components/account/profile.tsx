@@ -11,7 +11,7 @@ export default function Profile() {
         return <ProfileSkeleton />
     }
     const fullName = user?.firstName + " " + user?.lastName;
-    return <div className="py-4 px-4 rounded-md bg-dialog-background-light dark:bg-dialog-background-dark">
+    return <div className="py-4 px-4">
         <div className="py-4">
             <div className="w-fit h-fit mx-auto">
                 <Avatar diameter="200" avatarUrl={user?.avatarUrl} />

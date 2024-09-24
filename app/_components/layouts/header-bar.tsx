@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import Logo from "./logo";
 
-export default async function HeaderBar({ mode }: Readonly<{ mode: "short" | "full" }>) {
+export default async function HeaderBar({ mode = "full" }: Readonly<{ mode?: "short" | "full" }>) {
     const session = await auth();
     const authenticated = !!session;
     return <div className={clsx(
