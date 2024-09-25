@@ -8,7 +8,7 @@ export default function Greetings() {
     const isDarkMode = useDarkModeContext();
     const logo = isDarkMode ? logo_dark : logo_light;
 
-    return <div className="flex flex-col items-center gap-5 lg:items-start md:w-fit">
+    return <div className="flex flex-col items-center gap-5 lg:items-start w-fit mx-auto">
         <Image src={logo} height={125} alt="Logo" />
         <div className="text-center  md:text-left">
             <h1 className="text-3xl text-gray-700 dark:text-gray-300 text-nowrap">Manage tasks, manage life.</h1>
