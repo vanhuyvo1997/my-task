@@ -4,7 +4,7 @@ export const PUT = auth(async (request) => {
     const session = request.auth;
     if (!session) return new Response(null, { status: 403 });
     const formData = await request.formData();
-    const response = await fetch("http://localhost:8080/api/profiles/avatar", {
+    const response = await fetch(process.env.MY_TASK_PROFILES_BASE_API + "/avatar", {
         method: "PUT",
         headers: {
             "Authorization": "Bearer " + session.user?.accessToken,

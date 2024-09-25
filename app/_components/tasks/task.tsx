@@ -53,7 +53,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
 
         const nextStatus = status === "COMPLETED" ? 'TO_DO' : 'COMPLETED';
 
-        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/status`;
+        const url = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API + `/${id}/status`;
 
         try {
             const response = await fetch(url, {
@@ -93,7 +93,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
     async function handleDeleteTask() {
         changeToSubmiting();
 
-        const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + '/' + id;
+        const url = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API + '/' + id;
 
         try {
             const response = await fetch(url, { method: 'DELETE' });
@@ -139,7 +139,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (!validateResult.success) {
                 throw Error('TooLongTaskNameError');
             }
-            const url = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API + `/${id}/name`;
+            const url = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API + `/${id}/name`;
             const response = await fetch(url, {
                 method: 'PATCH',
                 body: JSON.stringify({ name: newName })

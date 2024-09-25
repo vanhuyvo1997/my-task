@@ -6,7 +6,7 @@ export async function GET(request: NextRequest, { params }: { params: { fileName
     if (!session) return new Response(null, { status: 403 });
 
     console.log(params.fileName);
-    const response = await fetch("http://localhost:8080/api/profiles/avatar/" + params.fileName, {
+    const response = await fetch(process.env.MY_TASK_PROFILES_BASE_API + "/avatar/" + params.fileName, {
         headers: {
             "Authorization": "Bearer " + session.user?.accessToken,
         },

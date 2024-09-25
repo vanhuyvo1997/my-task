@@ -7,7 +7,7 @@ export async function GET(rq: NextRequest) {
         return new Response('You are not authenticated', { status: 401 });
     }
 
-    const response = await fetch("http://localhost:8080/api/profiles", {
+    const response = await fetch(process.env.MY_TASK_PROFILES_BASE_API, {
         headers: {
             "Authorization": "Bearer " + session.user?.accessToken,
         }
