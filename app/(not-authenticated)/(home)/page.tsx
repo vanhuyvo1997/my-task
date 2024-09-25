@@ -11,7 +11,7 @@ export default function HomePage() {
   return (<>
     <HeaderBar />
     <div className="mt-24 flex flex-col px-5 gap-5 md:gap-14
-    md:flex-row md:justify-center
+    md:flex-row md:justify-center md:mt-40 mb-5
     ">
       <div className="md:w-fit">
         <Greetings />
