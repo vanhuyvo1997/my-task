@@ -24,7 +24,7 @@ export default function TasksPage() {
 
     useEffect(() => {
         setLoadingTasks(true);
-        let tasksUrl = process.env.NEXT_PUBLIC_PROXY_TASKS_BASE_API;
+        let tasksUrl = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API;
         const params = new URLSearchParams();
         if (query) {
             params.append('query', query);

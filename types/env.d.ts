@@ -7,7 +7,10 @@ declare namespace NodeJS {
         MY_TASK_REFRESH_TOKEN: string;
 
         MY_TASK_TASKS_BASE_API: string;
+        MY_TASK_PROFILES_BASE_API: string;
 
-        NEXT_PUBLIC_PROXY_TASKS_BASE_API: string;
+        NEXT_PUBLIC_PROXY_BASE_API: string;
+        NEXT_PUBLIC_TASKS_PROXY_BASE_API: string;
+        NEXT_PUBLIC_PROFILES_PROXY_BASE_API: string;
     }
 }
