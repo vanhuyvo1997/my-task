@@ -8,7 +8,7 @@ import { showNotification } from '@/app/_lib/utils';
 import defaultAvatar from "@/app/_images/logo-light.png";
 import { useRefreshUserContext } from '@/app/_context/user-context';
 
-export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diameter?: `${number}`, avatarUrl?: string }>) {
+export default function Avatar({ diameter = '50', avatarUrl, selectable = true }: Readonly<{ diameter?: `${number}`, avatarUrl?: string, selectable?: boolean }>) {
     const [busy, setBusy] = useState(false);
     const refreshUser = useRefreshUserContext();
 
@@ -25,7 +25,7 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
             title='select another avatar'
         >
 
-            {!busy && <button
+            {!busy && selectable && <button
                 className='w-full h-full p-[10%]'
                 onClick={() => { document.getElementById('avatar-file-selector')?.click() }}>
                 <PencilSquareIcon className='w-full h-full' />

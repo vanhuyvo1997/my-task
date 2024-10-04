@@ -9,7 +9,7 @@ export default function UserRow({ className }: Readonly<{ className?: string }>)
         className
     )}>
         <td className="py-2 flex items-center gap-2">
-            <Avatar diameter="35" />    Võ Văn Huy
+            <Avatar selectable={false} diameter="35" />    Võ Văn Huy
         </td>
         <td className="py-2">vanhuyvo@gmail.com</td>
         <td className="py-2">21</td>
