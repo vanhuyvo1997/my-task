@@ -30,7 +30,7 @@ export default function ManageUsersPage() {
             </table>
         </div>
         <div className="py-5">
-            <Pagination />
+            <Pagination totalPage={8} />
         </div>
     </div>
 }
