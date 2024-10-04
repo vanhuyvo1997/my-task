@@ -35,41 +35,38 @@ const commonCreatePageUrl = (page: number, pathname?: string) => `${pathname}?pa
 function generatePaginationLinkButtons(totalPages: number, currentPage: number, pathname: string) {
     let result = [];
     if (!totalPages || totalPages <= 0) return null;
+    const hasMoreSymbol = "...";
 
     const createPageUrl = (page: number) => commonCreatePageUrl(page, pathname);
+    function addPaginationLinkButtons(begin: number, end: number) {
+        for (let i = begin; i <= end; i++) {
+            result.push(<PaginationLinkButton key={i} href={createPageUrl(i)} active={currentPage === i}>{i}</PaginationLinkButton>);
+        }
+    }
 
     result.push(<PaginationLinkButton key={"back"} href={pathname + "?" + "page=" + (currentPage - 1)} disabled={currentPage === 1}><ArrowLeftIcon className="h-6" /></PaginationLinkButton>);
-
     if (totalPages <= 7 && totalPages >= 1) {
-        addPaginationButtonsOnSmallTotalPage(totalPages, currentPage, result, pathname);
+        addPaginationLinkButtonsOnSmallTotalPage(totalPages, currentPage, result, pathname);
     } else if (currentPage <= 3) {
-        result.push(<PaginationLinkButton key={1} href={createPageUrl(1)} active={currentPage === 1}>{1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={2} href={createPageUrl(2)} active={currentPage === 2}>{2}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={3} href={createPageUrl(3)} active={currentPage === 3}>{3}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={"..."} disabled>...</PaginationLinkButton>)
-        result.push(<PaginationLinkButton key={totalPages - 1} href={createPageUrl(totalPages - 1)} active={currentPage === totalPages - 1}>{totalPages - 1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={totalPages} href={createPageUrl(totalPages)} active={currentPage === totalPages}>{totalPages}</PaginationLinkButton>);
+        addPaginationLinkButtons(1, 3);
+        result.push(<PaginationLinkButton key={hasMoreSymbol} disabled>{hasMoreSymbol}</PaginationLinkButton>)
+        addPaginationLinkButtons(totalPages - 1, totalPages);
     } else if (currentPage >= totalPages - 2) {
-        result.push(<PaginationLinkButton key={1} href={createPageUrl(1)} active={currentPage === 1}>{1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={2} href={createPageUrl(2)} active={currentPage === 2}>{2}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={"..."} disabled>...</PaginationLinkButton>)
-        result.push(<PaginationLinkButton key={totalPages - 2} href={createPageUrl(totalPages - 2)} active={currentPage === totalPages - 2}>{totalPages - 2}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={totalPages - 1} href={createPageUrl(totalPages - 1)} active={currentPage === totalPages - 1}>{totalPages - 1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={totalPages} href={createPageUrl(totalPages)} active={currentPage === totalPages}>{totalPages}</PaginationLinkButton>);
+        addPaginationLinkButtons(1, 2);
+        result.push(<PaginationLinkButton key={hasMoreSymbol} disabled>{hasMoreSymbol}</PaginationLinkButton>)
+        addPaginationLinkButtons(totalPages - 2, totalPages);
     } else {
-        result.push(<PaginationLinkButton key={1} href={createPageUrl(1)} active={currentPage === 1}>{1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={"...1"} disabled>...</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={currentPage - 1} href={createPageUrl(currentPage - 1)}>{currentPage - 1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={currentPage} href={createPageUrl(currentPage)} active>{currentPage}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={currentPage + 1} href={createPageUrl(currentPage + 1)}>{currentPage + 1}</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={"...2"} disabled>...</PaginationLinkButton>);
-        result.push(<PaginationLinkButton key={totalPages} href={createPageUrl(totalPages)} active={currentPage === totalPages}>{totalPages}</PaginationLinkButton>);
+        addPaginationLinkButtons(1, 1);
+        result.push(<PaginationLinkButton key={hasMoreSymbol + 1} disabled>{hasMoreSymbol}</PaginationLinkButton>);
+        addPaginationLinkButtons(currentPage - 1, currentPage + 1);
+        result.push(<PaginationLinkButton key={hasMoreSymbol + 2} disabled>{hasMoreSymbol}</PaginationLinkButton>);
+        addPaginationLinkButtons(totalPages, totalPages);
     }
     result.push(<PaginationLinkButton key={"next"} href={createPageUrl(currentPage + 1)} disabled={currentPage === totalPages}><ArrowRightIcon className="h-6" /></PaginationLinkButton>);
     return result;
 }
 
-function addPaginationButtonsOnSmallTotalPage(totalPages: number, currentPage: number, result: JSX.Element[], pathname: string) {
+function addPaginationLinkButtonsOnSmallTotalPage(totalPages: number, currentPage: number, result: JSX.Element[], pathname: string) {
     for (let i = 1; i <= totalPages; i++) {
         result.push(<PaginationLinkButton href={commonCreatePageUrl(i, pathname)} key={i} active={currentPage === i}>{i}</PaginationLinkButton>);
     }
