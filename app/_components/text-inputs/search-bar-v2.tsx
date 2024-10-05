@@ -5,29 +5,36 @@ import TextInput from "./text-input"
 import Button from "../buttons/button"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export const searchQueryKey = "query";
 
 export default function SearchBar({ className, placeholder = "Search..." }: Readonly<{ className?: string, placeholder?: string }>) {
     const pathname = usePathname();
-    const searParams = useSearchParams();
-    const searchTerm = searParams.get(searchQueryKey) ?? '';
+    const searchParams = useSearchParams();
     const { replace } = useRouter();
+    const [query, setQuery] = useState(searchParams.get(searchQueryKey) ?? '');
+
+    useEffect(() => {
+        function handleChangeSearchQuery(newQuery: string) {
+            const params = new URLSearchParams(searchParams);
+            if (newQuery) {
+                params.set(searchQueryKey, newQuery);
+            } else {
+                params.delete(searchQueryKey);
+            }
+            replace(pathname + "?" + params.toString());
+        }
+
+        const timeoutId = setTimeout(() => handleChangeSearchQuery(query), 500);
+        return () => {
+            clearTimeout(timeoutId);
+        }
+    }, [pathname, query, replace, searchParams]);
 
     function handleChangeSearchTerm(e: React.ChangeEvent<HTMLInputElement>) {
-        handleChangeSearchQuery(e.target.value);
+        setQuery(e.target.value);
     }
-
-    function handleChangeSearchQuery(newQuery: string) {
-        const params = new URLSearchParams(searParams);
-        if (newQuery) {
-            params.set(searchQueryKey, newQuery);
-        } else {
-            params.delete(searchQueryKey);
-        }
-        replace(pathname + "?" + params.toString());
-    }
-
 
     return <div className={clsx(
         "flex border-b-2 border-solid rounded-sm border-orange-400",
@@ -35,11 +42,11 @@ export default function SearchBar({ className, placeholder = "Search..." }: Read
     )} onSubmit={e => e.preventDefault()}>
         <TextInput
             onChange={handleChangeSearchTerm}
-            onClearText={() => { handleChangeSearchQuery("") }}
+            onClearText={() => { setQuery("") }}
             placeholder={placeholder}
             className="outline-none rounded-r-none bg-transparent shadow-none"
-            value={searchTerm}
-            defaultValue={searchTerm}
+            value={query}
+            defaultValue={query}
         />
         <Button disabled className="rounded-l-none bg-transparent shadow-none"><MagnifyingGlassIcon height={20} width={20} /></Button>
     </div>
