@@ -1,36 +1,28 @@
 import Pagination from "@/app/_components/user/pagination";
-import UserRow from "@/app/_components/user/user-row";
+import UserTable, { UserRowData } from "@/app/_components/user/user-table";
+import { auth } from "@/auth";
 
-export default function ManageUsersPage() {
+export default async function ManageUserPage({ searchParams }: Readonly<{ searchParams: { page: number } }>) {
+    const session = await auth();
+    if (!session || session.error === 'RefreshAccessTokenError' || session.user?.role !== "ADMIN") {
+        throw new Error("Permission denied");
+    }
+    const page = searchParams.page ?? 1;
+    const response = await fetch(`http://localhost:8080/api/users?pageSize=8&pageNum=${page - 1}&sortDir=desc`,
+        { headers: { "Authorization": "Bearer " + session.user.accessToken, } }
+    );
+    if (!response.ok) {
+        throw new Error("Fail to fetch: " + response.status);
+    }
+    const data = await response.json();
+    const rowsData = data.content as UserRowData[];
+
     return <div>
         <h1 className="text-2xl">User Mangement</h1>
         <br />
-        <div>
-            <table className="border-collapse w-full text-left">
-                <thead className="py-4">
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Todo</th>
-                        <th>Done</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <UserRow />
-                    <UserRow />
-                    <UserRow />
-                    <UserRow />
-                    <UserRow />
-                    <UserRow />
-                    <UserRow />
-                    <UserRow className="border-b-0" />
-                </tbody>
-            </table>
-        </div>
+        <UserTable userRowsData={rowsData} />
         <div className="py-5">
-            <Pagination totalPage={8} />
+            <Pagination totalPage={data.totalPages} />
         </div>
     </div>
 }
