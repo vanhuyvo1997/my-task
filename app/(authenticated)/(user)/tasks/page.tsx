@@ -6,21 +6,21 @@ import { useFormState } from "react-dom";
 import createTask, { TaskData } from "../../../_actions/task-actions";
 import { tasksReducer } from "../../../_reducers/tasks-reducer";
 import { TasksContext, TasksDispatchContext } from "../../../_context/tasks-context";
-import SearchBar from "../../../_components/text-inputs/search-bar";
 import AddTaskForm from "../../../_components/forms/add-task-form";
 import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
 import { signOut } from "next-auth/react";
 import { showNotification } from "@/app/_lib/utils";
-import { useSearchTermContext } from "@/app/_context/search-tasks-context";
+import SearchBarV2, { searchQueryKey } from "@/app/_components/text-inputs/search-bar-v2";
+import { useSearchQuery } from "@/app/_hooks/useSearchQuery";
+
 
 export default function TasksPage() {
     const [addingTaskFormState, addTaskAction] = useFormState(createTask, { success: false });
     const [tasks, dispatch] = useReducer(tasksReducer, []);
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
-    const query = useSearchTermContext();
+    const query = useSearchQuery(searchQueryKey);
     const isShowSearchTasks = tasks.length > 0 || query;
-
 
     useEffect(() => {
         setLoadingTasks(true);
@@ -104,7 +104,7 @@ export default function TasksPage() {
                 </div>
                 {isShowSearchTasks && <div className="bg-dialog-background-light/75 dark:bg-dialog-background-dark/75 backdrop-blur-sm fixed w-[98%] right-[1%] top-20 z-20
                  lg:w-[200px] lg:top-4 lg:right-28 lg:z-30">
-                    <SearchBar placeholder="Search for tasks..." />
+                    <SearchBarV2 placeholder="Search for tasks..." />
                 </div>
                 }
                 <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">

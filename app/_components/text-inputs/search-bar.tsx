@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import TextInput from "./text-input";
 import Button from "../buttons/button";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
@@ -21,6 +21,7 @@ export default function SearchBar({ className, placeholder = "Search..." }: Read
             placeholder={placeholder}
             className="outline-none rounded-r-none bg-transparent shadow-none"
             value={searchTerm}
+            defaultValue={searchTerm}
         />
         <Button disabled className="rounded-l-none bg-transparent shadow-none"><MagnifyingGlassIcon height={20} width={20} /></Button>
     </form>
