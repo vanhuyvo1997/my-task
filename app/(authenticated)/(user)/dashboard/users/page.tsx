@@ -9,7 +9,9 @@ export default async function ManageUserPage({ searchParams }: Readonly<{ search
     }
     const page = searchParams.page ?? 1;
     const response = await fetch(`http://localhost:8080/api/users?pageSize=8&pageNum=${page - 1}&sortDir=desc`,
-        { headers: { "Authorization": "Bearer " + session.user.accessToken, } }
+        {
+            headers: { "Authorization": "Bearer " + session.user.accessToken, },
+        }
     );
     if (!response.ok) {
         throw new Error("Fail to fetch: " + response.status);
