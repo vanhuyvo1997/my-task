@@ -1,12 +1,11 @@
 import clsx from "clsx";
-import UserRow from "./user-row";
 import { getPagedUsersData } from "@/app/_dal/users-dal";
 import Pagination from "./pagination";
 import React from "react";
 import { UserSearchParam } from "@/app/(authenticated)/(user)/dashboard/users/page";
+import UserDetailsRow from "./user-details-row";
 
 export default async function UserTable({ searchParams }: Readonly<{ searchParams: UserSearchParam }>) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
     const pagedUserDetailsData = await getPagedUsersData(searchParams.page ?? 1, searchParams.query);
     const userRowsData = pagedUserDetailsData.content;
     const totalPages = pagedUserDetailsData.totalPages;
@@ -31,7 +30,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                 </tr>
             </thead>
             <tbody>
-                {userRowsData.map((userRowData, index) => <UserRow className={clsx(index === userRowsData.length - 1 && "border-b-0")} key={userRowData.id} data={userRowData} />)}
+                {userRowsData.map((userRowData, index) => <UserDetailsRow className={clsx(index === userRowsData.length - 1 && "border-b-0")} key={userRowData.id} data={userRowData} />)}
             </tbody>
         </table>
         <div className="py-5">
