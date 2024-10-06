@@ -9,7 +9,7 @@ export default async function SideMenu({ id, children }: Readonly<{ id: string, 
         </div>
         <div className="flex flex-col gap-4 py-5 lg:py-0">
             <AccountInfo />
-            <div>
+            <div className="flex flex-col gap-1">
                 {children}
             </div>
         </div>

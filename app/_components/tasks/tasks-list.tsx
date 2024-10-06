@@ -4,7 +4,7 @@ import CompletedDropMark from "../buttons/completed-drop-mark";
 import { TasksContext } from "../../_context/tasks-context";
 import { Task } from "./task";
 import clsx from "clsx";
-import EmptyTasksBanner from "./empty-tasks-banner";
+import EmptyBanner from "./empty-banner";
 import { TaskData } from "@/app/_actions/task-actions";
 
 
@@ -16,7 +16,7 @@ export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedT
     const [showCompleted, setShowCompleted] = useState(true);
 
     if (tasks.length === 0) {
-        return <EmptyTasksBanner />
+        return <EmptyBanner />
     }
 
     const todoTasks = tasks.filter(t => t.status === 'TO_DO');

@@ -8,7 +8,7 @@ import { showNotification } from '@/app/_lib/utils';
 import defaultAvatar from "@/app/_images/logo-light.png";
 import { useRefreshUserContext } from '@/app/_context/user-context';
 
-export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diameter?: `${number}`, avatarUrl?: string }>) {
+export default function Avatar({ diameter = '50', avatarUrl, selectable = true }: Readonly<{ diameter?: `${number}`, avatarUrl?: string, selectable?: boolean }>) {
     const [busy, setBusy] = useState(false);
     const refreshUser = useRefreshUserContext();
 
@@ -16,7 +16,7 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
     return <div style={{ height: diameter + 'px', width: diameter + 'px' }}
         className="avatar-container border-solid border-2 border-[#888888] relative overflow-hidden rounded-full bg-background-light dark:bg-background-dark">
         <Image alt="avatar" className='h-full w-auto' src={avatarUrl ?? defaultAvatar} width={diameter} height={diameter} />
-        <div className={
+        {selectable && <div className={
             clsx(
                 'absolute top-0 left-0 w-full h-full hover:bg-slate-900/50 opacity-50 rounded-full',
                 !busy && 'edit-avatar-panel',
@@ -54,6 +54,6 @@ export default function Avatar({ diameter = '50', avatarUrl }: Readonly<{ diamet
                     }).finally(() => setBusy(false))
                 }} />
 
-        </div>
+        </div>}
     </div>
 }
