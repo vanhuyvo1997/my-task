@@ -4,14 +4,9 @@ import Avatar from "../account/avatar";
 import clsx from "clsx";
 import { changeUserStatusAction } from "@/app/_actions/user-action";
 import { UserDetailsData } from "@/app/_dal/users-dal";
+import { useFormStatus } from "react-dom";
 
 export default function UserRow({ data, className }: Readonly<{ className?: string, data: UserDetailsData }>) {
-    async function handleDisableUser() {
-        changeUserStatusAction(data.id, "disabled");
-    }
-    async function handleEnableUser() {
-        changeUserStatusAction(data.id, "enabled");
-    }
     return <tr className={clsx(
         "border-b-[0.5px] border-opacity-20 border-y-black dark:border-gray-700 border-x-transparent hover:bg-hover-background",
         className
@@ -24,20 +19,22 @@ export default function UserRow({ data, className }: Readonly<{ className?: stri
         <td className="py-2">{data.numOfCompleted}</td>
         <td className="py-2">{data.totalTasks}</td>
         <td className="py-2">
-            <Switcher value={data.enabled} onOn={handleEnableUser} onOff={handleDisableUser} />
+            <form action={async e => {
+                await changeUserStatusAction(data.id, e.get("switcher") == "on" ? "disabled" : "enabled");
+            }}>
+                <Switcher name="switcher" value={data.enabled ? "on" : "off"} />
+            </form>
         </td>
     </tr>
 }
 
-function Switcher({ onOn, onOff, value }: Readonly<{ onOn?: () => Promise<void>, onOff?: () => Promise<void>, value: boolean }>) {
-    async function handleChange() {
-        value ? onOff && await onOff() : onOn && await onOn();
-    }
+function Switcher({ value, name = "switcher" }: Readonly<{ value: "on" | "off", name?: string }>) {
+    const { pending } = useFormStatus();
     return <div className="w-8 bg-gray-300 h-4 rounded-full relative">
-        <button onClick={async () => { handleChange(); }} className={clsx(
+        <button type="submit" value={value} name="switcher" className={clsx(
             "h-5 w-5  rounded-full absolute top-1/2 -translate-y-1/2",
-            value && "bg-green-500 right-0 hover:bg-green-300",
-            !value && "bg-gray-500 left-0 hover:bg-gray-400"
+            value === "on" ? "bg-green-500 right-0 hover:bg-green-300" : "bg-gray-500 left-0 hover:bg-gray-400",
+            pending && "animate-pulse"
         )}>
         </button>
     </div>
