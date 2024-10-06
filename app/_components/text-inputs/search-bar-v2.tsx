@@ -7,21 +7,23 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-export const searchQueryKey = "query";
+export const SearchQueryKey = "query";
+const SearchPageKey = "page"
 
 export default function SearchBar({ className, placeholder = "Search..." }: Readonly<{ className?: string, placeholder?: string }>) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { replace } = useRouter();
-    const [query, setQuery] = useState(searchParams.get(searchQueryKey) ?? '');
+    const [query, setQuery] = useState(searchParams.get(SearchQueryKey) ?? '');
 
     useEffect(() => {
         function handleChangeSearchQuery(newQuery: string) {
             const params = new URLSearchParams(searchParams);
             if (newQuery) {
-                params.set(searchQueryKey, newQuery);
+                params.set(SearchQueryKey, newQuery);
+                params.get(SearchPageKey) && params.set(SearchPageKey, '1');
             } else {
-                params.delete(searchQueryKey);
+                params.delete(SearchQueryKey);
             }
             replace(pathname + "?" + params.toString());
         }

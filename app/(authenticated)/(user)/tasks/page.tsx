@@ -10,7 +10,7 @@ import AddTaskForm from "../../../_components/forms/add-task-form";
 import TasksListSkeleton from "@/app/_components/skeletons/tasks-list-skeleton";
 import { signOut } from "next-auth/react";
 import { showNotification } from "@/app/_lib/utils";
-import SearchBarV2, { searchQueryKey } from "@/app/_components/text-inputs/search-bar-v2";
+import SearchBarV2, { SearchQueryKey } from "@/app/_components/text-inputs/search-bar-v2";
 import { useSearchQuery } from "@/app/_hooks/useSearchQuery";
 
 
@@ -19,7 +19,7 @@ export default function TasksPage() {
     const [tasks, dispatch] = useReducer(tasksReducer, []);
     const [highlightedTaskId, setHighlightedTaskId] = useState<number | undefined>(undefined);
     const [loadingTasks, setLoadingTasks] = useState(true);
-    const query = useSearchQuery(searchQueryKey);
+    const query = useSearchQuery(SearchQueryKey);
     const isShowSearchTasks = tasks.length > 0 || query;
 
     useEffect(() => {

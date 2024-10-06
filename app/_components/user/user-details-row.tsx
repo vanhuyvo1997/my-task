@@ -1,11 +1,11 @@
 "use client"
-import React, { useState } from "react";
+import React from "react";
 import Avatar from "../account/avatar";
 import clsx from "clsx";
-import { UserRowData } from "./user-table";
 import { changeUserStatusAction } from "@/app/_actions/user-action";
+import { UserDetailsData } from "@/app/_dal/users-dal";
 
-export default function UserRow({ data, className }: Readonly<{ className?: string, data: UserRowData }>) {
+export default function UserRow({ data, className }: Readonly<{ className?: string, data: UserDetailsData }>) {
     async function handleDisableUser() {
         changeUserStatusAction(data.id, "disabled");
     }
