@@ -4,11 +4,16 @@ import Pagination from "./pagination";
 import React from "react";
 import { UserSearchParam } from "@/app/(authenticated)/(user)/dashboard/users/page";
 import UserDetailsRow from "./user-details-row";
+import EmptyBanner from "../tasks/empty-banner";
 
 export default async function UserTable({ searchParams }: Readonly<{ searchParams: UserSearchParam }>) {
     const pagedUserDetailsData = await getPagedUsersData(searchParams.page ?? 1, searchParams.query);
     const userRowsData = pagedUserDetailsData.content;
     const totalPages = pagedUserDetailsData.totalPages;
+
+    if (pagedUserDetailsData.totalElements === 0) {
+        return <EmptyBanner message="There is no users." />
+    }
     return <>
         <table className="border-collapse w-full text-left">
             <colgroup>

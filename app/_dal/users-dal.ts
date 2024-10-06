@@ -15,6 +15,7 @@ export type UserDetailsData = {
 
 export type PagedUsersDetailsData = {
     totalPages: number,
+    totalElements: number,
     content: UserDetailsData[],
 }
 
