@@ -5,7 +5,8 @@ import TextInput from "./text-input"
 import Button from "../buttons/button"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import { useDebouncedCallback } from "use-debounce"
 
 export const SearchQueryKey = "query";
 const SearchPageKey = "page"
@@ -16,26 +17,26 @@ export default function SearchBar({ className, placeholder = "Search..." }: Read
     const { replace } = useRouter();
     const [query, setQuery] = useState(searchParams.get(SearchQueryKey) ?? '');
 
-    useEffect(() => {
-        function handleChangeSearchQuery(newQuery: string) {
-            const params = new URLSearchParams(searchParams);
-            if (newQuery) {
-                params.set(SearchQueryKey, newQuery);
-                params.get(SearchPageKey) && params.set(SearchPageKey, '1');
-            } else {
-                params.delete(SearchQueryKey);
-            }
-            replace(pathname + "?" + params.toString());
+    const setSearchQuery = useDebouncedCallback((newQuery: string) => {
+        const params = new URLSearchParams(searchParams);
+        if (newQuery) {
+            params.set(SearchQueryKey, newQuery);
+            params.get(SearchPageKey) && params.set(SearchPageKey, '1');
+        } else {
+            params.delete(SearchQueryKey);
         }
+        replace(pathname + "?" + params.toString());
+    }, 600);
 
-        const timeoutId = setTimeout(() => handleChangeSearchQuery(query), 500);
-        return () => {
-            clearTimeout(timeoutId);
-        }
-    }, [pathname, query, replace, searchParams]);
+    function handleChangeSearchQuery(e: React.ChangeEvent<HTMLInputElement>) {
+        const newValue = e.target.value;
+        setQuery(newValue);
+        setSearchQuery(newValue);
+    }
 
-    function handleChangeSearchTerm(e: React.ChangeEvent<HTMLInputElement>) {
-        setQuery(e.target.value);
+    function handleClearSearchQuery() {
+        setQuery("");
+        setSearchQuery("");
     }
 
     return <div className={clsx(
@@ -43,8 +44,8 @@ export default function SearchBar({ className, placeholder = "Search..." }: Read
         className,
     )} onSubmit={e => e.preventDefault()}>
         <TextInput
-            onChange={handleChangeSearchTerm}
-            onClearText={() => { setQuery("") }}
+            onChange={handleChangeSearchQuery}
+            onClearText={handleClearSearchQuery}
             placeholder={placeholder}
             className="outline-none rounded-r-none bg-transparent shadow-none"
             value={query}
