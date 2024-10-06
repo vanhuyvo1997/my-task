@@ -8,45 +8,39 @@ import clsx from "clsx";
 import Link from "next/link";
 
 export default function Pagination({ totalPage }: Readonly<{ totalPage: number }>) {
-    const searchQuery = useSearchParams();
-    const currentPage = Number(searchQuery.get("page") ?? '1');
+    const searchParams = useSearchParams();
+    const currentPage = Number(searchParams.get("page") ?? 1);
     const pathname = usePathname();
-    const allPaginationButtons = useMemo(() => generatePaginationLinkButtons(totalPage, currentPage, pathname), [totalPage, currentPage, pathname]);
+    const allPaginationButtons = useMemo(
+        () => generatePaginationLinkButtons(totalPage, currentPage, pathname, new URLSearchParams(searchParams)),
+        [totalPage, currentPage, pathname, searchParams]
+    );
 
     return <div className="h-4 max-w-80 flex items-center m-auto gap-1">
         {allPaginationButtons}
     </div>
 }
 
-function PaginationLinkButton({ children, active = false, disabled, href }: Readonly<{ children: ReactNode, active?: boolean, disabled?: boolean, href?: string }>) {
-    const buttonClassName = clsx("border-[1px]");
-    if (disabled || active) {
-        return <Button disabled className={clsx(buttonClassName, active && "bg-hover-background")}>{children}</Button>
-    }
-    return <Link href={href ?? ''} >
-        <Button className={buttonClassName}>
-            {children}
-        </Button>
-    </Link>;
-}
-
-const commonCreatePageUrl = (page: number, pathname?: string) => `${pathname}?page=${page}`;
-
-function generatePaginationLinkButtons(totalPages: number, currentPage: number, pathname: string) {
+function generatePaginationLinkButtons(totalPages: number, currentPage: number, pathname: string, searchParams: URLSearchParams) {
     let result = [];
     if (!totalPages || totalPages <= 0) return null;
     const hasMoreSymbol = "...";
 
-    const createPageUrl = (page: number) => commonCreatePageUrl(page, pathname);
+    const createPageUrl = (page: number) => {
+        searchParams.set("page", page + "");
+        return `${pathname}?${searchParams.toString()}`;
+    }
+
     function addPaginationLinkButtons(begin: number, end: number) {
         for (let i = begin; i <= end; i++) {
             result.push(<PaginationLinkButton key={i} href={createPageUrl(i)} active={currentPage === i}>{i}</PaginationLinkButton>);
         }
     }
 
-    result.push(<PaginationLinkButton key={"back"} href={pathname + "?" + "page=" + (currentPage - 1)} disabled={currentPage === 1}><ArrowLeftIcon className="h-6" /></PaginationLinkButton>);
+
+    result.push(<PaginationLinkButton key={"back"} href={createPageUrl(currentPage - 1)} disabled={currentPage === 1}><ArrowLeftIcon className="h-6" /></PaginationLinkButton>);
     if (totalPages <= 7 && totalPages >= 1) {
-        addPaginationLinkButtonsOnSmallTotalPage(totalPages, currentPage, result, pathname);
+        addPaginationLinkButtons(1, totalPages);
     } else if (currentPage <= 3) {
         addPaginationLinkButtons(1, 3);
         result.push(<PaginationLinkButton key={hasMoreSymbol} disabled>{hasMoreSymbol}</PaginationLinkButton>)
@@ -66,8 +60,15 @@ function generatePaginationLinkButtons(totalPages: number, currentPage: number, 
     return result;
 }
 
-function addPaginationLinkButtonsOnSmallTotalPage(totalPages: number, currentPage: number, result: JSX.Element[], pathname: string) {
-    for (let i = 1; i <= totalPages; i++) {
-        result.push(<PaginationLinkButton href={commonCreatePageUrl(i, pathname)} key={i} active={currentPage === i}>{i}</PaginationLinkButton>);
+
+function PaginationLinkButton({ children, active = false, disabled, href }: Readonly<{ children: ReactNode, active?: boolean, disabled?: boolean, href?: string }>) {
+    const buttonClassName = clsx("border-[1px]");
+    if (disabled || active) {
+        return <Button disabled className={clsx(buttonClassName, active && "bg-hover-background")}>{children}</Button>
     }
+    return <Link href={href ?? ''} >
+        <Button className={buttonClassName}>
+            {children}
+        </Button>
+    </Link>;
 }
