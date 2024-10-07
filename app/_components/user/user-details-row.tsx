@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { changeUserStatusAction } from "@/app/_actions/user-action";
 import { UserDetailsData } from "@/app/_dal/users-dal";
 import { useFormStatus } from "react-dom";
+import OneLineLimitedText from "../layouts/limited-text";
 
 export default function UserRow({ data, className }: Readonly<{ className?: string, data: UserDetailsData }>) {
     return <tr className={clsx(
@@ -14,7 +15,7 @@ export default function UserRow({ data, className }: Readonly<{ className?: stri
         <td className="py-2 flex items-center gap-2">
             <span><Avatar selectable={false} diameter="37" avatarUrl={data.avatarUrl} /></span> {data.firstName + " " + data.lastName}
         </td>
-        <td className="py-2">{data.email}</td>
+        <td className="py-2"><OneLineLimitedText title={data.email}>{data.email}</OneLineLimitedText></td>
         <td className="py-2">{data.numOfTodo}</td>
         <td className="py-2">{data.numOfCompleted}</td>
         <td className="py-2">{data.totalTasks}</td>

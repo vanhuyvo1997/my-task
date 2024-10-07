@@ -22,7 +22,7 @@ export default function UserTableSkeleton() {
                     <th>Todo</th>
                     <th>Done</th>
                     <th>Total</th>
-                    <th>Status</th>
+                    <th>Enabled</th>
                 </tr>
             </thead>
 
