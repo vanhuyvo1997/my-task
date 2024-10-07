@@ -15,7 +15,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
         return <EmptyBanner message="There is no users." />
     }
     return <>
-        <table className="border-collapse w-full text-left">
+        <table className="table-fixed border-collapse w-full text-left">
             <colgroup>
                 <col style={{ width: "40%" }} />
                 <col style={{ width: "32%" }} />
@@ -31,7 +31,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                     <th>Todo</th>
                     <th>Done</th>
                     <th>Total</th>
-                    <th>Status</th>
+                    <th>Enabled</th>
                 </tr>
             </thead>
             <tbody>
