@@ -22,10 +22,10 @@ export type PagedUsersDetailsData = {
 export async function getPagedUsersData(page: number, query: string) {
     const session = await auth();
     if (!session || session.error === 'RefreshAccessTokenError' || session.user?.role !== "ADMIN") {
-        throw new Error("Permission denied");
+        throw new Error("PermissionDeniedError");
     }
 
-    const response = await fetch(`http://localhost:8080/api/users?pageSize=8&pageNum=${page - 1}&sortDir=desc${query ? "&query=" + query : ''}`,
+    const response = await fetch(process.env.MY_TASK_USERS_BASE_API + `?pageSize=8&pageNum=${page - 1}&sortDir=desc${query ? "&query=" + query : ''}`,
         {
             headers: { "Authorization": "Bearer " + session.user.accessToken, },
         }
@@ -34,6 +34,7 @@ export async function getPagedUsersData(page: number, query: string) {
     if (!response.ok) {
         throw new Error("Fail to fetch: " + response.status);
     }
+
     const data = await response.json();
     return data as PagedUsersDetailsData;
 }

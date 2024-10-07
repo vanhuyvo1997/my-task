@@ -1,14 +1,16 @@
 import { PieChart } from "@mui/x-charts";
 import Card from "./card";
 
+export type StatisticsDisplayData = {
+    id: number | string,
+    label: string,
+    value: number,
+}
+
 export default function StatisticsColumn({ header, data }:
     Readonly<{
         header: React.ReactNode,
-        data: {
-            id: number | string,
-            label: string,
-            value: number,
-        }[],
+        data: StatisticsDisplayData[],
     }>) {
     return <div className="w-full border border-gray-300 p-1 shadow-lg rounded-sm flex flex-col gap-1">
         <div className="text-xl p-3 flex items-center gap-2">
