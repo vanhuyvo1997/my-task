@@ -8,12 +8,12 @@ export default function UserTableSkeleton() {
     return <div className="animate-pulse">
         <table className="border-collapse w-full text-left">
             <colgroup>
-                <col style={{ width: "40%" }} />
-                <col style={{ width: "32%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
+                <col className="w-[30%] md:w-[35%]" />
+                <col className="w-[20%] md:w-[25%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[14%] md:w-[7%]" />
             </colgroup>
             <thead className="py-4">
                 <tr>
@@ -37,7 +37,7 @@ export default function UserTableSkeleton() {
                 <UserDetailsRowSkeleton />
             </tbody>
         </table>
-        <div className="py-5">
+        <div className="w-fit mx-auto py-5">
             <PageinationSkeleton />
         </div>
     </div>
@@ -70,7 +70,7 @@ function SwitcherSkeleton() {
 }
 
 function PageinationSkeleton() {
-    return <div className="h-4 max-w-80 flex items-center m-auto gap-1">
+    return <div className="h-4 w-fit flex items-center gap-1">
         <PaginationLinkButtonSkeleton>
             <ArrowLeftIcon className="h-6" />
         </PaginationLinkButtonSkeleton>

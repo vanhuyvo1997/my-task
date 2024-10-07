@@ -17,12 +17,12 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
     return <>
         <table className="table-fixed border-collapse w-full text-left">
             <colgroup>
-                <col style={{ width: "40%" }} />
-                <col style={{ width: "32%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
-                <col style={{ width: "7%" }} />
+                <col className="w-[30%] md:w-[35%]" />
+                <col className="w-[20%] md:w-[25%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[12%] md:w-[11%]" />
+                <col className="w-[14%] md:w-[7%]" />
             </colgroup>
             <thead className="py-4">
                 <tr>
@@ -38,7 +38,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                 {userRowsData.map((userRowData, index) => <UserDetailsRow className={clsx(index === userRowsData.length - 1 && "border-b-0")} key={userRowData.id} data={userRowData} />)}
             </tbody>
         </table>
-        <div className="py-5">
+        <div className="w-fit mx-auto py-5">
             <Pagination totalPage={totalPages} />
         </div>
     </>

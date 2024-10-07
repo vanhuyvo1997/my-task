@@ -16,7 +16,7 @@ export default function Pagination({ totalPage }: Readonly<{ totalPage: number }
         [totalPage, currentPage, pathname, searchParams]
     );
 
-    return <div className="h-4 max-w-80 flex items-center m-auto gap-1">
+    return <div className="h-4 w-fit flex items-center gap-1">
         {allPaginationButtons}
     </div>
 }
