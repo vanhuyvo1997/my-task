@@ -1,5 +1,6 @@
 import StatisticsColumn, { StatisticsDisplayData } from "@/app/_components/statistics/statistics-column";
 import { getStatistics } from "@/app/_dal/statistics-dal";
+import ChartThemeProviderWrapper from "@/app/_wrapper/chart-them-provider-wrapper";
 import { ListBulletIcon, UserGroupIcon } from "@heroicons/react/24/outline";
 
 export default async function StatisticsPage() {
@@ -26,14 +27,16 @@ export default async function StatisticsPage() {
         <h1 className="text-2xl">Statistics</h1>
         <br />
         <div className="flex gap-2 flex-col md:flex-row">
-            <StatisticsColumn
-                header={<> <span><UserGroupIcon className="h-6 w-6" /></span> Users</>}
-                data={userStatisticsDisplayedData}
-            />
-            <StatisticsColumn
-                header={<><span><ListBulletIcon className="h-6 w-6" /></span> Tasks</>}
-                data={taskStatisticsDisplayedData}
-            />
+            <ChartThemeProviderWrapper>
+                <StatisticsColumn
+                    header={<> <span><UserGroupIcon className="h-6 w-6" /></span> Users</>}
+                    data={userStatisticsDisplayedData}
+                />
+                <StatisticsColumn
+                    header={<><span><ListBulletIcon className="h-6 w-6" /></span> Tasks</>}
+                    data={taskStatisticsDisplayedData}
+                />
+            </ChartThemeProviderWrapper>
         </div>
     </div>
 }

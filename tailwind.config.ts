@@ -12,7 +12,6 @@ const config: Config = {
     extend: {
       colors: {
         'hover-background': '#888888',
-
         'background-light': '#ffffff',
         'headerbar-light': '#ffffff',
         'sidemenu-background-light': '#e0e0e0',
