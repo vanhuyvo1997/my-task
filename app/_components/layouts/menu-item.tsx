@@ -24,8 +24,8 @@ export function ManageUsersMenuItem() {
 
 export function StatisticsMenuItem() {
     const pathName = usePathname();
-    const href = "/dashboard/statistics";
-    return <MenuItem href="/dashboard/statistics" active={pathName.endsWith(href)} >
+    const href = "/dashboard";
+    return <MenuItem href={href} active={pathName.endsWith(href)} >
         <ChartPieIcon className="h-full" /> Statistics
     </MenuItem>
 }

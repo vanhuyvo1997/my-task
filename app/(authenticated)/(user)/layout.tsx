@@ -14,8 +14,8 @@ export default async function UserLayout({ children }: Readonly<{ children: Reac
         <HeaderBar mode={session ? 'short' : 'full'} />
         <SideMenu id='side-menu'>
             {session.user?.role === "ADMIN" && <>
-                <ManageUsersMenuItem />
                 <StatisticsMenuItem />
+                <ManageUsersMenuItem />
             </>}
         </SideMenu>
         <div className="w-auto min-w-[344px] lg:pl-[344px]">
