@@ -6,7 +6,7 @@ import { Suspense } from "react";
 export type UserSearchParam = { page: number, query: string };
 
 export default async function ManageUserPage({ searchParams }: Readonly<{ searchParams: UserSearchParam }>) {
-    return <div>
+    return <>
         <h1 className="text-2xl font-semibold text-orange-400">User Mangement</h1>
         <br />
         <div className="md:relative">
@@ -16,5 +16,5 @@ export default async function ManageUserPage({ searchParams }: Readonly<{ search
         <Suspense key={searchParams.query + searchParams.page} fallback={<UserTableSkeleton />}>
             <UserTable searchParams={searchParams} />
         </Suspense>
-    </div>
+    </>
 }
