@@ -8,10 +8,9 @@ export type UserSearchParam = { page: number, query: string };
 
 export default async function ManageUserPage({ searchParams }: Readonly<{ searchParams: UserSearchParam }>) {
     return <AdminPageSection title="User Mangement">
-        <div className="md:relative">
-            <SearchBarV2 className="md:absolute md:right-4 md:-top-10" />
+        <div className="md:relative mb-2">
+            <SearchBarV2 className="md:absolute md:right-4 md:-top-14" />
         </div>
-        <br />
         <Suspense key={searchParams.query + searchParams.page} fallback={<UserTableSkeleton />}>
             <UserTable searchParams={searchParams} />
         </Suspense>
