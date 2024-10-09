@@ -4,6 +4,11 @@ import UserRankedList from "@/app/_components/statistics/user-ranked-list";
 import AdminPageSection from "@/app/_components/user/admin-page-section";
 import StatisticsSectionContent from "@/app/_components/user/statistics-section-content";
 import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Statistics"
+}
 
 export default async function StatisticsPage() {
     return <div className="flex flex-col gap-6">

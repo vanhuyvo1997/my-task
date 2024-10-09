@@ -18,7 +18,7 @@ export function ManageUsersMenuItem() {
     const pathName = usePathname();
     const href = "/dashboard/users";
     return <MenuItem href={href} active={pathName.endsWith(href)} >
-        <UsersIcon className="h-full" /> Manage users
+        <UsersIcon className="h-full" /> Users Management
     </MenuItem>
 }
 
