@@ -53,7 +53,9 @@ function UserDetailsRowSkeleton() {
         <td className="py-2"><TextSkeleton /></td>
         <td className="py-2"><TextSkeleton /></td>
         <td className="py-2">
-            <SwitcherSkeleton />
+            <div className="mx-auto w-fit h-fit">
+                <SwitcherSkeleton />
+            </div>
         </td>
     </tr>
 }

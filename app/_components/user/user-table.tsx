@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { getPagedUsersData } from "@/app/_dal/users-dal";
 import Pagination from "./pagination";
 import React from "react";
@@ -24,7 +23,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                 <col className="w-[12%] md:w-[11%]" />
                 <col className="w-[14%] md:w-[7%]" />
             </colgroup>
-            <thead className="py-4 bg-gray-200">
+            <thead className="py-4 bg-gray-200 dark:bg-gray-800">
                 <tr>
                     <th className="text-left">Name</th>
                     <th className="text-left">Email</th>

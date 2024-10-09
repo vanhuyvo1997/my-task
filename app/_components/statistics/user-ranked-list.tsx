@@ -16,7 +16,7 @@ export default async function UserRankedList() {
             <thead className="bg-gray-200 dark:bg-gray-700">
                 <tr className="text-lg ">
                     <th>TOP</th>
-                    <th>Name</th>
+                    <th className="text-left">Name</th>
                     <th>Todo</th>
                     <th>Complete</th>
                     <th>Total</th>
