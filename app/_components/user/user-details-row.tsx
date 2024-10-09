@@ -19,8 +19,8 @@ export default function UserRow({ data, className }: Readonly<{ className?: stri
         <td className="py-2">{data.numOfTodo}</td>
         <td className="py-2">{data.numOfCompleted}</td>
         <td className="py-2">{data.totalTasks}</td>
-        <td className="py-2 flex justify-center">
-            <form action={async e => {
+        <td>
+            <form className="h-fit w-fit mx-auto" action={async e => {
                 await changeUserStatusAction(data.id, e.get("switcher") == "on" ? "disabled" : "enabled");
             }}>
                 <Switcher name="switcher" value={data.enabled ? "on" : "off"} />

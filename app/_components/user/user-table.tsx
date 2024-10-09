@@ -24,10 +24,10 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                 <col className="w-[12%] md:w-[11%]" />
                 <col className="w-[14%] md:w-[7%]" />
             </colgroup>
-            <thead className="py-4">
+            <thead className="py-4 bg-gray-200">
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th className="text-left">Name</th>
+                    <th className="text-left">Email</th>
                     <th>Todo</th>
                     <th>Done</th>
                     <th>Total</th>
@@ -35,7 +35,7 @@ export default async function UserTable({ searchParams }: Readonly<{ searchParam
                 </tr>
             </thead>
             <tbody>
-                {userRowsData.map((userRowData, index) => <UserDetailsRow className={clsx(index === userRowsData.length - 1 && "border-b-0")} key={userRowData.id} data={userRowData} />)}
+                {userRowsData.map((userRowData, index) => <UserDetailsRow key={userRowData.id} data={userRowData} />)}
             </tbody>
         </table>
         <div className="w-fit mx-auto py-5">

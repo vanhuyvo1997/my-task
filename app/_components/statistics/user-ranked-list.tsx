@@ -4,7 +4,7 @@ import Avatar from "../account/avatar";
 export default async function UserRankedList() {
     const rankedList = await getTopActiveUser(5);
 
-    return <div className="w-full flex flex-col gap-1  border">
+    return <div className="w-full flex flex-col gap-1  border shadow-md">
         <table className="text-center">
             <colgroup>
                 <col width={"10%"} />
