@@ -1,6 +1,6 @@
 import { getPagedUsersData } from "@/app/lib/dal/users-dal";
 import React from "react";
-import { UserSearchParam } from "@/app/(application)/(authenticated)/(user)/dashboard/users/page";
+import { UserSearchParam } from "@/app/(my-task-app)/(authenticated)/(main)/dashboard/users/page";
 import UserDetailsRow from "./user-details-row";
 import EmptyBanner from "../commons/empty-banner";
 import Pagination from "../commons/pagination";
