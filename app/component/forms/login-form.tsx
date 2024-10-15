@@ -1,0 +1,76 @@
+'use client'
+
+import Link from "next/link"
+import { LabelTextInput } from "../commons/text-inputs/label-text-input"
+import AuthCommonForm from "./auth-common-form"
+import { showNotification } from "@/app/lib/utils";
+import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
+import { useFormState } from "react-dom";
+import { login, LoginFormState } from "@/app/lib/action/auth-actions";
+
+const initialState: LoginFormState = { success: false, message: '' };
+
+export default function LoginForm() {
+
+    const [formData, setFormData] = useState<{ email?: string, password?: string }>({});
+    const emailInputRef = useRef<HTMLInputElement>(null);
+    const [formStatus, action] = useFormState(login, initialState);
+    const router = useRouter();
+
+    function handleChangeFormData(e: React.ChangeEvent<HTMLInputElement>) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    function handleClearText(field: keyof typeof formData) {
+        setFormData({
+            ...formData,
+            [field]: '',
+        })
+    }
+
+    useEffect(() => {
+        if (formStatus.success) {
+            router.push('/');
+        } else if (formStatus.message) {
+            showNotification('error', formStatus.message);
+            emailInputRef.current?.focus();
+        }
+    }, [formStatus, router]);
+
+    useEffect(() => {
+        emailInputRef.current?.focus();
+    }, []);
+    return <AuthCommonForm
+        footerContent={<>or <Link href="/register" className="text-blue-600">Create an new account</Link> now?</>}
+        buttonContent="Login"
+        action={action}
+    >
+        <LabelTextInput
+            className="bg-text-input-background-light dark:bg-text-input-background-dark"
+            id="email"
+            type="email"
+            name="email"
+            title="Email"
+            ref={emailInputRef}
+            placeholder="Your email"
+            value={formData.email ?? ''}
+            onChange={handleChangeFormData}
+            onClearText={() => handleClearText('email')}
+        />
+        <LabelTextInput
+            className="bg-text-input-background-light dark:bg-text-input-background-dark"
+            id="password"
+            type="password"
+            name="password"
+            title="Password"
+            placeholder="Your password"
+            value={formData.password ?? ''}
+            onChange={handleChangeFormData}
+            onClearText={() => handleClearText('password')}
+        />
+    </AuthCommonForm>
+}
