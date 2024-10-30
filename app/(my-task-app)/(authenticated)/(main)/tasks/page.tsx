@@ -1,7 +1,7 @@
 "use client"
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import TasksList from "../../../../component/tasks/tasks-list";
-import { useFormState } from "react-dom";
+import { flushSync, useFormState } from "react-dom";
 import { tasksReducer } from "../../../../lib/reducer/tasks-reducer";
 import AddTaskForm from "../../../../component/forms/add-task-form";
 import TasksListSkeleton from "@/app/component/skeletons/tasks-list-skeleton";
@@ -21,6 +21,7 @@ export default function TasksPage() {
     const [loadingTasks, setLoadingTasks] = useState(true);
     const query = useSearchQuery(SearchQueryKey);
     const isShowSearchTasks = tasks.length > 0 || query;
+    const tasksListRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setLoadingTasks(true);
@@ -72,16 +73,16 @@ export default function TasksPage() {
 
     useEffect(() => {
         if (addingTaskFormState.success) {
-            window.scrollTo({ top: 0, behavior: "smooth" });
             let timeoutId: NodeJS.Timeout;
             const createdTask: TaskData = addingTaskFormState.createdTask!;
 
             setHighlightedTaskId(createdTask.id);
             timeoutId = setTimeout(() => setHighlightedTaskId(undefined), 3000);
-            dispatch({
+            flushSync(() => dispatch({
                 type: 'added',
                 task: createdTask,
-            })
+            }));
+            window.scrollTo({ top: 0, behavior: "smooth" });
 
             return () => {
                 clearTimeout(timeoutId);
@@ -107,7 +108,7 @@ export default function TasksPage() {
                     <SearchBarV2 placeholder="Search for tasks..." />
                 </div>
                 }
-                <div className="mt-14 mb-24 lg:mt-14 lg:mb-16">
+                <div className="mt-14 mb-24 lg:mt-14 lg:mb-16" ref={tasksListRef} >
                     {
                         loadingTasks ? <TasksListSkeleton /> : <TasksList highlightedTaskId={highlightedTaskId} />
                     }
