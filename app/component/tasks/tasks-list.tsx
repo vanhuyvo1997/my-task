@@ -1,16 +1,16 @@
 'use client'
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import CompletedDropButton from "../commons/buttons/completed-drop-button";
 import clsx from "clsx";
-import { TasksContext } from "@/app/lib/context/tasks-context";
 import { TaskData } from "@/app/lib/action/task-actions";
 import EmptyBanner from "../commons/empty-banner";
 import { Task } from "./task";
+import { useAppSelector } from "@/redux-lib/hooks";
 
 export default function TasksList({ highlightedTaskId }: Readonly<{ highlightedTaskId?: number | string }>) {
 
-    const tasks = useContext(TasksContext);
+    const tasks = useAppSelector(state => state.tasks);
 
     const [showCompleted, setShowCompleted] = useState(true);
 
