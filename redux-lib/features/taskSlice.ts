@@ -9,7 +9,7 @@ export const taskSlice = createSlice({
     initialState: initialState,
     reducers: {
         initialize: (state, action: PayloadAction<TaskData[]>) => {
-            state.push(...action.payload);
+            state.splice(0, state.length, ...action.payload)
         },
 
         addTask: (state, action: PayloadAction<TaskData>) => {
