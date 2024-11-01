@@ -49,7 +49,6 @@ export default function SearchBar({ className, placeholder = "Search..." }: Read
             placeholder={placeholder}
             className="outline-none rounded-r-none bg-transparent shadow-none"
             value={query}
-            defaultValue={query}
         />
         <PrimaryButton disabled className="rounded-l-none bg-transparent shadow-none"><MagnifyingGlassIcon height={20} width={20} /></PrimaryButton>
     </div>
