@@ -1,18 +1,19 @@
 
 import clsx from "clsx";
-import { FormEvent, ForwardedRef, forwardRef, useContext, useState } from "react";
+import { FormEvent, ForwardedRef, forwardRef, useState } from "react";
 
 import EditTaskForm from "../forms/edit-task-form";
 
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
 import { TaskData } from "@/app/lib/action/task-actions";
-import { TasksDispatchContext } from "@/app/lib/context/tasks-context";
 import TaskIcon, { IconStatus } from "./task-icon";
 import { showNotification } from "@/app/lib/utils";
 import { TaskNameSchema } from "@/app/lib/zod";
 import PrimaryButton from "../commons/buttons/primary-button";
 import DeleteTaskDialog from "../commons/dialog/delete-task-dialog";
+import { useAppDispatch } from "@/redux-lib/hooks";
+import { deleteTask, updateTask } from "@/redux-lib/features/taskSlice";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
@@ -20,7 +21,7 @@ export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted
 type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
 
 function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>, ref: ForwardedRef<HTMLDivElement>) {
-    const taskDispatch = useContext(TasksDispatchContext);
+    const taskDispatch = useAppDispatch();
 
     const [currentUiStatus, setCurrentUiStatus] = useState<TaskUiStatus>('normal');
 
@@ -67,10 +68,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 signOut();
             } else if (response.ok) {
                 const updatedTask = await response.json();
-                taskDispatch({
-                    type: 'updated',
-                    task: updatedTask,
-                });
+                taskDispatch(updateTask(updatedTask));
             } else if (response.status === 404) {
                 throw new Error('Task not found');
             } else {
@@ -80,10 +78,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (error instanceof Error) {
                 if (error.message === 'Task not found') {
                     showNotification('warning', 'Task not found');
-                    taskDispatch({
-                        type: 'deleted',
-                        taskId: id,
-                    })
+                    taskDispatch(deleteTask(id))
                 } else {
                     showNotification('error', error.message);
                 }
@@ -103,10 +98,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (response.status === 401) {
                 signOut();
             } else if (response.status === 204) {
-                taskDispatch({
-                    type: "deleted",
-                    taskId: id,
-                });
+                taskDispatch(deleteTask(id));
                 showNotification('success', 'The task has been removed successfully.');
             } else if (response.status === 404) {
                 throw new Error('Task not found');
@@ -118,10 +110,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (error instanceof Error) {
                 if (error.message === 'Task not found') {
                     showNotification('warning', "The task doesn't exist.");
-                    taskDispatch({
-                        type: "deleted",
-                        taskId: id,
-                    });
+                    taskDispatch(deleteTask(id));
                 } else {
                     showNotification('error', 'Something went wrong. Could delete task.');
                 }
@@ -152,10 +141,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                 signOut();
             } else if (response.ok) {
                 const updatedTask = await response.json();
-                taskDispatch({
-                    type: "updated",
-                    task: updatedTask,
-                })
+                taskDispatch(updateTask(updatedTask));
             } else if (response.status === 404) {
                 throw Error('TaskNotFoundError');
             } else {
@@ -165,10 +151,7 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
             if (error instanceof Error) {
                 if (error.message === 'TaskNotFoundError') {
                     showNotification('warning', 'Task not found');
-                    taskDispatch({
-                        type: 'deleted',
-                        taskId: id,
-                    });
+                    taskDispatch(deleteTask(id));
                 } else if (error.message === 'TooLongTaskNameError') {
                     showNotification("error", "Task name must bee less than 255 character.");
                 } else {

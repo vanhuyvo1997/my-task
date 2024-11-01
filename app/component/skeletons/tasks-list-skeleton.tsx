@@ -10,9 +10,6 @@ export default function TasksListSkeleton() {
             <TaskSkeleton />
             <TaskSkeleton />
             <TaskSkeleton />
-            <TaskSkeleton />
-            <TaskSkeleton />
-            <TaskSkeleton />
         </div>
         <CompletedDropMarkSkeleton />
         <div className="flex flex-col gap-2">
