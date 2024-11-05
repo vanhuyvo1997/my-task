@@ -10,6 +10,7 @@ export type TaskData = {
     status: "COMPLETED" | "TO_DO",
     createdAt?: Date,
     completedAt?: Date,
+    priority: "HIGH" | "MEDIUM" | "LOW"
     ownerId?: string
 }
 

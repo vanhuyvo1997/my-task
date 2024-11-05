@@ -14,13 +14,14 @@ import PrimaryButton from "../commons/buttons/primary-button";
 import DeleteTaskDialog from "../commons/dialog/delete-task-dialog";
 import { useAppDispatch } from "@/redux-lib/hooks";
 import { deleteTask, updateTask } from "@/redux-lib/features/taskSlice";
+import PriorityDot from "./priority-mark";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
 
 type TaskUiStatus = 'normal' | 'submiting' | 'deleting' | 'editing';
 
-function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { highlighted: boolean }>, ref: ForwardedRef<HTMLDivElement>) {
+function TaskComponent({ id, status, name, priority, highlighted }: Readonly<TaskData & { highlighted: boolean }>, ref: ForwardedRef<HTMLDivElement>) {
     const taskDispatch = useAppDispatch();
 
     const [currentUiStatus, setCurrentUiStatus] = useState<TaskUiStatus>('normal');
@@ -164,12 +165,10 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
     }
 
     return <>
-        <div className={
-            clsx(
-                "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md p-1 flex items-center justify-between gap-2 w-full",
-                highlighted && "animate-pulse"
-            )
-        }
+        <div className={clsx(
+            "bg-task-background-light hover:bg-hover-background dark:bg-task-background-dark rounded-md px-2 py-1 flex items-center justify-between gap-2 w-full",
+            highlighted && "animate-pulse"
+        )}
             ref={ref}
         >
 
@@ -178,9 +177,10 @@ function TaskComponent({ id, status, name, highlighted }: Readonly<TaskData & { 
                     <TaskIcon className="shrink-0" onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
                     <span className="overflow-hidden text-ellipsis" title={name}>{name}</span>
                 </div>
-                <div className="flex">
+                <div className="flex items-center">
                     <PrimaryButton onClick={changeToEditing} disabled={isSubmiting} size="sm" ><PencilSquareIcon height={20} width={20} /></PrimaryButton>
                     <PrimaryButton onClick={changeToDeleting} disabled={isSubmiting} size="sm" ><TrashIcon height={20} width={20} /></PrimaryButton>
+                    <PriorityDot priority={priority} diameter={18} />
                 </div>
             </>}
         </div>
