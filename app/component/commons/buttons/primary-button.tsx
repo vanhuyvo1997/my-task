@@ -11,7 +11,7 @@ export type CommonButtonProps = {
     tabIndex?: number,
 }
 
-type ButtonProps = CommonButtonProps & {
+export type ButtonProps = CommonButtonProps & {
     type?: 'button' | 'submit' | 'reset';
     size?: 'sm' | 'md' | 'lg';
 }

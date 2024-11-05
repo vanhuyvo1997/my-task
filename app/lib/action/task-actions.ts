@@ -34,6 +34,7 @@ export default async function createTask(prevState: CreateTaskState, formData: F
         }
 
         const newTaskName = formData.get('name')?.toString();
+        const priority = formData.get('priority')?.toString();
         const validateResult = TaskNameSchema.safeParse(newTaskName);
         if (!validateResult.success) {
             return {
@@ -48,7 +49,7 @@ export default async function createTask(prevState: CreateTaskState, formData: F
                 "Authorization": "Bearer " + session.user?.accessToken,
             },
             method: 'POST',
-            body: JSON.stringify({ name: newTaskName })
+            body: JSON.stringify({ name: newTaskName, priority: priority })
         });
 
         if (!response.ok) {

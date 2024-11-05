@@ -1,10 +1,12 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import { showNotification } from "@/app/lib/utils";
 import TextInput from "../commons/text-inputs/text-input";
-import { CreateTaskState } from "@/app/lib/action/task-actions";
+import { CreateTaskState, TaskData } from "@/app/lib/action/task-actions";
 import TaskIcon, { IconStatus } from "../tasks/task-icon";
+import clsx from "clsx";
+import SubmitButton from "../commons/buttons/submit-button";
 
 
 export default function AddTaskForm({
@@ -49,10 +51,11 @@ export default function AddTaskForm({
                 setAddingTaskState('submitting');
             }
         }}
-        className="flex px-2 items-center bg-add-task-background-light dark:bg-add-task-background-dark
+        className="flex gap-2 px-2 items-center bg-add-task-background-light dark:bg-add-task-background-dark
          rounded-md shadow-sm
          hover:bg-hover-background">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
+        {addingTaskName && <PrioritySelector onChange={() => nameInputRef.current?.focus()} />}
         <TextInput
             ref={nameInputRef}
             onFocus={e => setAddingTaskState("typing")}
@@ -64,5 +67,20 @@ export default function AddTaskForm({
             placeholder={addingTaskState === "typing" ? '' : 'Add new task'}
             name="name"
         />
+        {addingTaskName && <SubmitButton size="sm" className="bg-green-500">Create</SubmitButton>}
     </form>
+}
+
+function PrioritySelector({ onChange }: Readonly<{ onChange: () => void }>) {
+    const [value, setValue] = useState<TaskData['priority']>("MEDIUM");
+    return <select onChange={e => { setValue(e.target.value as TaskData['priority']); onChange() }}
+        className={clsx(
+            value === "HIGH" && 'bg-red-800',
+            value === "MEDIUM" && "bg-green-800",
+            value === "LOW" && "bg-purple-800",
+        )} name="priority" value={value}>
+        <option className="bg-red-800" value="HIGH">HIGH</option>
+        <option className="bg-green-800" value="MEDIUM">MEDIUM</option>
+        <option className="bg-purple-800" value="LOW">LOW</option>
+    </select>;
 }
