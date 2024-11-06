@@ -2,20 +2,25 @@ import { ArchiveBoxXMarkIcon, CheckIcon } from "@heroicons/react/20/solid";
 import { useEffect, useRef, useState } from "react";
 import TextInput from "../commons/text-inputs/text-input";
 import PrimaryButton from "../commons/buttons/primary-button";
+import { PrioritySelector } from "./add-task-form";
+import { TaskData } from "@/app/lib/action/task-actions";
 
 export default function EditTaskForm({
     originName,
+    originPriority,
     onCancel,
     onSubmit,
 }: Readonly<{
     originName: string,
+    originPriority: TaskData['priority']
     onCancel?: React.MouseEventHandler<HTMLButtonElement>
     onSubmit?: React.FormEventHandler<HTMLFormElement>
 }>) {
     const newNameInputRef = useRef<HTMLInputElement>(null);
     const [newName, setNewName] = useState(originName);
+    const [newPriority, setNewPriority] = useState(originPriority);
 
-    const disableSubmit = newName === originName || newName.length === 0;
+    const disableSubmit = (newName === originName && newPriority === originPriority) || newName.length === 0;
 
     useEffect(() => {
         newNameInputRef.current?.focus();
@@ -24,6 +29,7 @@ export default function EditTaskForm({
 
 
     return <form className="flex w-full justify-between items-center gap-3" onSubmit={onSubmit}>
+        <PrioritySelector onSelect={p => setNewPriority(p)} defaultValue={newPriority} />
         <TextInput
             ref={newNameInputRef}
             id="task-name"

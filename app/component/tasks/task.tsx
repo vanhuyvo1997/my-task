@@ -9,12 +9,12 @@ import { signOut } from "next-auth/react";
 import { TaskData } from "@/app/lib/action/task-actions";
 import TaskIcon, { IconStatus } from "./task-icon";
 import { showNotification } from "@/app/lib/utils";
-import { TaskNameSchema } from "@/app/lib/zod";
 import PrimaryButton from "../commons/buttons/primary-button";
 import DeleteTaskDialog from "../commons/dialog/delete-task-dialog";
 import { useAppDispatch } from "@/redux-lib/hooks";
 import { deleteTask, updateTask } from "@/redux-lib/features/taskSlice";
 import PriorityDot from "./priority-mark";
+import { NewTaskSchema } from "@/app/lib/zod";
 
 
 export const Task = forwardRef<HTMLDivElement, Readonly<TaskData & { highlighted: boolean }>>(TaskComponent);
@@ -126,16 +126,18 @@ function TaskComponent({ id, status, name, priority, highlighted }: Readonly<Tas
         e.preventDefault();
         changeToSubmiting();
         const fomrData = new FormData(e.currentTarget);
-        const newName = fomrData.get('task-name');
+
         try {
-            const validateResult = TaskNameSchema.safeParse(newName);
+            const validateResult = NewTaskSchema.safeParse({ name: fomrData.get('task-name'), priority: fomrData.get('priority') });
             if (!validateResult.success) {
                 throw Error('TooLongTaskNameError');
             }
-            const url = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API + `/${id}/name`;
+
+            const { name, priority } = validateResult.data;
+            const url = process.env.NEXT_PUBLIC_TASKS_PROXY_BASE_API + `/${id}`;
             const response = await fetch(url, {
-                method: 'PATCH',
-                body: JSON.stringify({ name: newName })
+                method: 'PUT',
+                body: JSON.stringify({ name, priority })
             });
 
             if (response.status === 401) {
@@ -172,7 +174,7 @@ function TaskComponent({ id, status, name, priority, highlighted }: Readonly<Tas
             ref={ref}
         >
 
-            {isEditing ? <EditTaskForm onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
+            {isEditing ? <EditTaskForm originPriority={priority} onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
                 <div className="flex items-center gap-2 w-[calc(100%-80px)]">
                     <TaskIcon className="shrink-0" onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
                     <span className="overflow-hidden text-ellipsis" title={name}>{name}</span>

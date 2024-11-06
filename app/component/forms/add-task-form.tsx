@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { ChangeEventHandler, useEffect, useRef, useState } from "react"
 import { showNotification } from "@/app/lib/utils";
 import TextInput from "../commons/text-inputs/text-input";
 import { CreateTaskState, TaskData } from "@/app/lib/action/task-actions";
@@ -66,7 +66,7 @@ export default function AddTaskForm({
          rounded-md shadow-sm
          hover:bg-hover-background">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
-        {addingTaskState === "typing" && <PrioritySelector />}
+        {addingTaskState === "typing" && <PrioritySelector defaultValue="MEDIUM" />}
         <TextInput
             ref={nameInputRef}
             onChange={e => handleChangeName(e.target.value)}
@@ -80,9 +80,16 @@ export default function AddTaskForm({
     </form>
 }
 
-export function PrioritySelector() {
-    const [value, setValue] = useState<TaskData['priority']>("MEDIUM");
-    return <select onChange={e => { setValue(e.target.value as TaskData['priority']); }}
+export function PrioritySelector({ defaultValue, onSelect }: Readonly<{ defaultValue: TaskData["priority"], onSelect?: (p: TaskData["priority"]) => void }>) {
+    const [value, setValue] = useState<TaskData['priority']>(defaultValue);
+
+    const handleChangeOption: ChangeEventHandler<HTMLSelectElement> = e => {
+        const newOption = e.target.value as TaskData['priority'];
+        setValue(e.target.value as TaskData['priority']);
+        onSelect && onSelect(newOption);
+    }
+
+    return <select onChange={handleChangeOption}
         className={clsx(
             value === "HIGH" && 'bg-red-800',
             value === "MEDIUM" && "bg-green-800",
