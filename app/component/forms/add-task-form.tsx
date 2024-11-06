@@ -91,12 +91,12 @@ export function PrioritySelector({ defaultValue, onSelect }: Readonly<{ defaultV
 
     return <select onChange={handleChangeOption}
         className={clsx(
-            value === "HIGH" && 'bg-red-800',
-            value === "MEDIUM" && "bg-green-800",
-            value === "LOW" && "bg-purple-800",
+            value === "HIGH" && 'bg-red-500',
+            value === "MEDIUM" && "bg-green-500",
+            value === "LOW" && "bg-gray-500",
         )} name="priority" value={value}>
-        <option className="text-red-800 bg-white" value="HIGH">HIGH</option>
-        <option className="text-green-800 bg-white" value="MEDIUM">MEDIUM</option>
-        <option className="text-purple-800 bg-white" value="LOW">LOW</option>
+        <option className="text-red-500 bg-white" value="HIGH">HIGH</option>
+        <option className="text-green-500 bg-white" value="MEDIUM">MEDIUM</option>
+        <option className="text-gray-500 bg-white" value="LOW">LOW</option>
     </select>;
 }

@@ -177,12 +177,12 @@ function TaskComponent({ id, status, name, priority, highlighted }: Readonly<Tas
             {isEditing ? <EditTaskForm originPriority={priority} onSubmit={handleChangeTaskName} onCancel={changeToNormal} originName={name} /> : <>
                 <div className="flex items-center gap-2 w-[calc(100%-80px)]">
                     <TaskIcon className="shrink-0" onClick={handleChangeTaskSatus} status={findTaskIconStatus()} />
-                    <span className="overflow-hidden text-ellipsis" title={name}>{name}</span>
+                    <PriorityDot priority={priority} diameter={9} />
+                    <span className="overflow-hidden text-ellipsis" title={name}>{status == "COMPLETED" ? <s>{name}</s> : name}</span>
                 </div>
                 <div className="flex items-center">
                     <PrimaryButton onClick={changeToEditing} disabled={isSubmiting} size="sm" ><PencilSquareIcon height={20} width={20} /></PrimaryButton>
                     <PrimaryButton onClick={changeToDeleting} disabled={isSubmiting} size="sm" ><TrashIcon height={20} width={20} /></PrimaryButton>
-                    <PriorityDot priority={priority} diameter={18} />
                 </div>
             </>}
         </div>
