@@ -30,4 +30,11 @@ export const LoginFormSchema = z.object({
     password: PasswordSchema,
 })
 
-export const TaskNameSchema = RequiredStringSchema.max(255, 'This filed must be less than 255 character');
+const TaskNameSchema = RequiredStringSchema.max(255, 'This field must be less than 255 character');
+
+const PrioritySchema = z.enum(["HIGH", "MEDIUM", "LOW"]);
+
+export const NewTaskSchema = z.object({
+    name: TaskNameSchema,
+    priority: PrioritySchema
+});

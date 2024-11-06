@@ -24,7 +24,7 @@ export default function TaskIcon({
             onClick={onClick}
             disabled={isDisabled}
             className={clsx(
-                'rounded-full h-6 w-6 relative p-0.5',
+                'rounded-full h-6 w-6 relative p-0.5 shrink-0',
                 status === 'busy' && 'animate-spin border-dotted border-[5px] border-t-emerald-200 border-r-lime-500 border-l-red-500',
                 (status === 'checked' || status === 'unchecked') && 'border-2 border-white',
                 status === 'checked' && 'bg-green-500',

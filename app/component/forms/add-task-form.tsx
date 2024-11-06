@@ -1,6 +1,6 @@
 "use client"
 
-import { ChangeEventHandler, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { showNotification } from "@/app/lib/utils";
 import TextInput from "../commons/text-inputs/text-input";
 import { CreateTaskState, TaskData } from "@/app/lib/action/task-actions";
@@ -33,16 +33,27 @@ export default function AddTaskForm({
         }
     }
 
+    function handleChangeName(newName: string) {
+        setAddingTaskName(newName);
+        if (newName) {
+            setAddingTaskState("typing");
+        } else {
+            setAddingTaskState("normal");
+        }
+    }
+
     useEffect(() => {
         if (addingTaskFormState.success) {
-            setAddingTaskName("");
+            handleChangeName("");
+            nameInputRef.current?.focus();
         } else if (addingTaskFormState.message) {
             showNotification("error", addingTaskFormState.message);
+            setAddingTaskState("normal");
         }
-        setAddingTaskState("normal");
     }, [addingTaskFormState]);
 
     return <form
+
         action={addTaskAction}
         onSubmit={e => {
             if (!addingTaskName) {
@@ -55,32 +66,30 @@ export default function AddTaskForm({
          rounded-md shadow-sm
          hover:bg-hover-background">
         <TaskIcon onClick={() => nameInputRef.current?.focus()} status={iconStatus} />
-        {addingTaskName && <PrioritySelector onChange={() => nameInputRef.current?.focus()} />}
+        {addingTaskState === "typing" && <PrioritySelector />}
         <TextInput
             ref={nameInputRef}
-            onFocus={e => setAddingTaskState("typing")}
-            onBlur={e => setAddingTaskState('normal')}
-            onChange={e => setAddingTaskName(e.target.value)}
+            onChange={e => handleChangeName(e.target.value)}
             value={addingTaskName}
-            onClearText={e => setAddingTaskName('')}
+            onClearText={e => handleChangeName('')}
             className="bg-transparent outline-none shadow-none"
             placeholder={addingTaskState === "typing" ? '' : 'Add new task'}
             name="name"
         />
-        {addingTaskName && <SubmitButton size="sm" className="bg-green-500">Create</SubmitButton>}
+        {addingTaskState === "typing" && <SubmitButton size="sm" className="bg-green-500">Create</SubmitButton>}
     </form>
 }
 
-function PrioritySelector({ onChange }: Readonly<{ onChange: () => void }>) {
+export function PrioritySelector() {
     const [value, setValue] = useState<TaskData['priority']>("MEDIUM");
-    return <select onChange={e => { setValue(e.target.value as TaskData['priority']); onChange() }}
+    return <select onChange={e => { setValue(e.target.value as TaskData['priority']); }}
         className={clsx(
             value === "HIGH" && 'bg-red-800',
             value === "MEDIUM" && "bg-green-800",
             value === "LOW" && "bg-purple-800",
         )} name="priority" value={value}>
-        <option className="bg-red-800" value="HIGH">HIGH</option>
-        <option className="bg-green-800" value="MEDIUM">MEDIUM</option>
-        <option className="bg-purple-800" value="LOW">LOW</option>
+        <option className="text-red-800 bg-white" value="HIGH">HIGH</option>
+        <option className="text-green-800 bg-white" value="MEDIUM">MEDIUM</option>
+        <option className="text-purple-800 bg-white" value="LOW">LOW</option>
     </select>;
 }
