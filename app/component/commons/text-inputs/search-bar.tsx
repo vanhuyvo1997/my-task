@@ -8,22 +8,22 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 
-export const SearchQueryKey = "query";
-const SearchPageKey = "page"
+export const NAME_QUERY_KEY = "query";
+const PAGE_KEY = "page"
 
 export default function SearchBar({ className, placeholder = "Search..." }: Readonly<{ className?: string, placeholder?: string }>) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { replace } = useRouter();
-    const [query, setQuery] = useState(searchParams.get(SearchQueryKey) ?? '');
+    const [query, setQuery] = useState(searchParams.get(NAME_QUERY_KEY) ?? '');
 
     const setSearchQuery = useDebouncedCallback((newQuery: string) => {
         const params = new URLSearchParams(searchParams);
         if (newQuery) {
-            params.set(SearchQueryKey, newQuery);
-            params.get(SearchPageKey) && params.set(SearchPageKey, '1');
+            params.set(NAME_QUERY_KEY, newQuery);
+            params.get(PAGE_KEY) && params.set(PAGE_KEY, '1');
         } else {
-            params.delete(SearchQueryKey);
+            params.delete(NAME_QUERY_KEY);
         }
         replace(pathname + "?" + params.toString());
     }, 600);

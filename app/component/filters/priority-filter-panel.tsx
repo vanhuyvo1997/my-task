@@ -5,21 +5,22 @@ import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react"
 
-type PriorityRadioValueType = TaskData['priority'] | "ALL";
-const PRIORITY_RADIO_VALUES = new Set<PriorityRadioValueType>(["ALL", "HIGH", "MEDIUM", "LOW"]);
+export type PriorityRadioValueType = TaskData['priority'] | "ALL";
+export const PRIORITY_RADIO_VALUES = new Set<PriorityRadioValueType>(["ALL", "HIGH", "MEDIUM", "LOW"]);
+export const PRORITY_QUERY_KEY = "priority";
 
 export default function PriorityFilterPanal() {
     const path = usePathname();
     const searchParam = useSearchParams();
     const { replace } = useRouter();
-    const prevPrority = searchParam.get("priority") as PriorityRadioValueType;
+    const prevPrority = searchParam.get(PRORITY_QUERY_KEY) as PriorityRadioValueType;
     const [selectedValue, setSelectedValue] = useState<PriorityRadioValueType>(PRIORITY_RADIO_VALUES.has(prevPrority) ? prevPrority : "ALL");
 
 
     const handleSelect: React.ChangeEventHandler<HTMLInputElement> = e => {
         const newValue = e.target.value as PriorityRadioValueType;
         const urlParams = new URLSearchParams(searchParam);
-        urlParams.set("priority", newValue);
+        urlParams.set(PRORITY_QUERY_KEY, newValue);
         replace(path + '?' + urlParams.toString());
         setSelectedValue(newValue);
     }

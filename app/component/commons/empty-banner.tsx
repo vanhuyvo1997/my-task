@@ -4,12 +4,12 @@ import EmptyBoxLight from '@/app/image/box-light.png';
 import EmptyBoxDark from '@/app/image/box-dark.png';
 import Image from "next/image";
 import { useSearchQuery } from '@/app/lib/hook/useSearchQuery';
-import { SearchQueryKey } from './text-inputs/search-bar';
+import { NAME_QUERY_KEY } from './text-inputs/search-bar';
 import { useDarkModeContext } from '@/app/lib/context/dark-mode-context';
 
 
 export default function EmptyBanner({ message = "Let's add your first task now!" }: Readonly<{ message?: string }>) {
-    const searchTerm = useSearchQuery(SearchQueryKey);
+    const searchTerm = useSearchQuery(NAME_QUERY_KEY);
     const isDarkMode = useDarkModeContext();
     return <div className="w-fit m-auto mt-20 text-2xl">
         <Image className="m-auto my-10" src={isDarkMode ? EmptyBoxDark : EmptyBoxLight} height={100} alt="empty box" />
